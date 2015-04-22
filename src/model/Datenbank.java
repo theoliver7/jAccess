@@ -34,7 +34,7 @@ public class Datenbank {
 
 	
 		try {
-			connection = (Connection) DriverManager.getConnection(database, user, password);
+			connection = DriverManager.getConnection(database, user, password);
 
 		} catch (SQLException e) {
 			System.out.println("Connection Failed! Check output console");
