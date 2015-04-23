@@ -1,15 +1,22 @@
-package model;
+package jdbc;
 
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Properties;
 
+import java.sql.PreparedStatement;
+
 public class Datenbank {
-	public static void main(String[] args) {
-		Connection connection=null;
+
+	protected Connection con = null;
+	protected PreparedStatement ps = null;
+	protected ResultSet rs = null;
+
+	public Connection getCon() throws SQLException {
 		String user = "";
 		String database = "";
 		String password = "";
@@ -29,23 +36,44 @@ public class Datenbank {
 		} catch (ClassNotFoundException e) {
 			System.out.println("Treiber Problem");
 			e.printStackTrace();
-			return;
+
 		}
 
-	
 		try {
-			connection = DriverManager.getConnection(database, user, password);
+			con = DriverManager.getConnection(database, user, password);
 
 		} catch (SQLException e) {
 			System.out.println("Connection Failed! Check output console");
 			e.printStackTrace();
-			return;
 		}
 
-		if (connection != null) {
+		if (con != null) {
 			System.out.println("Connected");
 		} else {
 			System.out.println("Failed to make connection!");
+		}
+
+		return con;
+	}
+
+	public void setCon(Connection con) {
+		this.con = con;
+	}
+
+	protected void closeCon() {
+		try {
+			if (rs != null) {
+				rs.close();
+			}
+			if (ps != null) {
+				ps.close();
+			}
+			if (con != null) {
+				con.close();
+				con = null;
+			}
+		} catch (SQLException e) {
+
 		}
 	}
 }
