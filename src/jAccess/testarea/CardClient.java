@@ -15,23 +15,12 @@ public class CardClient {
 	 * 
 	 */
 	private static final long	serialVersionUID	= -547343587330787268L;
-
-	private CardClient() throws RemoteException {
-		super();
-		// TODO Auto-generated constructor stub
-	}
 	
 	public static void main(String[] args) throws MalformedURLException, RemoteException, NotBoundException, ClassCastException {
-		CardIntf obj = (CardIntf) Naming.lookup("//localhost/CardServer");
-		obj.sendUid(getUid());
-	}
-	
-	public CardClient getInstance() throws RemoteException {
-		if (cardclient == null) {
-			cardclient = (CardIntf) new CardClient();
-			return (CardClient) cardclient;
+		CardIntf obj = (CardIntf)Naming.lookup("//localhost/CardServer");
+		while(true) {
+		obj.receiveUid(getUid());
 		}
-		return (CardClient) cardclient;
 	}
 
 	public static String getUid() {

@@ -7,7 +7,7 @@ import javax.smartcardio.*;
 
 public class CardReader {
 	
-	private static CardClient client = null;
+	private static CardClient client = new CardClient();
 	
 	public static void main(String[] args) throws RemoteException {
 		
@@ -42,10 +42,9 @@ public class CardReader {
 					CardChannel cc = card.getBasicChannel();
 					
 					// Uid wird Client über Uid Instanz gesendet
-					client.getInstance().setUid(send(command, cc));
-					client.getInstance();
+					client.setUid(send(command, cc));
 					// Uid wird noch einmal ausgegeben
-					System.out.println(CardClient.getUid());
+					System.out.println(client.getUid());
 					
 					// Terminal diconnected Karte
 					terminal.waitForCardAbsent(0);

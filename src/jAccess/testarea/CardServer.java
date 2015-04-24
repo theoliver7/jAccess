@@ -9,7 +9,7 @@ import java.rmi.server.UnicastRemoteObject;
 public class CardServer extends UnicastRemoteObject implements CardIntf {
 	
 	protected CardServer() throws RemoteException {
-		super();
+		super(0);
 		// TODO Auto-generated constructor stub
 	}
 
@@ -37,7 +37,7 @@ public class CardServer extends UnicastRemoteObject implements CardIntf {
 	}
 
 	@Override
-	public String sendUid(String uid) throws RemoteException {
+	public String receiveUid(String uid) throws RemoteException {
 		// TODO Auto-generated method stub
 		System.out.println("UID: " + uid);
 		return uid;
