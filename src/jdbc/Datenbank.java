@@ -56,7 +56,7 @@ public class Datenbank {
 		return con;
 	}
 
-	public void setCon(Connection con) {
+	public void setCon(Connection con){
 		this.con = con;
 	}
 
