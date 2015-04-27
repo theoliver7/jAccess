@@ -4,38 +4,28 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 
 public class ZeitJDBCDAO extends Datenbank implements ZeitDAO {
 	private static Zeit z;
 	private Connection con = null;
 	private PreparedStatement ps = null;
 	private ResultSet rs = null;
+	private String s;
 
 	@Override
 	public Zeit arbeitszeitauslesen() throws SQLException {
 		z = new Zeit();
-		String sql = "SELECT idZeit, BeginnMorgen, EndeMorgen, BeginnNachmittag, EndeNachmittag, Datum, Total, ArbeiterID FROM zeit WHERE 45-459-5415";
+		String sql = "SELECT idZeit, timestamp, ArbeiterID FROM zeit WHERE ArbeiterID ='45-459-5415'";
 		con = getCon();
 		ps = con.prepareStatement(sql);
 		rs = ps.executeQuery();
+
 		while (rs.next()) {
-			z = new Zeit();
 			z.setIdZeit(rs.getString("idZeit"));
-			z.setBeginnMorgen(rs.getString("BeginnMorgen"));
-			z.setEndeMorgen(rs.getString("EndeMorgen"));
-			z.setBeginnNachmittag(rs.getString("BeginnNachmittag"));
-			z.setEndeMittag(rs.getString("EndeNachmittag"));
-			z.setDatum(rs.getString("Datum"));
-			z.setTotal(rs.getString("Total"));
+			z.setTimestamp(rs.getTimestamp("timestamp"));
 			z.setArbeiterID(rs.getString("ArbeiterID"));
-			// System.out.println(z.getIdZeit());
-			// System.out.println(z.getBeginnMorgen());
-			// System.out.println(z.getEndeMorgen());
-			// System.out.println(z.getBeginnNachmittag());
-			// System.out.println(z.getEndeMittag());
-			// System.out.println(z.getDatum());
-			// System.out.println(z.getTotal());
-			// System.out.println(z.getArbeiterID());
+			System.out.println(z.getTimestamp());
 			break;
 		}
 		return z;
@@ -43,10 +33,19 @@ public class ZeitJDBCDAO extends Datenbank implements ZeitDAO {
 	}
 
 	@Override
-	public Zeit totaleinfuegen() throws SQLException {
+	public Zeit zeiteintragen() throws SQLException {
+		z = new Zeit();
+		String sql = "INSERT INTO `zeit`(`ArbeiterID`) VALUES (?)";
 		con = getCon();
 		ps = con.prepareStatement(sql);
-		rs = ps.executeQuery();
+		ps.setString(1, z.getArbeiterID());
+		ps.executeUpdate();
+		return null;
+	}
+
+	@Override
+	public Zeit totalberechnen() throws SQLException {
+		// TODO Auto-generated method stub
 		return null;
 	}
 

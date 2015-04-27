@@ -1,5 +1,6 @@
 package jdbc;
 
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -8,13 +9,8 @@ import org.apache.commons.lang3.time.DurationFormatUtils;
 
 public class Zeit {
 	public String idZeit;
-	public String beginnMorgen;
-	public String endeMorgen;
-	public String beginnNachmittag;
-	public String endeMittag;
-	public String datum;
-	public String total;
-	public String arbeiterID;
+	public Timestamp timestamp;
+	public String arbeiterID="45-459-5415";
 
 	public static double totalberechnen(String time1, String time2, String time3, String time4) throws ParseException {
 
@@ -37,60 +33,20 @@ public class Zeit {
 		this.idZeit = idZeit;
 	}
 
-	public String getBeginnMorgen() {
-		return beginnMorgen;
-	}
-
-	public void setBeginnMorgen(String beginnMorgen) {
-		this.beginnMorgen = beginnMorgen;
-	}
-
-	public String getEndeMorgen() {
-		return endeMorgen;
-	}
-
-	public void setEndeMorgen(String endeMorgen) {
-		this.endeMorgen = endeMorgen;
-	}
-
-	public String getBeginnNachmittag() {
-		return beginnNachmittag;
-	}
-
-	public void setBeginnNachmittag(String beginnNachmittag) {
-		this.beginnNachmittag = beginnNachmittag;
-	}
-
-	public String getEndeMittag() {
-		return endeMittag;
-	}
-
-	public void setEndeMittag(String endeMittag) {
-		this.endeMittag = endeMittag;
-	}
-
-	public String getDatum() {
-		return datum;
-	}
-
-	public void setDatum(String datum) {
-		this.datum = datum;
-	}
-
-	public String getTotal() {
-		return total;
-	}
-
-	public void setTotal(String total) {
-		this.total = total;
-	}
-
 	public String getArbeiterID() {
 		return arbeiterID;
 	}
 
 	public void setArbeiterID(String arbeiterID) {
 		this.arbeiterID = arbeiterID;
+	}
+
+	public Timestamp getTimestamp() {
+		return timestamp;
+	}
+
+	public void setTimestamp(Timestamp timestamp2) {
+		this.timestamp = timestamp2;
 	}
 
 }

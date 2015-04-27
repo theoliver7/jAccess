@@ -12,9 +12,12 @@ public class JAccessController {
 	public static void main(String[] args) throws SQLException, ParseException {
 		ARBEITER_DAO.findPersonBykuerzel();
 		Zeit_DAO.arbeitszeitauslesen();
+		Zeit_DAO.zeiteintragen();
 
-		Zeit.totalberechnen(ZeitJDBCDAO.getZ().getBeginnMorgen(), ZeitJDBCDAO.getZ().getEndeMorgen(),ZeitJDBCDAO.getZ().getBeginnNachmittag(),ZeitJDBCDAO.getZ().getEndeMittag());
-		String currenttime= new SimpleDateFormat("HH:mm").format(new Date());
-		System.out.println(currenttime);
+		//Zeit.totalberechnen(ZeitJDBCDAO.getZ().getBeginnMorgen(), ZeitJDBCDAO.getZ().getEndeMorgen(),ZeitJDBCDAO.getZ().getBeginnNachmittag(),ZeitJDBCDAO.getZ().getEndeMittag());
+		// String currenttime= new SimpleDateFormat("HH:mm:ss ").format(new Date());
+		// Date timestamp= new Date();
+		// System.out.println(currenttime);
+		// System.out.println(timestamp);
 	}
 }
