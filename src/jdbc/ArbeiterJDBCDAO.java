@@ -20,12 +20,12 @@ public class ArbeiterJDBCDAO extends Datenbank implements ArbeiterDAO {
 			a.setNachname(rs.getString("Nachname"));
 			a.setWohnohrt(rs.getString("Wohnort"));
 			a.setFunktion(rs.getString("Funktion"));
-			// System.out.println(System.getProperty("user.name"));
-			// System.out.println(a.getIdArbeiter());
-			// System.out.println(a.getNachname());
-			// System.out.println(a.getName());
-			// System.out.println(a.getWohnohrt());
-			// System.out.println(a.getFunktion());
+			 System.out.println(System.getProperty("user.name"));
+			 System.out.println(a.getIdArbeiter());
+			 System.out.println(a.getNachname());
+			 System.out.println(a.getName());
+			 System.out.println(a.getWohnohrt());
+			 System.out.println(a.getFunktion());
 			break;
 		}
 		return a;

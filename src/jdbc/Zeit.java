@@ -1,28 +1,52 @@
 package jdbc;
 
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-
-import org.apache.commons.lang3.time.DurationFormatUtils;
+import java.util.List;
 
 public class Zeit {
 	public String idZeit;
 	public Timestamp timestamp;
-	public String arbeiterID="45-459-5415";
-	public static double totalberechnen(String time1, String time2, String time3, String time4) throws ParseException {
-		
-	
-		SimpleDateFormat format = new SimpleDateFormat("HH:mm");
-		Date date1 = format.parse(time1);
-		Date date2 = format.parse(time2);
-		Date date3 = format.parse(time3);
-		Date date4 = format.parse(time4);
-		long difference = (date2.getTime() - date1.getTime()) + (date4.getTime() - date3.getTime());
-		System.out.println("Duration: " + DurationFormatUtils.formatDuration(difference, "HH:mm"));
-		return difference;
+	public String arbeiterID = "45-459-5415";
+
+	public List<String> totalberechnen(List<String> daten) throws SQLException, ParseException {
+		int i = 0;
+		List<String> totalarbeitszeiten = new ArrayList<String>();
+		if (daten.size() % 4 == 0) {
+			while (i < daten.size()) {
+				SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+				Date beginnMorgen = dateFormat.parse(daten.get(i));
+				i++;
+				Date endeMorgen = dateFormat.parse(daten.get(i));
+				i++;
+				Date beginnNachmittag = dateFormat.parse(daten.get(i));
+				i++;
+				Date endeNachmittag = dateFormat.parse(daten.get(i));
+				i++;
+				System.out.println(beginnMorgen);
+				System.out.println(endeMorgen);
+				System.out.println(beginnNachmittag);
+				System.out.println(endeNachmittag);
+				long diff = (endeMorgen.getTime() - beginnMorgen.getTime() + endeNachmittag.getTime() - beginnNachmittag.getTime());
+
+				long second = (diff / 1000) % 60;
+				long minute = (diff / (1000 * 60)) % 60;
+				long hour = (diff / (1000 * 60 * 60)) % 24;
+				diff = diff % 1000;
+
+				String time = String.format("%02d:%02d:%02d:%d", hour, minute, second, diff);
+				System.out.println(time);
+				totalarbeitszeiten.add(time);
+			}
+		} else {
+			System.out.println("Zu wenig eingetragene Arbeitszeiten");
+		}
+
+		return totalarbeitszeiten;
 	}
 
 	public String getIdZeit() {
