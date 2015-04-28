@@ -48,7 +48,7 @@ public class Datenbank {
 		}
 
 		if (con != null) {
-			System.out.println("Connected");
+	
 		} else {
 			System.out.println("Failed to make connection!");
 		}
