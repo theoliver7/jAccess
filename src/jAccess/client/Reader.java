@@ -10,19 +10,32 @@ import java.rmi.RemoteException;
 
 import javax.smartcardio.*;
 
+/**
+ * Ein Programm das Die UID von NFC und Mifare Karten/Tags einlesen kann und
+ * diese als Client an einen Server weitersendet.
+ * @author Nico Fehr, ICT Berufsbildungscenter AG, nico.fehr@bbcag.ch
+ * @version 1.0
+ * 
+ */
 public class Reader {
-	
+
 	// Uid des Tags und ID des Angestellten
 	private static String uid;
 
+	/**
+	 * Hauptprogramm: Führt Kartenleseprogramm aus.
+	 * @param args
+	 * @throws RemoteException
+	 */
 	public static void main(String[] args) throws RemoteException {
- 
+
 		// Überprüft angeschlossene Reader
 		try {
 			if (TerminalFactory.getDefault().terminals().list().size() == 0) {
 				// Wenn keine Reader angeschlossen
 				System.err.println("Kein Reader angeschlossen!");
 			}
+			System.out.println("Reader gestartet");
 		} catch (CardException e1) {
 			e1.printStackTrace();
 		}
@@ -41,10 +54,12 @@ public class Reader {
 				// Wartet bis Karte sofort hingehalten wird
 				if (terminal.waitForCardPresent(0)) {
 					// Karte wird verbunden
-					// connect(protokoll) * = Alle Protokolle (T=1(neuere Geräte/Tags) & T=0(ältere Geräte/Tags))
+					// connect(protokoll) * = Alle Protokolle (T=1(neuere
+					// Geräte/Tags) & T=0(ältere Geräte/Tags))
 					Card card = terminal.connect("*");
 
-					// Befehl der an den Tag gesendet wird um die Uid auszulesen:
+					// Befehl der an den Tag gesendet wird um die Uid
+					// auszulesen:
 					// FFCA0000
 					byte[] command = new byte[] { (byte) 0xFF, (byte) 0xCA, (byte) 0x00, (byte) 0x00 };
 
@@ -52,16 +67,16 @@ public class Reader {
 
 					// Die Uid wird gesetzt mit der Antwort der Karte
 					setUid(send(command, cc));
-					
+
 					// Uid wird Client über Uid Instanz gesendet
 					try {
+						// Uid wird noch einmal ausgegeben
+						System.out.println(getUid());
+
 						newTag(getUid());
 					} catch (MalformedURLException | NotBoundException e) {
 						e.printStackTrace();
 					}
-					// Uid wird noch einmal ausgegeben
-					System.out.println(getUid());
-
 					// Terminal diconnected Karte
 					terminal.waitForCardAbsent(0);
 				}
@@ -71,13 +86,29 @@ public class Reader {
 		}
 	}
 
+	/**
+	 * Wenn ein neuer Tag erkannt wird, sendet diese Funktion die Uid als {@code send} dem Server zu.
+	 * 
+	 * @param send
+	 * @throws MalformedURLException
+	 * @throws RemoteException
+	 * @throws NotBoundException
+	 */
 	private static void newTag(String send) throws MalformedURLException, RemoteException, NotBoundException {
 		CardIntf serverobj = (CardIntf) Naming.lookup("//localhost/CardServer");
 		serverobj.receiveUid(send);
+		System.out.println(serverobj.getResponse());
 	}
 
+	/**
+	 * Wandelt den Hexadezimalen Wert der Antwort der Karte in einen String um.
+	 * 
+	 * @param cmd
+	 * @param channel
+	 * @return Gibt Uid als fomratierten String zurück.
+	 */
 	public static String send(byte[] cmd, CardChannel channel) {
-
+		
 		String res = "";
 
 		byte[] baResp = new byte[258];
@@ -100,7 +131,8 @@ public class Reader {
 
 		return res;
 	}
-
+	
+	// Getter und Setter Methoden
 	public static String getUid() {
 		return uid;
 	}
