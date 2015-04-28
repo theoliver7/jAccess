@@ -1,4 +1,4 @@
-package jAccess.testarea;
+package testarea;
 
 import java.rmi.Naming;
 import java.rmi.Remote;

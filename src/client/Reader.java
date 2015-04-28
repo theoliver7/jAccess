@@ -1,4 +1,4 @@
-package jAccess.client;
+package client;
 
 public class Reader {
 

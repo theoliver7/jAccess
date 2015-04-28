@@ -1,4 +1,4 @@
-package jAccess.server;
+package server;
 
 public class CardServer {
 

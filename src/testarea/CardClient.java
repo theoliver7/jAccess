@@ -1,4 +1,4 @@
-package jAccess.testarea;
+package testarea;
 
 import java.net.MalformedURLException;
 import java.rmi.Naming;
