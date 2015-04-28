@@ -45,7 +45,7 @@ public class Zeit {
 		} else {
 			System.out.println("Zu wenig eingetragene Arbeitszeiten");
 		}
-
+		System.out.println(totalarbeitszeiten);
 		return totalarbeitszeiten;
 	}
 
