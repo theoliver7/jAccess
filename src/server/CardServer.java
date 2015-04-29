@@ -75,7 +75,7 @@ public class CardServer extends UnicastRemoteObject implements CardIntf, UserInt
 			return "Something went wrong!"; 
 		}
 	}
-
+	
 	public String getUid() {
 		return uid;
 	}
