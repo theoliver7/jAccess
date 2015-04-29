@@ -5,8 +5,14 @@ import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.server.UnicastRemoteObject;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import jdbc.ArbeiterDAO;
+import jdbc.ArbeiterJDBCDAO;
+import jdbc.ZeitDAO;
+import jdbc.ZeitJDBCDAO;
 
 /**
  * Einfacher RMI-Server für die Verbindung zur DB und allgemeinen Verwaltung des Programmes.
@@ -19,14 +25,15 @@ public class CardServer extends UnicastRemoteObject implements CardIntf, UserInt
 
 	// Seriennummer
 	private static final long serialVersionUID = 8078764826510784045L;
+	
+	// Datenbankanbindungen
+	ArbeiterDAO arbeiterDb = new ArbeiterJDBCDAO();
+	ZeitDAO zeitDb = new ZeitJDBCDAO();
 
 	// Variabeln deklarieren
 	private String uid = null;
 	private String response = "OK";
 	private List<User> whoishere = new ArrayList<User>();
-	
-	// Datenbankanbindungen
-	// Hier einfügen
 
 	// Konstruktor
 	public CardServer() throws RemoteException {
@@ -55,9 +62,9 @@ public class CardServer extends UnicastRemoteObject implements CardIntf, UserInt
 	}
 
 	@Override
-	public void receiveUid(String send) {
-		this.uid = send;
-		// Nummer an DB weitersenden
+	public void receiveUid(String uid) throws SQLException {
+		this.setUid(uid);
+		this.zeitDb.zeiteintragen(uid);
 	}
 	
 	// Getters and Setters
@@ -67,5 +74,21 @@ public class CardServer extends UnicastRemoteObject implements CardIntf, UserInt
 		} else {
 			return "Something went wrong!"; 
 		}
+	}
+
+	public String getUid() {
+		return uid;
+	}
+
+	public void setUid(String uid) {
+		this.uid = uid;
+	}
+
+	public ArbeiterDAO getArbeiterDb() {
+		return arbeiterDb;
+	}
+
+	public void setArbeiterDb(ArbeiterDAO arbeiterDb) {
+		this.arbeiterDb = arbeiterDb;
 	}
 }

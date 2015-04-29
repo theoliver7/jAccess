@@ -2,6 +2,7 @@ package server;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.sql.SQLException;
 
 /**
  * Einfaches Interface für den Server. Dient als Schnittstelle zum Client
@@ -14,8 +15,9 @@ public interface CardIntf extends Remote {
 	 * Empfängt die UID vom Client Reader
 	 * @param send
 	 * @throws RemoteException
+	 * @throws SQLException 
 	 */
-	public void receiveUid(String send) throws RemoteException;
+	public void receiveUid(String uid) throws RemoteException, SQLException;
 	
 	/**
 	 * Schickt Antwort des Servers zurück an den Client.

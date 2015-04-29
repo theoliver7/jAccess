@@ -35,6 +35,7 @@ public class ZeitJDBCDAO extends Datenbank implements ZeitDAO {
 
 	}
 
+	@Override
 	public Zeit zeiteintragen(String uid) throws SQLException {
 		String sql = "INSERT INTO `zeit`(`ArbeiterID`) VALUES (?)";
 		con = getCon();

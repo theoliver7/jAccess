@@ -5,6 +5,7 @@ import java.nio.ByteBuffer;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.sql.SQLException;
 
 import javax.smartcardio.*;
 
@@ -97,9 +98,15 @@ public class Reader {
 	 * @throws RemoteException
 	 * @throws NotBoundException
 	 */
-	private static void newTag(String send) throws MalformedURLException, RemoteException, NotBoundException {
+	private static void newTag(String uid) throws MalformedURLException, RemoteException, NotBoundException {
 		CardIntf serverobj = (CardIntf) Naming.lookup("//localhost/CardServer");
-		serverobj.receiveUid(send);
+		try {
+			serverobj.receiveUid(uid);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.println("Failed to insert Time!");
+			e.printStackTrace();
+		}
 		System.out.println(serverobj.getResponse());
 	}
 
