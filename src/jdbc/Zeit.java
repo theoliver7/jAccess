@@ -11,11 +11,11 @@ import java.util.List;
 public class Zeit {
 	public String idZeit;
 	public Timestamp timestamp;
-	public String arbeiterID = "45-459-5415";
 
 	public List<String> totalberechnen(List<String> daten) throws SQLException, ParseException {
 		int i = 0;
 		List<String> totalarbeitszeiten = new ArrayList<String>();
+		
 		if (daten.size() % 4 == 0) {
 			while (i < daten.size()) {
 				SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
@@ -45,7 +45,7 @@ public class Zeit {
 		} else {
 			System.out.println("Zu wenig eingetragene Arbeitszeiten");
 		}
-		System.out.println(totalarbeitszeiten);
+		// System.out.println(totalarbeitszeiten);
 		return totalarbeitszeiten;
 	}
 
@@ -55,14 +55,6 @@ public class Zeit {
 
 	public void setIdZeit(String idZeit) {
 		this.idZeit = idZeit;
-	}
-
-	public String getArbeiterID() {
-		return arbeiterID;
-	}
-
-	public void setArbeiterID(String arbeiterID) {
-		this.arbeiterID = arbeiterID;
 	}
 
 	public Timestamp getTimestamp() {
