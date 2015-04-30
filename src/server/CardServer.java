@@ -30,10 +30,16 @@ public class CardServer extends UnicastRemoteObject implements CardIntf, UserInt
 	ArbeiterDAO arbeiterDb = new ArbeiterJDBCDAO();
 	ZeitDAO zeitDb = new ZeitJDBCDAO();
 
+	// Karten Teil
 	// Variabeln deklarieren
-	private String uid = null;
+	private String uid;
 	private String response = "OK";
+	// Ende Karten Teil
+	
+	// User Teil
+	private String kuerzel;
 	private List<User> whoishere = new ArrayList<User>();
+	// Ende User Teil
 
 	// Konstruktor
 	public CardServer() throws RemoteException {
@@ -66,6 +72,8 @@ public class CardServer extends UnicastRemoteObject implements CardIntf, UserInt
 		this.setUid(uid);
 		this.zeitDb.zeiteintragen(uid);
 	}
+	
+	
 	
 	// Getters and Setters
 	public String getResponse() {
