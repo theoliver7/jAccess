@@ -6,6 +6,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+/**
+ * Queris für die Zeittabellen
+ * @author Oliver Aschwanden, ICT Berufsbildungscenter AG, oliver.aschwanden@bbcag.ch
+ * @version 0.1.0.2.1
+ *
+ */
 
 public class ZeitJDBCDAO extends Datenbank implements ZeitDAO {
 	private Zeit z;
@@ -13,14 +19,18 @@ public class ZeitJDBCDAO extends Datenbank implements ZeitDAO {
 	private PreparedStatement ps = null;
 	private ResultSet rs = null;
 	
-
-	@Override
+	/**
+	 * Eine Methode welche die Arbeitszeit nach der UID der NFC Karte ausliest
+	 * @param String
+	 * @throws SQLException 
+	 */
 	public List<String> arbeitszeitauslesen(String uid) throws SQLException {
 		List<String> daten = new ArrayList<String>();
 
-		String sql = "SELECT idZeit, timestamp, ArbeiterID FROM zeit WHERE ArbeiterID ='" + uid + "'";
+		String sql = "SELECT idZeit, timestamp, ArbeiterID FROM zeit WHERE ArbeiterID =(?)";
 		con = getCon();
 		ps = con.prepareStatement(sql);
+		ps.setString(1, uid);
 		rs = ps.executeQuery();
 
 		while (rs.next()) {
@@ -35,6 +45,11 @@ public class ZeitJDBCDAO extends Datenbank implements ZeitDAO {
 
 	}
 
+	/**
+	 * Trägt die UID und einen Timestamp in die Dantenbank ab
+	 * @param String
+	 * @throws SQLException 
+	 */
 	@Override
 	public Zeit zeiteintragen(String uid) throws SQLException {
 		String sql = "INSERT INTO zeit (ArbeiterID) VALUES (?)";
@@ -44,15 +59,7 @@ public class ZeitJDBCDAO extends Datenbank implements ZeitDAO {
 		ps.executeUpdate();
 		return null;
 	}
-	
 
-	public Zeit getZ() {
-		return z;
-	}
-
-	public void setZ(Zeit z) {
-		this.z = z;
-	}
 
 
 }
