@@ -83,7 +83,14 @@ public class CardServer extends UnicastRemoteObject implements CardIntf, UserInt
 	@Override
 	public Arbeiter getYourArbeiter(String kuerzel) throws RemoteException {
 		// TODO: Kuerzel von Client holen
-		return null;
+		Arbeiter you = null;
+		try {
+			you = this.getArbeiterDb().findPersonBykuerzel(kuerzel);
+		} catch (SQLException e) {
+			// TODO: Meldung wenn DB nicht funktioniert.
+			e.printStackTrace();
+		}
+		return you;
 	}
 
 	@Override

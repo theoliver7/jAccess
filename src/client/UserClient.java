@@ -8,6 +8,7 @@ import java.rmi.RemoteException;
 
 import javax.swing.JOptionPane;
 
+import jdbc.Arbeiter;
 import server.UserIntf;
 import view.View2;
 
@@ -25,6 +26,7 @@ public class UserClient {
 	// Variabeln deklarieren
 	private String kuerzel;
 	private static UserClient client;
+	private Arbeiter you;
 
 	/**
 	 * Private Konstruktor für Singleton
@@ -63,6 +65,12 @@ public class UserClient {
 	public static void main(String[] args) {
 		UserClient ucl = UserClient.getInstance();
 		ucl.setKuerzel(System.getProperty("user.name"));
+		try {
+			ucl.setYou(getServer().getYourArbeiter(ucl.getKuerzel()));
+		} catch (RemoteException e) {
+			// TODO Meldung wenn server verbindung nicht stimmt.
+			e.printStackTrace();
+		}
 		
 		View2 frame = new View2(ucl);
 		frame.setVisible(true);
@@ -89,6 +97,14 @@ public class UserClient {
 
 	public static void setClient(UserClient client) {
 		client = client;
+	}
+
+	public Arbeiter getYou() {
+		return you;
+	}
+
+	public void setYou(Arbeiter you) {
+		this.you = you;
 	}
 
 }

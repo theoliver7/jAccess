@@ -329,7 +329,7 @@ public class View2 extends JFrame {
 		JSeparator separator = new JSeparator();
 		online_panel.add(separator);
 
-		JLabel lblYouAreOnline = new JLabel("You [" + ucl.getKuerzel() + "] are online");
+		JLabel lblYouAreOnline = new JLabel("You [" + ucl.getYou().getFunktion() + "] are online");
 		online_panel.add(lblYouAreOnline);
 
 	}
