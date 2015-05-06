@@ -1,11 +1,14 @@
 package jdbc;
 
 public class Arbeiter {
-	public String idarbeiter;
-	public String name;
-	public String nachname;
-	public String wohnohrt;
-	public String funktion;
+	private String idarbeiter;
+	private String name;
+	private String nachname;
+	private boolean status;
+	private String wohnort;
+	private String funktion;
+	private String abteilung;
+	private String kuerzel;
 
 	public String getIdArbeiter() {
 		return idarbeiter;
@@ -35,14 +38,6 @@ public class Arbeiter {
 		this.nachname = nachname;
 	}
 
-	public String getWohnohrt() {
-		return wohnohrt;
-	}
-
-	public void setWohnohrt(String wohnohrt) {
-		this.wohnohrt = wohnohrt;
-	}
-
 	public String getFunktion() {
 		return funktion;
 	}
@@ -51,6 +46,35 @@ public class Arbeiter {
 		this.funktion = funktion;
 	}
 
+	public boolean isStatus() {
+		return status;
+	}
 
+	public void setStatus(boolean status) {
+		this.status = status;
+	}
 
+	public String getWohnort() {
+		return wohnort;
+	}
+
+	public void setWohnort(String wohnort) {
+		this.wohnort = wohnort;
+	}
+
+	public String getKuerzel() {
+		return kuerzel;
+	}
+
+	public void setKuerzel(String kuerzel) {
+		this.kuerzel = kuerzel;
+	}
+
+	public String getAbteilung() {
+		return abteilung;
+	}
+
+	public void setAbteilung(String abteilung) {
+		this.abteilung = abteilung;
+	}
 }

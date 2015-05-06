@@ -107,7 +107,7 @@ public class Reader {
 			System.out.println("Failed to insert Time!");
 			e.printStackTrace();
 		}
-		System.out.println(serverobj.getResponse());
+		System.err.println(serverobj.getResponse());
 	}
 
 	/**

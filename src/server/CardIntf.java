@@ -5,7 +5,7 @@ import java.rmi.RemoteException;
 import java.sql.SQLException;
 
 /**
- * Einfaches Interface für den Server. Dient als Schnittstelle zum Client
+ * Einfaches Interface für den Server. Dient als Schnittstelle zum Card-Reader
  * 
  * @author Nico Fehr, ICT Berufsbildungscenter AG, nico.fehr@bbcag.ch
  * @version 1.0
@@ -13,7 +13,7 @@ import java.sql.SQLException;
 public interface CardIntf extends Remote {
 	/**
 	 * Empfängt die UID vom Client Reader
-	 * @param send
+	 * @param uid
 	 * @throws RemoteException
 	 * @throws SQLException 
 	 */

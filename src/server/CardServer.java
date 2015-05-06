@@ -9,14 +9,17 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import jdbc.Arbeiter;
 import jdbc.ArbeiterDAO;
 import jdbc.ArbeiterJDBCDAO;
 import jdbc.ZeitDAO;
 import jdbc.ZeitJDBCDAO;
 
 /**
- * Einfacher RMI-Server für die Verbindung zur DB und allgemeinen Verwaltung des Programmes.
- * Sendet bestimmte Objekte an ihre Clients. Empfängt UIDs des CardReaders.
+ * Einfacher RMI-Server für die Verbindung zur DB und allgemeinen Verwaltung des
+ * Programmes. Sendet bestimmte Objekte an ihre Clients. Empfängt UIDs des
+ * CardReaders.
+ * 
  * @author Nico Fehr, ICT Berufsbildungscenter AG, nico.fehr@bbcag.ch
  * @version 1.0
  *
@@ -25,21 +28,22 @@ public class CardServer extends UnicastRemoteObject implements CardIntf, UserInt
 
 	// Seriennummer
 	private static final long serialVersionUID = 8078764826510784045L;
-	
+
 	// Datenbankanbindungen
 	ArbeiterDAO arbeiterDb = new ArbeiterJDBCDAO();
 	ZeitDAO zeitDb = new ZeitJDBCDAO();
 
-	// Karten Teil
 	// Variabeln deklarieren
+	// Karten Teil
 	private String uid;
-	private String response = "OK";
+	private final String response = "OK";
 	// Ende Karten Teil
-	
+
 	// User Teil
-	private String kuerzel;
-	private List<User> whoishere = new ArrayList<User>();
+	private List<Arbeiter> whoishere = new ArrayList<Arbeiter>();
+
 	// Ende User Teil
+	// Ende Variabeln deklarieren
 
 	// Konstruktor
 	public CardServer() throws RemoteException {
@@ -67,23 +71,35 @@ public class CardServer extends UnicastRemoteObject implements CardIntf, UserInt
 
 	}
 
+	// Methoden für Reader
 	@Override
 	public void receiveUid(String uid) throws SQLException {
 		this.setUid(uid);
-		this.zeitDb.zeiteintragen(uid);
+		this.getZeitDb().zeiteintragen(uid);
 	}
 	
 	
-	
+	// Methoden für Client
+	@Override
+	public String sendKuerzel(String kuerzel) throws RemoteException {
+		// TODO: Kuerzel von Client holen
+		return null;
+	}
+
+	@Override
+	public void setUser(Arbeiter user) throws RemoteException {
+		// TODO: User auf die 'whoishere' liste setzen
+	}
+
 	// Getters and Setters
 	public String getResponse() {
-		if(uid != null) {
+		if (uid != null) {
 			return response;
 		} else {
-			return "Something went wrong!"; 
+			return "Fehler bei der Übermittlung!";
 		}
 	}
-	
+
 	public String getUid() {
 		return uid;
 	}
@@ -98,5 +114,17 @@ public class CardServer extends UnicastRemoteObject implements CardIntf, UserInt
 
 	public void setArbeiterDb(ArbeiterDAO arbeiterDb) {
 		this.arbeiterDb = arbeiterDb;
+	}
+
+	public ZeitDAO getZeitDb() {
+		return zeitDb;
+	}
+
+	public void setZeitDb(ZeitDAO zeitDb) {
+		this.zeitDb = zeitDb;
+	}
+
+	public List<Arbeiter> getWhoishere() {
+		return whoishere;
 	}
 }
