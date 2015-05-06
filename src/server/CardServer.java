@@ -81,7 +81,7 @@ public class CardServer extends UnicastRemoteObject implements CardIntf, UserInt
 	
 	// Methoden für Client
 	@Override
-	public String sendKuerzel(String kuerzel) throws RemoteException {
+	public Arbeiter getYourArbeiter(String kuerzel) throws RemoteException {
 		// TODO: Kuerzel von Client holen
 		return null;
 	}

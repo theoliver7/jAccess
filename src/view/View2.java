@@ -28,33 +28,19 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 
-@SuppressWarnings("serial")
+import client.UserClient;
+
 public class View2 extends JFrame {
 
+	private static final long serialVersionUID = 4701804783439921041L;
 	private JPanel content;
 	private JTextField message;
 	private JTable time_tabel;
 
 	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					View2 frame = new View2();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
 	 * Create the frame.
 	 */
-	public View2() {
+	public View2(UserClient ucl) {
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 992, 651);
@@ -343,7 +329,7 @@ public class View2 extends JFrame {
 		JSeparator separator = new JSeparator();
 		online_panel.add(separator);
 
-		JLabel lblYouAreOnline = new JLabel("You are online");
+		JLabel lblYouAreOnline = new JLabel("You [" + ucl.getKuerzel() + "] are online");
 		online_panel.add(lblYouAreOnline);
 
 	}

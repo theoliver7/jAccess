@@ -1,5 +1,6 @@
 package client;
 
+import java.awt.EventQueue;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
@@ -7,7 +8,8 @@ import java.rmi.RemoteException;
 
 import javax.swing.JOptionPane;
 
-import server.CardIntf;
+import server.UserIntf;
+import view.View2;
 
 /**
  * Client für den Server um dem User die Entsprechenden Zeiten und die Anderen
@@ -21,7 +23,7 @@ import server.CardIntf;
 public class UserClient {
 
 	// Variabeln deklarieren
-	private static String kuerzel;
+	private String kuerzel;
 	private static UserClient client;
 
 	/**
@@ -35,13 +37,11 @@ public class UserClient {
 	 * 
 	 * @return UserClient-Instanz
 	 */
-	public UserClient getInstance() {
-		if (UserClient.client == null) {
-			UserClient.setClient(new UserClient());
-			return UserClient.client;
-		} else {
-			return UserClient.client;
+	public synchronized static UserClient getInstance() {
+		if (client == null) {
+			client = new UserClient();
 		}
+		return client;
 	}
 
 	/**
@@ -49,25 +49,28 @@ public class UserClient {
 	 * 
 	 * @return Server-Verbindung
 	 */
-	public static CardIntf getServer() {
-		CardIntf serverobj = null;
+	public static UserIntf getServer() {
+		UserIntf serverobj = null;
 		try {
-			serverobj = (CardIntf) Naming.lookup("//localhost/CardServer");
+			serverobj = (UserIntf) Naming.lookup("//localhost/CardServer");
 		} catch (MalformedURLException | RemoteException | NotBoundException e) {
-			// TODO Auto-generated catch block
-			JOptionPane.showMessageDialog(null, "Der Server läuft zurzeit nicht", "Fehler", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Der Server läuft zurzeit nicht! Bitte wenden " + "Sie sich an den IT-Support.", "Fehler", JOptionPane.ERROR_MESSAGE);
 			e.printStackTrace();
 		}
 		return serverobj;
 	}
 
 	public static void main(String[] args) {
+		UserClient ucl = UserClient.getInstance();
+		ucl.setKuerzel(System.getProperty("user.name"));
 		
-
+		View2 frame = new View2(ucl);
+		frame.setVisible(true);
 	}
 
 	/**
 	 * Gibt einen Bool'schen Wert zurück ob UserClient im Chat online ist.
+	 * 
 	 * @return boolean (ist UserClient online?)
 	 */
 	@SuppressWarnings("unused")
@@ -80,8 +83,8 @@ public class UserClient {
 		return kuerzel;
 	}
 
-	public static void setKuerzel(String kuerzel) {
-		kuerzel = kuerzel;
+	public void setKuerzel(String kuerzel) {
+		this.kuerzel = kuerzel;
 	}
 
 	public static void setClient(UserClient client) {

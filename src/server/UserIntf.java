@@ -20,9 +20,9 @@ public interface UserIntf extends Remote {
 	 * 
 	 * @param kuerzel
 	 * @throws RemoteException
-	 * @return Kuerzel des Users
+	 * @return Arbeiter Objekt des Users
 	 */
-	public String sendKuerzel(String kuerzel) throws RemoteException;
+	public Arbeiter getYourArbeiter(String kuerzel) throws RemoteException;
 	
 	/**
 	 * Setzt neuen User auf die Anwesenheitsliste des Servers.
