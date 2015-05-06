@@ -11,5 +11,6 @@ public class JAccessController {
 	public static void main(String[] args) throws SQLException, ParseException {
 		 ARBEITER_DAO.findPersonBykuerzel();
 		 Zeit.totalberechnen(Zeit_DAO.arbeitszeitauslesen("45-459-5415"));
+		 System.out.println("gitgub ");
 	}
 }
