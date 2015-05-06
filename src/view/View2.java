@@ -25,8 +25,8 @@ import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.EmptyBorder;
-import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
+import javax.swing.ListSelectionModel;
 
 import client.UserClient;
 
@@ -248,7 +248,7 @@ public class View2 extends JFrame {
 		time_panel.setLayout(null);
 
 		JLabel tabel_label = new JLabel("Tabel");
-		tabel_label.setBounds(44, 17, 55, 16);
+		tabel_label.setBounds(44, 6, 55, 16);
 		time_panel.add(tabel_label);
 
 		JLabel chart_label = new JLabel("Chart");
@@ -256,16 +256,16 @@ public class View2 extends JFrame {
 		time_panel.add(chart_label);
 
 		JSeparator separator_17 = new JSeparator();
-		separator_17.setBounds(6, 26, 33, 7);
+		separator_17.setBounds(7, 17, 33, 7);
 		time_panel.add(separator_17);
 
 		JSeparator separator_16 = new JSeparator();
-		separator_16.setBounds(79, 26, 891, 16);
+		separator_16.setBounds(79, 17, 891, 16);
 		time_panel.add(separator_16);
 
 		JSeparator separator_18 = new JSeparator();
 		separator_18.setOrientation(SwingConstants.VERTICAL);
-		separator_18.setBounds(5, 27, 18, 181);
+		separator_18.setBounds(5, 17, 18, 191);
 		time_panel.add(separator_18);
 
 		JSeparator separator_19 = new JSeparator();
@@ -274,7 +274,7 @@ public class View2 extends JFrame {
 
 		JSeparator separator_20 = new JSeparator();
 		separator_20.setOrientation(SwingConstants.VERTICAL);
-		separator_20.setBounds(968, 27, 2, 181);
+		separator_20.setBounds(968, 17, 2, 191);
 		time_panel.add(separator_20);
 
 		JSeparator separator_21 = new JSeparator();
@@ -304,15 +304,20 @@ public class View2 extends JFrame {
 		time_panel.add(table_panel);
 		table_panel.setLayout(null);
 
-		Object rowData[][] = { { "Row1-Column1", "Row1-Column2", "Row1-Column3" }, { "Row2-Column1", "Row2-Column2", "Row2-Column3" } };
-		Object columnNames[] = { "Column One", "Column Two", "Column Three" };
+		Object rowData[][] = { { "Row1-Column1", "Row1-Column2", "Row1-Column3","Row1-Column1", "Row1-Column2", "Row1-Column3"  },
+				{ "Row1-Column1", "Row1-Column2", "Row1-Column3" ,"Row2-Column1", "Row2-Column2", "Row2-Column3" } };
+		Object columnNames[] = { "Date", "Morning", "Lunch","Evening", "Total" };
 
 		JTable time_tabel = new JTable(rowData, columnNames);
+		time_tabel.setFillsViewportHeight(true);
+		time_tabel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		time_tabel.setShowGrid(false);
+		time_tabel.setShowVerticalLines(true);
+		time_tabel.setShowHorizontalLines(true);
 		time_tabel.setBackground(Color.WHITE);
 		time_tabel.setBounds(6, 6, 952, 169);
 
 		JTableHeader header = time_tabel.getTableHeader();
-
 		table_panel.setLayout(new BorderLayout());
 		table_panel.add(header, BorderLayout.NORTH);
 		table_panel.add(time_tabel, BorderLayout.CENTER);
