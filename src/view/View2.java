@@ -2,26 +2,22 @@ package view;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
+import java.awt.FlowLayout;
+import java.awt.Font;
 
 import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import java.awt.FlowLayout;
 import javax.swing.JLabel;
-import java.awt.Font;
-import java.awt.SystemColor;
-import javax.swing.JMenuBar;
 import javax.swing.JMenu;
-import javax.swing.JCheckBoxMenuItem;
-import javax.swing.JRadioButtonMenuItem;
-import javax.swing.JMenuItem;
-import javax.swing.JFormattedTextField;
-import javax.swing.JTabbedPane;
-import java.awt.Canvas;
+import javax.swing.JMenuBar;
+import javax.swing.JPanel;
 import javax.swing.JSeparator;
-import javax.swing.JProgressBar;
-import javax.swing.JTree;
-import javax.swing.JToggleButton;
+import javax.swing.JTabbedPane;
+import javax.swing.UIManager;
+import javax.swing.UIManager.LookAndFeelInfo;
+import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.border.EmptyBorder;
+import javax.swing.BoxLayout;
+import javax.swing.JTextPane;
 
 public class View2 extends JFrame {
 
@@ -51,6 +47,13 @@ public class View2 extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 992, 651);
 		
+		try {
+			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
 		
@@ -74,19 +77,11 @@ public class View2 extends JFrame {
 		
 		JPanel panel_2 = new JPanel();
 		tabbedPane.addTab("Übersicht", null, panel_2, null);
-		panel_2.setLayout(null);
-		
-		JLabel lblHi = new JLabel("Hi");
-		lblHi.setBounds(274, 139, 55, 16);
-		panel_2.add(lblHi);
+		panel_2.setLayout(new BoxLayout(panel_2, BoxLayout.X_AXIS));
 		
 		JPanel panel_3 = new JPanel();
 		tabbedPane.addTab("Arbeitszeiten", null, panel_3, null);
 		panel_3.setLayout(null);
-		
-		JLabel lblPeter = new JLabel("Peter");
-		lblPeter.setBounds(221, 157, 55, 16);
-		panel_3.add(lblPeter);
 		
 		JPanel panel_1 = new JPanel();
 		contentPane.add(panel_1, BorderLayout.SOUTH);
@@ -97,5 +92,6 @@ public class View2 extends JFrame {
 		
 		JSeparator separator = new JSeparator();
 		panel_1.add(separator);
+		
 	}
 }
