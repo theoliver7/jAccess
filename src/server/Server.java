@@ -41,8 +41,11 @@ public class Server extends UnicastRemoteObject implements CardIntf, UserIntf {
 
 	// User Teil
 	private List<Arbeiter> whoishere = new ArrayList<Arbeiter>();
-
 	// Ende User Teil
+	
+	// Chat Teil
+	public static List<Message> msgs = new ArrayList<Message>();
+	
 	// Ende Variabeln deklarieren
 
 	// Konstruktor
@@ -107,6 +110,35 @@ public class Server extends UnicastRemoteObject implements CardIntf, UserIntf {
 	public void setUser(Arbeiter user) throws RemoteException {
 		// TODO: User auf die 'whoishere' liste setzen
 	}
+	
+	// Methoden für Chat
+	@Override
+	public List<Message> returnMessages() throws RemoteException {
+		return this.msgs;
+	}
+
+	@Override
+	public void rmvPrintedMsgs() throws RemoteException {
+		List<Message> msgarray = this.returnMessages();
+		try {
+
+			// Mit sleep(int) kann ein Cooldown eingestellt werden. Für
+			// besonders
+			// Nervige Chatter :)
+			Thread.sleep(1000);
+
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		msgarray.clear();
+		this.msgs = msgarray;
+	}
+	
+	@Override
+	public void send(Message msg) throws RemoteException {
+		msgs.add(msg);
+	}
+
 
 	// Getters and Setters
 	public String getResponse() {

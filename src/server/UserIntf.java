@@ -39,4 +39,26 @@ public interface UserIntf extends Remote {
 	 * @throws RemoteException
 	 */
 	public void setUser(Arbeiter user) throws RemoteException;
+
+	/**
+	 * Gibt die Messages den Clients weiter
+	 * @return Messages an die Clients
+	 * @throws RemoteException
+	 */
+	public List<Message> returnMessages() throws RemoteException;
+
+	/**
+	 * Entfernt die Bereits gesendeten Nachrichten wieder aus dem Array um Nachrichten
+	 * nicht mehrmals anzeigen zu lassen.
+	 * @throws RemoteException
+	 */
+	public void rmvPrintedMsgs() throws RemoteException;
+
+	/**
+	 * Schickt die Nachricht des Clients an den Server, 
+	 * der diese dann verarbeitet.
+	 * @param msg
+	 * @throws RemoteException
+	 */
+	public void send(Message msg) throws RemoteException;
 }
