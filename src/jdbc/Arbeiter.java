@@ -1,6 +1,10 @@
 package jdbc;
 
-public class Arbeiter {
+import java.io.Serializable;
+
+public class Arbeiter implements Serializable {
+
+	private static final long serialVersionUID = 2214654996246406521L;
 	private String idarbeiter;
 	private String name;
 	private String nachname;
