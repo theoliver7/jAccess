@@ -24,10 +24,11 @@ public class ZeitJDBCDAO extends Datenbank implements ZeitDAO {
 	 * @param String
 	 * @throws SQLException 
 	 */
+	
+	@Override
 	public List<String> arbeitszeitauslesen(String uid) throws SQLException {
 		List<String> daten = new ArrayList<String>();
-
-		String sql = "SELECT idZeit, timestamp, ArbeiterID FROM zeit WHERE ArbeiterID =(?)";
+		String sql = "SELECT idZeit, timestamp, ArbeiterID FROM zeit WHERE ArbeiterID =(?)ORDER BY timestamp ASC";
 		con = getCon();
 		ps = con.prepareStatement(sql);
 		ps.setString(1, uid);
@@ -39,10 +40,8 @@ public class ZeitJDBCDAO extends Datenbank implements ZeitDAO {
 			// z.setTimestamp(rs.getString("timestamp"));
 //			z.setArbeiterID(rs.getString("ArbeiterID"));
 			daten.add(rs.getString("timestamp"));
-
 		}
 		return daten;
-
 	}
 
 	/**
@@ -59,7 +58,4 @@ public class ZeitJDBCDAO extends Datenbank implements ZeitDAO {
 		ps.executeUpdate();
 		return null;
 	}
-
-
-
 }
