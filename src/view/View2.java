@@ -195,7 +195,16 @@ public class View2 extends JFrame {
 		
 		List<Arbeiter> arb = ucl.getTeam();
 		for (Arbeiter a : arb) {
-			arbeiter.addElement(a.getName() + " " + a.getNachname());
+			try {
+				if(UserClient.getServer().getWhoishere().contains(a)) {
+					arbeiter.addElement(a.getName() + " " + a.getNachname() + " On");
+				} else {
+					arbeiter.addElement(a.getName() + " " + a.getNachname() + " Off");
+				}
+			} catch (RemoteException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		}
 		
 		JList list = new JList();
@@ -220,33 +229,33 @@ public class View2 extends JFrame {
 		profile_panel.add(panel_2);
 		panel_2.setLayout(new GridLayout(0, 2, 0, 0));
 		
-		JLabel lblNewLabel = new JLabel("Vorname");
-		lblNewLabel.setHorizontalAlignment(SwingConstants.LEFT);
-		panel_2.add(lblNewLabel);
+		JLabel vornameLabel = new JLabel("Vorname");
+		vornameLabel.setHorizontalAlignment(SwingConstants.LEFT);
+		panel_2.add(vornameLabel);
 		
-		JLabel lblNewLabel_1 = new JLabel("Nachname");
-		panel_2.add(lblNewLabel_1);
+		JLabel nachnameLabel = new JLabel("Nachname");
+		panel_2.add(nachnameLabel);
 		
-		JLabel lblNewLabel_2 = new JLabel("Funktion");
-		panel_2.add(lblNewLabel_2);
+		JLabel funktionLabel = new JLabel("Funktion");
+		panel_2.add(funktionLabel);
 		
 		JLabel lblNewLabel_3 = new JLabel("");
 		panel_2.add(lblNewLabel_3);
 		
-		JLabel lblNewLabel_4 = new JLabel("Abteilung");
-		panel_2.add(lblNewLabel_4);
+		JLabel abteilungLabel = new JLabel("Abteilung");
+		panel_2.add(abteilungLabel);
 		
 		JLabel lblNewLabel_5 = new JLabel("");
 		panel_2.add(lblNewLabel_5);
 		
-		JLabel lblNewLabel_6 = new JLabel("Wohnort");
-		panel_2.add(lblNewLabel_6);
+		JLabel wohnortLabel = new JLabel("Wohnort");
+		panel_2.add(wohnortLabel);
 		
 		JLabel lblNewLabel_7 = new JLabel("");
 		panel_2.add(lblNewLabel_7);
 		
-		JLabel lblNewLabel_8 = new JLabel("Status");
-		panel_2.add(lblNewLabel_8);
+		JLabel statusLabel = new JLabel("Status");
+		panel_2.add(statusLabel);
 		
 		JLabel lblNewLabel_10 = new JLabel("");
 		panel_2.add(lblNewLabel_10);
@@ -339,6 +348,8 @@ public class View2 extends JFrame {
 
 		JScrollPane scrollPane = new JScrollPane(chattext);
 		scrollPane.setBounds(10, 6, 441, 407);
+		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+		scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		scrollPane.getVerticalScrollBar().addAdjustmentListener(new AdjustmentListener() {
 			@Override
 			public void adjustmentValueChanged(AdjustmentEvent e) {
@@ -463,7 +474,7 @@ public class View2 extends JFrame {
 					}
 					chattext.repaint();
 					try {
-						Thread.sleep(20);
+						Thread.sleep(1);
 					} catch (InterruptedException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();

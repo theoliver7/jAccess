@@ -74,11 +74,12 @@ public class UserClient {
 		
 		try {
 			ucl.setYou(getServer().getYourArbeiter(ucl.getKuerzel()));
-			ucl.setTeam(getServer().getYourTeam(ucl.getYou().getAbteilung()));
-//			List<Arbeiter> online = getServer().getWhoishere();
-//			online.add(ucl.getYou());
-//			getServer().setWhoishere(online);
+			ucl.setTeam(getServer().getYourTeam(ucl.getYou().getAbteilung(), ucl.getKuerzel()));
+			List<Arbeiter> online = getServer().getWhoishere();			
+			online.add(ucl.getYou());
+			getServer().setWhoishere(online);
 			
+			System.out.println(getServer().getWhoishere());
 			System.out.println(ucl.getTeam().toString());
 			System.out.println(ucl.getKuerzel());
 			System.out.println(ucl.getYou().toString());
@@ -90,7 +91,8 @@ public class UserClient {
 		frame.setVisible(true);
 		
 		frame.append("Erfolgreich mit dem Chat Verbunden!\n");
-		frame.append("--------------------------------------\n");
+		frame.append("-------------------------------------------------------"
+				+ "--------------------------------------------------\n");
 		frame.message.requestFocusInWindow();
 		
 		Message msg = new Message("[" + ucl.getKuerzel() + "]" , " got connected.\n");

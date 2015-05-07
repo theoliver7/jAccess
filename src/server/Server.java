@@ -95,10 +95,10 @@ public class Server extends UnicastRemoteObject implements CardIntf, UserIntf {
 	}
 
 	@Override
-	public List<Arbeiter> getYourTeam(String teamname) throws RemoteException {
+	public List<Arbeiter> getYourTeam(String teamname, String kuerzel) throws RemoteException {
 		List<Arbeiter> team = null;
 		try {
-			team = this.getArbeiterDb().findTeam(teamname);
+			team = this.getArbeiterDb().findTeam(teamname, kuerzel);
 		} catch (SQLException e) {
 			// TODO Meldung wenn DB nicht funktioniert.
 			e.printStackTrace();
@@ -125,7 +125,7 @@ public class Server extends UnicastRemoteObject implements CardIntf, UserIntf {
 			// Mit sleep(int) kann ein Cooldown eingestellt werden. Für
 			// besonders
 			// Nervige Chatter :)
-			Thread.sleep(1000);
+			Thread.sleep(1);
 
 		} catch (InterruptedException e) {
 			e.printStackTrace();
