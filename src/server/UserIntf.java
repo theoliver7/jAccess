@@ -2,6 +2,7 @@ package server;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.util.List;
 
 import jdbc.Arbeiter;
 
@@ -23,6 +24,14 @@ public interface UserIntf extends Remote {
 	 * @return Arbeiter Objekt des Users
 	 */
 	public Arbeiter getYourArbeiter(String kuerzel) throws RemoteException;
+	
+	/**
+	 * Gibt dem UserClient eine Liste seiner Mitarbeiter mit für das GUI.
+	 * @param kuerzel
+	 * @return Liste der Mitarbeiter des gleichen Teams
+	 * @throws RemoteException
+	 */
+	public List<Arbeiter> getYourTeam(String kuerzel) throws RemoteException;
 	
 	/**
 	 * Setzt neuen User auf die Anwesenheitsliste des Servers.

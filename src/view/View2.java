@@ -21,14 +21,19 @@ import javax.swing.JSeparator;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.JTextPane;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.JTableHeader;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Document;
 import javax.swing.ListSelectionModel;
 
 import client.UserClient;
+
+import javax.swing.JScrollPane;
 
 public class View2 extends JFrame {
 
@@ -36,6 +41,7 @@ public class View2 extends JFrame {
 	private JPanel content;
 	private JTextField message;
 	private JTable time_tabel;
+	private JTextPane chattext;
 
 	/**
 	 * Create the frame.
@@ -221,12 +227,12 @@ public class View2 extends JFrame {
 		profile_panel.add(funktion);
 
 		JPanel chat_panel = new JPanel();
-		chat_panel.setBounds(513, 26, 457, 458);
+		chat_panel.setBounds(509, 26, 457, 458);
 		overview.add(chat_panel);
 		chat_panel.setLayout(null);
 
 		message = new JTextField();
-		message.setBounds(6, 424, 377, 28);
+		message.setBounds(10, 424, 364, 23);
 		chat_panel.add(message);
 		message.setColumns(10);
 
@@ -235,13 +241,15 @@ public class View2 extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		message_send.setBounds(385, 424, 66, 28);
+		message_send.setBounds(384, 422, 63, 26);
 		chat_panel.add(message_send);
-
-		ScrollPane textPane = new ScrollPane();
-		textPane.setBackground(SystemColor.inactiveCaption);
-		textPane.setBounds(10, 22, 441, 390);
-		chat_panel.add(textPane);
+		
+		chattext = new JTextPane();
+		chattext.setEditable(false);
+		
+		JScrollPane scrollPane = new JScrollPane(chattext);
+		scrollPane.setBounds(10, 11, 441, 402);
+		chat_panel.add(scrollPane);
 
 		JPanel time_panel = new JPanel();
 		tabbedPanel.addTab("Arbeitszeiten", null, time_panel, null);
@@ -337,5 +345,14 @@ public class View2 extends JFrame {
 		JLabel lblYouAreOnline = new JLabel("You [" + ucl.getYou().getName() + "] are online");
 		online_panel.add(lblYouAreOnline);
 
+	}
+	
+	public void append(String s) {
+		try {
+			Document doc = chattext.getDocument();
+			doc.insertString(doc.getLength(), s, null);
+		} catch (BadLocationException exc) {
+			exc.printStackTrace();
+		}
 	}
 }

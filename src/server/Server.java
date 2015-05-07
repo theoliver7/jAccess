@@ -24,7 +24,7 @@ import jdbc.ZeitJDBCDAO;
  * @version 1.0
  *
  */
-public class CardServer extends UnicastRemoteObject implements CardIntf, UserIntf {
+public class Server extends UnicastRemoteObject implements CardIntf, UserIntf {
 
 	// Seriennummer
 	private static final long serialVersionUID = 8078764826510784045L;
@@ -46,7 +46,7 @@ public class CardServer extends UnicastRemoteObject implements CardIntf, UserInt
 	// Ende Variabeln deklarieren
 
 	// Konstruktor
-	public CardServer() throws RemoteException {
+	public Server() throws RemoteException {
 		super(0);
 	}
 
@@ -60,7 +60,7 @@ public class CardServer extends UnicastRemoteObject implements CardIntf, UserInt
 		} catch (RemoteException re) {
 			System.err.println("Registry existiert schon");
 		}
-		CardServer server = new CardServer();
+		Server server = new Server();
 		try {
 			Naming.rebind("//localhost/CardServer", server);
 			System.out.println("Server ist bereit");
@@ -77,12 +77,10 @@ public class CardServer extends UnicastRemoteObject implements CardIntf, UserInt
 		this.setUid(uid);
 		this.getZeitDb().zeiteintragen(uid);
 	}
-	
-	
+
 	// Methoden für Client
 	@Override
 	public Arbeiter getYourArbeiter(String kuerzel) throws RemoteException {
-		// TODO: Kuerzel von Client holen
 		Arbeiter you = null;
 		try {
 			you = this.getArbeiterDb().findPersonBykuerzel(kuerzel);
@@ -91,6 +89,18 @@ public class CardServer extends UnicastRemoteObject implements CardIntf, UserInt
 			e.printStackTrace();
 		}
 		return you;
+	}
+
+	@Override
+	public List<Arbeiter> getYourTeam(String kuerzel) throws RemoteException {
+		List<Arbeiter> team = null;
+		try {
+			team = this.getArbeiterDb().findTeam(kuerzel);
+		} catch (SQLException e) {
+			// TODO Meldung wenn DB nicht funktioniert.
+			e.printStackTrace();
+		}
+		return team;
 	}
 
 	@Override

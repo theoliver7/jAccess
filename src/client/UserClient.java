@@ -1,10 +1,10 @@
 package client;
 
-import java.awt.EventQueue;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.util.List;
 
 import javax.swing.JOptionPane;
 
@@ -27,6 +27,7 @@ public class UserClient {
 	private String kuerzel;
 	private static UserClient client;
 	private Arbeiter you;
+	private List<Arbeiter> team;
 
 	/**
 	 * Private Konstruktor für Singleton
@@ -67,8 +68,8 @@ public class UserClient {
 		ucl.setKuerzel(System.getProperty("user.name"));
 		try {
 			ucl.setYou(getServer().getYourArbeiter(ucl.getKuerzel()));
+			
 		} catch (RemoteException e) {
-			// TODO Meldung wenn server verbindung nicht stimmt.
 			e.printStackTrace();
 		}
 		
@@ -105,6 +106,14 @@ public class UserClient {
 
 	public void setYou(Arbeiter you) {
 		this.you = you;
+	}
+
+	public List<Arbeiter> getTeam() {
+		return team;
+	}
+
+	public void setTeam(List<Arbeiter> team) {
+		this.team = team;
 	}
 
 }
