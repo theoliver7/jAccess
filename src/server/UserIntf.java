@@ -61,4 +61,8 @@ public interface UserIntf extends Remote {
 	 * @throws RemoteException
 	 */
 	public void send(Message msg) throws RemoteException;
+	
+	public List<Arbeiter> getWhoishere() throws RemoteException;
+	
+	public void setWhoishere(List<Arbeiter> whoishere) throws RemoteException;
 }

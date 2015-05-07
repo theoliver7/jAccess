@@ -2,36 +2,34 @@ package view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.EventQueue;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.ScrollPane;
-import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.net.MalformedURLException;
-import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
+import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -39,12 +37,11 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.JTableHeader;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
-import javax.swing.ListSelectionModel;
 
-import client.UserClient;
-
-import javax.swing.JScrollPane;
+import jdbc.Arbeiter;
 import server.Message;
+import client.UserClient;
+import java.awt.GridLayout;
 
 public class View2 extends JFrame {
 
@@ -52,12 +49,14 @@ public class View2 extends JFrame {
 	private JPanel content;
 	private JTable time_tabel;
 	private JTextPane chattext;
+	private DefaultListModel arbeiter;
 	public JTextField message;
 
 	/**
 	 * Create the frame.
 	 */
 	public View2(UserClient ucl) {
+		setBackground(Color.WHITE);
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 992, 651);
@@ -192,50 +191,98 @@ public class View2 extends JFrame {
 		overview.add(youteam_panel);
 		youteam_panel.setLayout(null);
 
-		JLabel lblNewLabel = new JLabel("New label");
-		lblNewLabel.setBounds(16, 18, 55, 16);
-		youteam_panel.add(lblNewLabel);
-
-		JLabel label = new JLabel("New label");
-		label.setBounds(16, 46, 55, 16);
-		youteam_panel.add(label);
-
-		JLabel label_1 = new JLabel("New label");
-		label_1.setBounds(16, 74, 55, 16);
-		youteam_panel.add(label_1);
-
-		JLabel label_2 = new JLabel("New label");
-		label_2.setBounds(16, 102, 55, 16);
-		youteam_panel.add(label_2);
-
-		JLabel label_3 = new JLabel("New label");
-		label_3.setBounds(16, 130, 55, 16);
-		youteam_panel.add(label_3);
+		arbeiter = new DefaultListModel();
+		
+		List<Arbeiter> arb = ucl.getTeam();
+		for (Arbeiter a : arb) {
+			arbeiter.addElement(a.getName() + " " + a.getNachname());
+		}
+		
+		JList list = new JList();
+		list.setModel(arbeiter);
+		list.setBackground(new Color(214, 217, 223));
+		list.setBounds(6, 6, 203, 446);
+		youteam_panel.add(list);
 
 		JPanel profile_panel = new JPanel();
 		profile_panel.setBounds(234, 26, 267, 458);
 		overview.add(profile_panel);
 		profile_panel.setLayout(null);
-
-		JLabel name = new JLabel("New label");
-		name.setBounds(16, 18, 55, 16);
-		profile_panel.add(name);
-
-		JLabel vorname = new JLabel("New label");
-		vorname.setBounds(16, 46, 55, 16);
-		profile_panel.add(vorname);
-
-		JLabel kuerzel = new JLabel("New label");
-		kuerzel.setBounds(16, 102, 55, 16);
-		profile_panel.add(kuerzel);
-
-		JLabel wohnort = new JLabel("New label");
-		wohnort.setBounds(16, 74, 55, 16);
-		profile_panel.add(wohnort);
-
-		JLabel funktion = new JLabel("New label");
-		funktion.setBounds(16, 130, 55, 16);
-		profile_panel.add(funktion);
+		
+		JPanel panel_1 = new JPanel();
+		panel_1.setBackground(new Color(204, 204, 204));
+		panel_1.setBounds(20, 30, 96, 96);
+		profile_panel.add(panel_1);
+		
+		JPanel panel_2 = new JPanel();
+		panel_2.setBackground(UIManager.getColor("DesktopPane.background"));
+		panel_2.setBounds(20, 138, 224, 303);
+		profile_panel.add(panel_2);
+		panel_2.setLayout(new GridLayout(0, 2, 0, 0));
+		
+		JLabel lblNewLabel = new JLabel("Vorname");
+		lblNewLabel.setHorizontalAlignment(SwingConstants.LEFT);
+		panel_2.add(lblNewLabel);
+		
+		JLabel lblNewLabel_1 = new JLabel("Nachname");
+		panel_2.add(lblNewLabel_1);
+		
+		JLabel lblNewLabel_2 = new JLabel("Funktion");
+		panel_2.add(lblNewLabel_2);
+		
+		JLabel lblNewLabel_3 = new JLabel("");
+		panel_2.add(lblNewLabel_3);
+		
+		JLabel lblNewLabel_4 = new JLabel("Abteilung");
+		panel_2.add(lblNewLabel_4);
+		
+		JLabel lblNewLabel_5 = new JLabel("");
+		panel_2.add(lblNewLabel_5);
+		
+		JLabel lblNewLabel_6 = new JLabel("Wohnort");
+		panel_2.add(lblNewLabel_6);
+		
+		JLabel lblNewLabel_7 = new JLabel("");
+		panel_2.add(lblNewLabel_7);
+		
+		JLabel lblNewLabel_8 = new JLabel("Status");
+		panel_2.add(lblNewLabel_8);
+		
+		JLabel lblNewLabel_10 = new JLabel("");
+		panel_2.add(lblNewLabel_10);
+		
+		JLabel lblNewLabel_11 = new JLabel("");
+		panel_2.add(lblNewLabel_11);
+		
+		JLabel lblNewLabel_12 = new JLabel("");
+		panel_2.add(lblNewLabel_12);
+		
+		JLabel lblNewLabel_13 = new JLabel("");
+		panel_2.add(lblNewLabel_13);
+		
+		JLabel lblNewLabel_14 = new JLabel("");
+		panel_2.add(lblNewLabel_14);
+		
+		JLabel lblNewLabel_15 = new JLabel("");
+		panel_2.add(lblNewLabel_15);
+		
+		JLabel lblNewLabel_16 = new JLabel("");
+		panel_2.add(lblNewLabel_16);
+		
+		JLabel lblNewLabel_17 = new JLabel("");
+		panel_2.add(lblNewLabel_17);
+		
+		JLabel lblNewLabel_18 = new JLabel("");
+		panel_2.add(lblNewLabel_18);
+		
+		JLabel lblNewLabel_19 = new JLabel("");
+		panel_2.add(lblNewLabel_19);
+		
+		JLabel lblNewLabel_20 = new JLabel("");
+		panel_2.add(lblNewLabel_20);
+		
+		JLabel label = new JLabel("");
+		panel_2.add(label);
 
 		JPanel chat_panel = new JPanel();
 		chat_panel.setBounds(509, 26, 457, 458);
@@ -252,8 +299,8 @@ public class View2 extends JFrame {
 					e.consume();
 					try {
 						if (!message.getText().equals("")) {
-						ucl.send(new Message("[" + ucl.getKuerzel() + "] ", message.getText() + "\n"));
-						message.setText("");
+							ucl.send(new Message("[" + ucl.getKuerzel() + "] ", message.getText() + "\n"));
+							message.setText("");
 						}
 					} catch (RemoteException e1) {
 						// TODO eigene Nachrichten exception
@@ -283,14 +330,15 @@ public class View2 extends JFrame {
 				}
 			}
 		});
-		message_send.setBounds(388, 420, 63, 26);
+		message_send.setBounds(374, 420, 77, 26);
 		chat_panel.add(message_send);
 
 		chattext = new JTextPane();
 		chattext.setEditable(false);
+		chattext.setBackground(new Color(214, 217, 223));
 
 		JScrollPane scrollPane = new JScrollPane(chattext);
-		scrollPane.setBounds(10, 11, 441, 402);
+		scrollPane.setBounds(10, 6, 441, 407);
 		scrollPane.getVerticalScrollBar().addAdjustmentListener(new AdjustmentListener() {
 			@Override
 			public void adjustmentValueChanged(AdjustmentEvent e) {

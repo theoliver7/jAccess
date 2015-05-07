@@ -99,7 +99,7 @@ public class Reader {
 	 * @throws NotBoundException
 	 */
 	private static void newTag(String uid) throws MalformedURLException, RemoteException, NotBoundException {
-		CardIntf serverobj = (CardIntf) Naming.lookup("//localhost/CardServer");
+		CardIntf serverobj = (CardIntf) Naming.lookup("//localhost/Server");
 		try {
 			serverobj.receiveUid(uid);
 		} catch (SQLException e) {

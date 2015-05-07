@@ -40,7 +40,7 @@ public class Server extends UnicastRemoteObject implements CardIntf, UserIntf {
 	// Ende Karten Teil
 
 	// User Teil
-	private List<Arbeiter> whoishere = new ArrayList<Arbeiter>();
+	public List<Arbeiter> whoishere = new ArrayList<Arbeiter>();
 	// Ende User Teil
 	
 	// Chat Teil
@@ -65,7 +65,7 @@ public class Server extends UnicastRemoteObject implements CardIntf, UserIntf {
 		}
 		Server server = new Server();
 		try {
-			Naming.rebind("//localhost/CardServer", server);
+			Naming.rebind("//localhost/Server", server);
 			System.out.println("Server ist bereit");
 		} catch (MalformedURLException e) {
 			System.err.println("Fehler mit Server");
@@ -95,10 +95,10 @@ public class Server extends UnicastRemoteObject implements CardIntf, UserIntf {
 	}
 
 	@Override
-	public List<Arbeiter> getYourTeam(String kuerzel) throws RemoteException {
+	public List<Arbeiter> getYourTeam(String teamname) throws RemoteException {
 		List<Arbeiter> team = null;
 		try {
-			team = this.getArbeiterDb().findTeam(kuerzel);
+			team = this.getArbeiterDb().findTeam(teamname);
 		} catch (SQLException e) {
 			// TODO Meldung wenn DB nicht funktioniert.
 			e.printStackTrace();
@@ -173,7 +173,11 @@ public class Server extends UnicastRemoteObject implements CardIntf, UserIntf {
 		this.zeitDb = zeitDb;
 	}
 
-	public List<Arbeiter> getWhoishere() {
+	public List<Arbeiter> getWhoishere() throws RemoteException {
 		return whoishere;
+	}
+
+	public void setWhoishere(List<Arbeiter> whoishere) throws RemoteException {
+		this.whoishere = whoishere;
 	}
 }
