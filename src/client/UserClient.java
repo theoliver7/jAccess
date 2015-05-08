@@ -60,7 +60,7 @@ public class UserClient {
 	public static UserIntf getServer() {
 		UserIntf serverobj = null;
 		try {
-			serverobj = (UserIntf) Naming.lookup("//localhost/CardServer");
+			serverobj = (UserIntf) Naming.lookup("//localhost/Server");
 		} catch (MalformedURLException | RemoteException | NotBoundException e) {
 			JOptionPane.showMessageDialog(null, "Der Server hat zurzeit Probleme! \nBitte wenden " + "Sie sich an den IT-Support.", "Fehler", JOptionPane.ERROR_MESSAGE);
 			e.printStackTrace();
@@ -71,9 +71,18 @@ public class UserClient {
 	public static void main(String[] args) {
 		UserClient ucl = UserClient.getInstance();
 		ucl.setKuerzel(System.getProperty("user.name"));
+		
 		try {
 			ucl.setYou(getServer().getYourArbeiter(ucl.getKuerzel()));
-
+			ucl.setTeam(getServer().getYourTeam(ucl.getYou().getAbteilung(), ucl.getKuerzel()));
+			List<Arbeiter> online = getServer().getWhoishere();			
+			online.add(ucl.getYou());
+			getServer().setWhoishere(online);
+			
+			System.out.println(getServer().getWhoishere());
+			System.out.println(ucl.getTeam().toString());
+			System.out.println(ucl.getKuerzel());
+			System.out.println(ucl.getYou().toString());
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
@@ -82,7 +91,8 @@ public class UserClient {
 		frame.setVisible(true);
 		
 		frame.append("Erfolgreich mit dem Chat Verbunden!\n");
-		frame.append("--------------------------------------\n");
+		frame.append("-------------------------------------------------------"
+				+ "--------------------------------------------------\n");
 		frame.message.requestFocusInWindow();
 		
 		Message msg = new Message("[" + ucl.getKuerzel() + "]" , " got connected.\n");

@@ -31,7 +31,7 @@ public interface UserIntf extends Remote {
 	 * @return Liste der Mitarbeiter des gleichen Teams
 	 * @throws RemoteException
 	 */
-	public List<Arbeiter> getYourTeam(String kuerzel) throws RemoteException;
+	public List<Arbeiter> getYourTeam(String teamname, String kuerzel) throws RemoteException;
 	
 	/**
 	 * Setzt neuen User auf die Anwesenheitsliste des Servers.
@@ -61,4 +61,18 @@ public interface UserIntf extends Remote {
 	 * @throws RemoteException
 	 */
 	public void send(Message msg) throws RemoteException;
+	
+	/**
+	 * Gibt Liste bereit für den Client. Liste beinhaltet Arbeitet die gerade Online
+	 * @return Arbeiter-Liste von Leuten, die Online sind.
+	 * @throws RemoteException
+	 */
+	public List<Arbeiter> getWhoishere() throws RemoteException;
+	
+	/**
+	 * Setzt auf die Arbeiter-Liste einen neuen Client der gerade Online ist.
+	 * @param whoishere Liste der Arbeiter die hier sind
+	 * @throws RemoteException
+	 */
+	public void setWhoishere(List<Arbeiter> whoishere) throws RemoteException;
 }
