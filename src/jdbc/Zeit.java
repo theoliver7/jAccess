@@ -44,30 +44,31 @@ public class Zeit {
 	}
 
 	public List<String> zeitenorganisieren(List<String> daten) throws SQLException, ParseException {
-		int i = 0;
+		int i = 1;
+		int position = 0;
 		List<String> tag = new ArrayList<String>();
 		long beginn = umwandeln(daten.get(0)).getTime();
 		long diff = (umwandeln(daten.get(3)).getTime() - umwandeln(daten.get(0)).getTime());
-		System.out.println(daten.get(7));
 		System.out.println(daten.get(0));
-		long second = (diff / 3600 / 1000);
-		System.out.println(daten);
 
-		while (i < daten.size()) {
-			System.out.printf("Resultat:");
-			System.out.println(umwandeln(daten.get(0)).getTime());
-			System.out.println(umwandeln(daten.get(0)).getTime()-beginn);
-			if (beginn - umwandeln(daten.get(0)).getTime() < 86400000) {
-				System.out.println(beginn);
-				System.out.println(umwandeln(daten.get(0)).getTime());
-				tag.add(daten.get(0));
-				daten.remove(0);
-				
+		while (i <= 10) {
+			System.out.println("Resultat:"+umwandeln(daten.get(position)).getTime());
+			long peter=umwandeln(daten.get(position)).getTime()-beginn;
+			System.out.println("Peter: "+peter);
+			if ( umwandeln(daten.get(position)).getTime()-beginn < 86400000) {
+				System.out.println("Time:"+ daten.get(0));
+				tag.add(daten.get(position));
+				daten.remove(position);
+				System.out.println("Offiziel"+tag);
+				System.out.println(daten);
 			} else {
-				System.out.println(tag);
-				beginn = umwandeln(daten.get(0)).getTime();
+				System.out.println("niet");
+//				beginn = umwandeln(daten.get(0)).getTime();
 			}
 			i++;
+			System.out.println();
+			System.out.println("______________________________________________________________________________________");
+			System.out.println();
 		}
 		return tag;
 	}
