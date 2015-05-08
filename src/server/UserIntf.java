@@ -75,4 +75,21 @@ public interface UserIntf extends Remote {
 	 * @throws RemoteException
 	 */
 	public void setWhoishere(List<Arbeiter> whoishere) throws RemoteException;
+	
+	/**
+	 * Entfernt einen User aus der Liste der Leute die Online sind, wenn sie sich abmelden.
+	 * @param kuerzel
+	 * @return Hat Server User entfernt? true or false
+	 * @throws RemoteException
+	 */
+	public boolean removeUser(String kuerzel) throws RemoteException;
+
+	/**
+	 * 
+	 * @param a
+	 * @return
+	 * @throws RemoteException
+	 */
+	public boolean addUser(Arbeiter a) throws RemoteException;
+
 }

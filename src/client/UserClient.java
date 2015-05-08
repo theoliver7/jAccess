@@ -60,7 +60,7 @@ public class UserClient {
 	public static UserIntf getServer() {
 		UserIntf serverobj = null;
 		try {
-			serverobj = (UserIntf) Naming.lookup("//192.168.3.168/Server");
+			serverobj = (UserIntf) Naming.lookup("//localhost/Server");
 		} catch (MalformedURLException | RemoteException | NotBoundException e) {
 			JOptionPane.showMessageDialog(null, "Der Server hat zurzeit Probleme! \nBitte wenden " + "Sie sich an den IT-Support.", "Fehler", JOptionPane.ERROR_MESSAGE);
 			e.printStackTrace();
@@ -71,31 +71,32 @@ public class UserClient {
 	public static void main(String[] args) {
 		UserClient ucl = UserClient.getInstance();
 		ucl.setKuerzel(System.getProperty("user.name"));
-		
+
 		try {
 			ucl.setYou(getServer().getYourArbeiter(ucl.getKuerzel()));
 			ucl.setTeam(getServer().getYourTeam(ucl.getYou().getAbteilung(), ucl.getKuerzel()));
-			List<Arbeiter> online = getServer().getWhoishere();			
-			online.add(ucl.getYou());
-			getServer().setWhoishere(online);
-			
+			getServer();
+
+			for (Arbeiter a : getServer().getYourTeam(ucl.getYou().getAbteilung(), ucl.getKuerzel())) {
+				if (a.getKuerzel().equals(ucl.getKuerzel())) {
+					UserClient.getServer().addUser(a);
+				}
+			}
+
 			System.out.println(getServer().getWhoishere());
-			System.out.println(ucl.getTeam().toString());
 			System.out.println(ucl.getKuerzel());
-			System.out.println(ucl.getYou().toString());
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
 
 		View2 frame = new View2(ucl);
 		frame.setVisible(true);
-		
+
 		frame.append("Erfolgreich mit dem Chat Verbunden!\n");
-		frame.append("-------------------------------------------------------"
-				+ "--------------------------------------------------\n");
+		frame.append("-------------------------------------------------------" + "--------------------------------------------------\n");
 		frame.message.requestFocusInWindow();
-		
-		Message msg = new Message("[" + ucl.getKuerzel() + "]" , " got connected.\n");
+
+		Message msg = new Message("[" + ucl.getKuerzel() + "]", " got connected.\n");
 		try {
 			UserClient.getServer().send(msg);
 		} catch (RemoteException e1) {
@@ -107,7 +108,11 @@ public class UserClient {
 		frame.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
-
+				try {
+					getServer().removeUser(ucl.getKuerzel());
+				} catch (RemoteException e1) {
+					e1.printStackTrace();
+				}
 			}
 		});
 	}

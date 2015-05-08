@@ -4,21 +4,26 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.net.URL;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.swing.DefaultListModel;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -41,7 +46,6 @@ import javax.swing.text.Document;
 import jdbc.Arbeiter;
 import server.Message;
 import client.UserClient;
-import java.awt.GridLayout;
 
 public class View2 extends JFrame {
 
@@ -49,13 +53,22 @@ public class View2 extends JFrame {
 	private JPanel content;
 	private JTable time_tabel;
 	private JTextPane chattext;
-	private DefaultListModel arbeiter;
 	public JTextField message;
+	private Timer timer;
+	private UserClient ucl;
+	private JPanel youteam_panel;
+	private JPanel teamPanel;
+	private JScrollPane teamScroll;
+	
+	// Icons fürs GUI
+	private static final Icon online = loadIcon("");
+	private static final Icon offline = loadIcon("");
 
 	/**
 	 * Create the frame.
 	 */
 	public View2(UserClient ucl) {
+		this.setUcl(ucl);
 		setBackground(Color.WHITE);
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -186,112 +199,97 @@ public class View2 extends JFrame {
 		separator_15.setBounds(514, 482, 456, 21);
 		overview.add(separator_15);
 
-		JPanel youteam_panel = new JPanel();
+		youteam_panel = new JPanel();
 		youteam_panel.setBounds(7, 26, 215, 458);
 		overview.add(youteam_panel);
 		youteam_panel.setLayout(null);
-
-		arbeiter = new DefaultListModel();
 		
-		List<Arbeiter> arb = ucl.getTeam();
-		for (Arbeiter a : arb) {
-			try {
-				if(UserClient.getServer().getWhoishere().contains(a)) {
-					arbeiter.addElement(a.getName() + " " + a.getNachname() + " On");
-				} else {
-					arbeiter.addElement(a.getName() + " " + a.getNachname() + " Off");
-				}
-			} catch (RemoteException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-		}
+		teamScroll = new JScrollPane();
+		teamScroll.setBounds(6, 6, 203, 446);
+		youteam_panel.add(teamScroll);
 		
-		JList list = new JList();
-		list.setModel(arbeiter);
-		list.setBackground(new Color(214, 217, 223));
-		list.setBounds(6, 6, 203, 446);
-		youteam_panel.add(list);
+		teamPanel = new JPanel();
+		teamScroll.setViewportView(teamPanel);
 
 		JPanel profile_panel = new JPanel();
 		profile_panel.setBounds(234, 26, 267, 458);
 		overview.add(profile_panel);
 		profile_panel.setLayout(null);
-		
-		JPanel panel_1 = new JPanel();
-		panel_1.setBackground(new Color(204, 204, 204));
-		panel_1.setBounds(20, 30, 96, 96);
-		profile_panel.add(panel_1);
-		
-		JPanel panel_2 = new JPanel();
-		panel_2.setBackground(UIManager.getColor("DesktopPane.background"));
-		panel_2.setBounds(20, 138, 224, 303);
-		profile_panel.add(panel_2);
-		panel_2.setLayout(new GridLayout(0, 2, 0, 0));
-		
+
+		JPanel profilePic = new JPanel();
+		profilePic.setBackground(new Color(204, 204, 204));
+		profilePic.setBounds(20, 30, 96, 96);
+		profile_panel.add(profilePic);
+
+		JPanel profileInfo = new JPanel();
+		profileInfo.setBackground(UIManager.getColor("DesktopPane.background"));
+		profileInfo.setBounds(20, 138, 224, 303);
+		profile_panel.add(profileInfo);
+		profileInfo.setLayout(new GridLayout(0, 2, 0, 0));
+
 		JLabel vornameLabel = new JLabel("Vorname");
 		vornameLabel.setHorizontalAlignment(SwingConstants.LEFT);
-		panel_2.add(vornameLabel);
-		
+		profileInfo.add(vornameLabel);
+
 		JLabel nachnameLabel = new JLabel("Nachname");
-		panel_2.add(nachnameLabel);
-		
+		profileInfo.add(nachnameLabel);
+
 		JLabel funktionLabel = new JLabel("Funktion");
-		panel_2.add(funktionLabel);
-		
+		profileInfo.add(funktionLabel);
+
 		JLabel lblNewLabel_3 = new JLabel("");
-		panel_2.add(lblNewLabel_3);
-		
+		profileInfo.add(lblNewLabel_3);
+
 		JLabel abteilungLabel = new JLabel("Abteilung");
-		panel_2.add(abteilungLabel);
-		
+		profileInfo.add(abteilungLabel);
+
 		JLabel lblNewLabel_5 = new JLabel("");
-		panel_2.add(lblNewLabel_5);
-		
+		profileInfo.add(lblNewLabel_5);
+
 		JLabel wohnortLabel = new JLabel("Wohnort");
-		panel_2.add(wohnortLabel);
-		
+		profileInfo.add(wohnortLabel);
+
 		JLabel lblNewLabel_7 = new JLabel("");
-		panel_2.add(lblNewLabel_7);
-		
+		profileInfo.add(lblNewLabel_7);
+
 		JLabel statusLabel = new JLabel("Status");
-		panel_2.add(statusLabel);
-		
+		profileInfo.add(statusLabel);
+
 		JLabel lblNewLabel_10 = new JLabel("");
-		panel_2.add(lblNewLabel_10);
-		
+		profileInfo.add(lblNewLabel_10);
+
 		JLabel lblNewLabel_11 = new JLabel("");
-		panel_2.add(lblNewLabel_11);
-		
+		profileInfo.add(lblNewLabel_11);
+
 		JLabel lblNewLabel_12 = new JLabel("");
-		panel_2.add(lblNewLabel_12);
-		
+		profileInfo.add(lblNewLabel_12);
+
 		JLabel lblNewLabel_13 = new JLabel("");
-		panel_2.add(lblNewLabel_13);
-		
+		profileInfo.add(lblNewLabel_13);
+
 		JLabel lblNewLabel_14 = new JLabel("");
-		panel_2.add(lblNewLabel_14);
-		
+		profileInfo.add(lblNewLabel_14);
+
 		JLabel lblNewLabel_15 = new JLabel("");
-		panel_2.add(lblNewLabel_15);
-		
+		profileInfo.add(lblNewLabel_15);
+
 		JLabel lblNewLabel_16 = new JLabel("");
-		panel_2.add(lblNewLabel_16);
-		
+		profileInfo.add(lblNewLabel_16);
+
 		JLabel lblNewLabel_17 = new JLabel("");
-		panel_2.add(lblNewLabel_17);
-		
+		profileInfo.add(lblNewLabel_17);
+
 		JLabel lblNewLabel_18 = new JLabel("");
-		panel_2.add(lblNewLabel_18);
-		
+		profileInfo.add(lblNewLabel_18);
+
 		JLabel lblNewLabel_19 = new JLabel("");
-		panel_2.add(lblNewLabel_19);
-		
+		profileInfo.add(lblNewLabel_19);
+
 		JLabel lblNewLabel_20 = new JLabel("");
-		panel_2.add(lblNewLabel_20);
-		
+		profileInfo.add(lblNewLabel_20);
+
 		JLabel label = new JLabel("");
-		panel_2.add(label);
+		profileInfo.add(label);
 
 		JPanel chat_panel = new JPanel();
 		chat_panel.setBounds(509, 26, 457, 458);
@@ -308,7 +306,7 @@ public class View2 extends JFrame {
 					e.consume();
 					try {
 						if (!message.getText().equals("")) {
-							ucl.send(new Message("[" + ucl.getKuerzel() + "] ", message.getText() + "\n"));
+							getUcl().send(new Message("[" + getUcl().getKuerzel() + "] ", message.getText() + "\n"));
 							message.setText("");
 						}
 					} catch (RemoteException e1) {
@@ -331,7 +329,7 @@ public class View2 extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					if (!message.getText().equals("")) {
-						ucl.send(new Message("[" + ucl.getKuerzel() + "] ", message.getText() + "\n"));
+						getUcl().send(new Message("[" + getUcl().getKuerzel() + "] ", message.getText() + "\n"));
 						message.setText("");
 					}
 				} catch (RemoteException e1) {
@@ -449,43 +447,74 @@ public class View2 extends JFrame {
 		JSeparator separator = new JSeparator();
 		online_panel.add(separator);
 
-		JLabel lblYouAreOnline = new JLabel("You [" + ucl.getYou().getName() + "] are online");
+		JLabel lblYouAreOnline = new JLabel("You [" + getUcl().getYou().getName() + "] are online");
 		online_panel.add(lblYouAreOnline);
 
-		class Receiver extends Thread {
+		class Prozess extends TimerTask {
+
+			@Override
 			public void run() {
-				while (true) {
-					chattext.removeAll();
-					List<Message> messages = new ArrayList<Message>();
-					try {
-						messages = ucl.getServer().returnMessages();
-					} catch (RemoteException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					for (Message i : messages) {
-						append(i.getName() + i.getMsg());
-						try {
-							ucl.getServer().rmvPrintedMsgs();
-						} catch (RemoteException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-					}
-					chattext.repaint();
-					try {
-						Thread.sleep(1);
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
+				msgReceiver();
+				usrReceiver();
 			}
 		}
 
 		// Thread starten für den Chat
-		Thread msgreceive = new Thread(new Receiver());
-		msgreceive.start();
+		this.setTimer(new Timer());
+		this.getTimer().scheduleAtFixedRate(new Prozess(), 0, 10);
+
+	}
+
+	private void usrReceiver() {
+		try {
+			List<Arbeiter> workers = UserClient.getServer().getWhoishere();
+			List<Arbeiter> team = this.getUcl().getTeam();
+			
+			
+
+			for (Arbeiter a : workers) {
+				for (Arbeiter mitglied : team) {
+					if(a.getKuerzel().equals(mitglied.getKuerzel())) {
+						
+					} else {
+						
+					}
+				}
+			}
+			
+
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	private void msgReceiver() {
+		chattext.removeAll();
+		List<Message> messages = new ArrayList<Message>();
+		try {
+			messages = this.getUcl().getServer().returnMessages();
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		for (Message i : messages) {
+			append(i.getName() + i.getMsg());
+			try {
+				this.getUcl().getServer().rmvPrintedMsgs();
+			} catch (RemoteException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		chattext.repaint();
+		try {
+			Thread.sleep(1);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 	}
 
 	public void append(String s) {
@@ -495,5 +524,32 @@ public class View2 extends JFrame {
 		} catch (BadLocationException exc) {
 			exc.printStackTrace();
 		}
+	}
+	
+	private static Icon loadIcon(String iconName) {
+		final URL resource = View2.class.getResource("/images/" + iconName);
+		
+		if (resource == null) {
+			System.err.println("Error in " + View2.class.getName()
+					+ ": Icon /images/" + iconName + " could not be loaded.");
+			return new ImageIcon();
+		}
+		return new ImageIcon(resource);
+	}
+
+	public Timer getTimer() {
+		return timer;
+	}
+
+	public void setTimer(Timer timer) {
+		this.timer = timer;
+	}
+
+	public UserClient getUcl() {
+		return ucl;
+	}
+
+	public void setUcl(UserClient ucl) {
+		this.ucl = ucl;
 	}
 }
