@@ -5,12 +5,15 @@ import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
 public class Zeit {
 	public String idZeit;
 	public Timestamp timestamp;
+	private ArrayList<String> tag = new ArrayList<String>();
+	private ArrayList<ArrayList<String>> alleTage = new ArrayList<ArrayList<String>>();
 
 	public List<String> totalberechnen(List<String> daten) throws SQLException, ParseException {
 		int i = 0;
@@ -43,34 +46,29 @@ public class Zeit {
 		return totalarbeitszeiten;
 	}
 
-	public List<String> zeitenorganisieren(List<String> daten) throws SQLException, ParseException {
-		int i = 1;
+	public void zeitenorganisieren(List<String> daten) throws SQLException, ParseException {
+		int i = 0;
 		int position = 0;
-		List<String> tag = new ArrayList<String>();
-		long beginn = umwandeln(daten.get(0)).getTime();
-		long diff = (umwandeln(daten.get(3)).getTime() - umwandeln(daten.get(0)).getTime());
-		System.out.println(daten.get(0));
-
-		while (i <= 10) {
-			System.out.println("Resultat:"+umwandeln(daten.get(position)).getTime());
-			long peter=umwandeln(daten.get(position)).getTime()-beginn;
-			System.out.println("Peter: "+peter);
-			if ( umwandeln(daten.get(position)).getTime()-beginn < 86400000) {
-				System.out.println("Time:"+ daten.get(0));
+		long ersterTag = umwandeln(daten.get(0)).getTime();
+		int arraygrösse = daten.size();
+		while (i <= arraygrösse) {
+			if (umwandeln(daten.get(position)).getTime() - ersterTag < 72000000) {
 				tag.add(daten.get(position));
 				daten.remove(position);
-				System.out.println("Offiziel"+tag);
+				System.out.println("Tag Array:" + tag);
 				System.out.println(daten);
 			} else {
-				System.out.println("niet");
-//				beginn = umwandeln(daten.get(0)).getTime();
+				alleTage.add(tag);
+				System.out.println("Nächster Tag");
+				System.out.println("Alle Tage: " + alleTage);
+				ersterTag = umwandeln(daten.get(0)).getTime();
+				tag.clear();
 			}
 			i++;
 			System.out.println();
 			System.out.println("______________________________________________________________________________________");
 			System.out.println();
 		}
-		return tag;
 	}
 
 	public String getIdZeit() {
