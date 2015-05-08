@@ -62,7 +62,7 @@ public class Zeit {
 				System.out.println("Nächster Tag");
 				System.out.println("Alle Tage: " + alleTage);
 				ersterTag = umwandeln(daten.get(0)).getTime();
-				tag.clear();
+				tag = new ArrayList<String>();
 			}
 			i++;
 			System.out.println();
