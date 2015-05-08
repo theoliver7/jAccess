@@ -42,6 +42,7 @@ import jdbc.Arbeiter;
 import server.Message;
 import client.UserClient;
 import java.awt.GridLayout;
+import javax.swing.table.DefaultTableModel;
 
 public class View2 extends JFrame {
 
@@ -424,6 +425,16 @@ public class View2 extends JFrame {
 		Object columnNames[] = { "Date", "Morning", "Lunch", "Evening", "Total" };
 
 		JTable time_tabel = new JTable(rowData, columnNames);
+		time_tabel.setModel(new DefaultTableModel(
+			new Object[][] {
+				{null, null, null, null, null, null},
+				{null, null, null, null, null, null},
+				{null, null, null, null, null, null},
+			},
+			new String[] {
+				 "Date", "Morning", "Lunch","Noon", "Evening", "Total"
+			}
+		));
 		time_tabel.setFillsViewportHeight(true);
 		time_tabel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		time_tabel.setShowGrid(false);

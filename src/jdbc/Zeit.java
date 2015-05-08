@@ -15,38 +15,27 @@ public class Zeit {
 	private ArrayList<String> tag = new ArrayList<String>();
 	private ArrayList<ArrayList<String>> alleTage = new ArrayList<ArrayList<String>>();
 
-	public List<String> totalberechnen(List<String> daten) throws SQLException, ParseException {
-		int i = 0;
-		List<String> totalarbeitszeiten = new ArrayList<String>();
+	public ArrayList<ArrayList<String>> totalberechnen(ArrayList<ArrayList<String>> arrayList) throws SQLException, ParseException {
+		Date beginnMorgen = umwandeln(arrayList.get(0).get(0));
+		
+		Date endeMorgen = umwandeln(arrayList.get(0).get(1));
+		
+		Date beginnNachmittag = umwandeln(arrayList.get(0).get(2));
+		Date endeNachmittag = umwandeln(arrayList.get(0).get(3));
+		long diff = (endeMorgen.getTime() - beginnMorgen.getTime() + endeNachmittag.getTime() - beginnNachmittag.getTime());
+		long second = (diff / 1000) % 60;
+		long minute = (diff / (1000 * 60)) % 60;
+		long hour = (diff / (1000 * 60 * 60)) % 24;
+		diff = diff % 1000;
 
-		if (daten.size() % 4 == 0) {
-			while (i < daten.size()) {
-
-				Date beginnMorgen = umwandeln(daten.get(i));
-				i++;
-				Date endeMorgen = umwandeln(daten.get(i));
-				i++;
-				Date beginnNachmittag = umwandeln(daten.get(i));
-				i++;
-				Date endeNachmittag = umwandeln(daten.get(i));
-				i++;
-				long diff = (endeMorgen.getTime() - beginnMorgen.getTime() + endeNachmittag.getTime() - beginnNachmittag.getTime());
-				long second = (diff / 1000) % 60;
-				long minute = (diff / (1000 * 60)) % 60;
-				long hour = (diff / (1000 * 60 * 60)) % 24;
-				diff = diff % 1000;
-
-				String time = String.format("%02d:%02d:%02d:%d", hour, minute, second, diff);
-				totalarbeitszeiten.add(time);
-			}
-		} else {
-			System.out.println("Zu wenig eingetragene Arbeitszeiten");
-		}
-		// System.out.println(totalarbeitszeiten);
-		return totalarbeitszeiten;
+		String time = String.format("%02d:%02d:%02d:%d", hour, minute, second, diff);
+	
+		arrayList.get(0).add(time);
+		System.out.println(arrayList);
+		return arrayList;
 	}
 
-	public void zeitenorganisieren(List<String> daten) throws SQLException, ParseException {
+	public ArrayList<ArrayList<String>> zeitenorganisieren(List<String> daten) throws SQLException, ParseException {
 		int i = 0;
 		int position = 0;
 		long ersterTag = umwandeln(daten.get(0)).getTime();
@@ -69,6 +58,7 @@ public class Zeit {
 			System.out.println("______________________________________________________________________________________");
 			System.out.println();
 		}
+		return alleTage;
 	}
 
 	public String getIdZeit() {
@@ -91,6 +81,17 @@ public class Zeit {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
 		Date umgewandeltertimestamp = dateFormat.parse(timestamp_string);
 		return umgewandeltertimestamp;
+
+	}
+
+	public String leserlichmachen(long diff) {
+		long second = (diff / 1000) % 60;
+		long minute = (diff / (1000 * 60)) % 60;
+		long hour = (diff / (1000 * 60 * 60)) % 24;
+		diff = diff % 1000;
+
+		String time = String.format("%02d:%02d:%02d:%d", hour, minute, second, diff);
+		return time;
 
 	}
 

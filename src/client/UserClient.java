@@ -60,7 +60,7 @@ public class UserClient {
 	public static UserIntf getServer() {
 		UserIntf serverobj = null;
 		try {
-			serverobj = (UserIntf) Naming.lookup("//192.168.3.168/Server");
+			serverobj = (UserIntf) Naming.lookup("//localhost/Server");
 		} catch (MalformedURLException | RemoteException | NotBoundException e) {
 			JOptionPane.showMessageDialog(null, "Der Server hat zurzeit Probleme! \nBitte wenden " + "Sie sich an den IT-Support.", "Fehler", JOptionPane.ERROR_MESSAGE);
 			e.printStackTrace();

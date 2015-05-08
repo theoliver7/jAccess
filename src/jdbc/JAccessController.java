@@ -11,8 +11,7 @@ public class JAccessController {
 
 	public static void main(String[] args) throws SQLException, ParseException {
 		// ARBEITER_DAO.findPersonBykuerzel(System.getProperty("user.name"));
-		// Zeit.totalberechnen(Zeit_DAO.arbeitszeitauslesen("45-459-5415"));
-		Zeit.zeitenorganisieren(Zeit_DAO.arbeitszeitauslesen("45-459-5415"));
+		Zeit.totalberechnen(Zeit.zeitenorganisieren(Zeit_DAO.arbeitszeitauslesen("45-459-5415")));
 		// List<Arbeiter> liste = ARBEITER_DAO.findTeam("Informatik");
 		// for (Arbeiter a : liste) {
 		// System.out.println(a.getName() + " " + a.getNachname() + " " +
