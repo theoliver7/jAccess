@@ -9,6 +9,5 @@
 	<classpathentry kind="lib" path="T:/Public/Software/Tools/Java/Lib/joda-time-2.3-javadoc.jar"/>
 	<classpathentry kind="lib" path="T:/Public/Software/Tools/Java/Lib/mysql-connector-java-5.1.30.jar"/>
 	<classpathentry kind="lib" path="D:/log4j-1.2.17.jar"/>
-	<classpathentry kind="lib" path="D:/Users/zascho/Downloads/lanterna-2.1.7.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

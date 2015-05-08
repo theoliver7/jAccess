@@ -9,6 +9,15 @@ import java.awt.ScrollPane;
 import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.AdjustmentEvent;
+import java.awt.event.AdjustmentListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.net.MalformedURLException;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -16,26 +25,34 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.JTextPane;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.JTableHeader;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Document;
 import javax.swing.ListSelectionModel;
 
 import client.UserClient;
+
+import javax.swing.JScrollPane;
+import server.Message;
 
 public class View2 extends JFrame {
 
 	private static final long serialVersionUID = 4701804783439921041L;
 	private JPanel content;
-	private JTextField message;
 	private JTable time_tabel;
+	private JTextPane chattext;
+	public JTextField message;
 
 	/**
 	 * Create the frame.
@@ -221,27 +238,66 @@ public class View2 extends JFrame {
 		profile_panel.add(funktion);
 
 		JPanel chat_panel = new JPanel();
-		chat_panel.setBounds(513, 26, 457, 458);
+		chat_panel.setBounds(509, 26, 457, 458);
 		overview.add(chat_panel);
 		chat_panel.setLayout(null);
 
 		message = new JTextField();
-		message.setBounds(6, 424, 377, 28);
+		message.setBounds(10, 419, 362, 28);
 		chat_panel.add(message);
 		message.setColumns(10);
+		message.addKeyListener(new KeyListener() {
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+					e.consume();
+					try {
+						if (!message.getText().equals("")) {
+						ucl.send(new Message("[" + ucl.getKuerzel() + "] ", message.getText() + "\n"));
+						message.setText("");
+						}
+					} catch (RemoteException e1) {
+						// TODO eigene Nachrichten exception
+					}
+				}
+			}
+
+			@Override
+			public void keyTyped(KeyEvent e) {
+			}
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+			}
+		});
 
 		JButton message_send = new JButton("Send");
 		message_send.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				try {
+					if (!message.getText().equals("")) {
+						ucl.send(new Message("[" + ucl.getKuerzel() + "] ", message.getText() + "\n"));
+						message.setText("");
+					}
+				} catch (RemoteException e1) {
+					// TODO Nachricht nicht senden exception
+				}
 			}
 		});
-		message_send.setBounds(385, 424, 66, 28);
+		message_send.setBounds(388, 420, 63, 26);
 		chat_panel.add(message_send);
 
-		ScrollPane textPane = new ScrollPane();
-		textPane.setBackground(SystemColor.inactiveCaption);
-		textPane.setBounds(10, 22, 441, 390);
-		chat_panel.add(textPane);
+		chattext = new JTextPane();
+		chattext.setEditable(false);
+
+		JScrollPane scrollPane = new JScrollPane(chattext);
+		scrollPane.setBounds(10, 11, 441, 402);
+		scrollPane.getVerticalScrollBar().addAdjustmentListener(new AdjustmentListener() {
+			@Override
+			public void adjustmentValueChanged(AdjustmentEvent e) {
+				e.getAdjustable().setValue(e.getAdjustable().getMaximum());
+			}
+		});
+		chat_panel.add(scrollPane);
 
 		JPanel time_panel = new JPanel();
 		tabbedPanel.addTab("Arbeitszeiten", null, time_panel, null);
@@ -304,9 +360,9 @@ public class View2 extends JFrame {
 		time_panel.add(table_panel);
 		table_panel.setLayout(null);
 
-		Object rowData[][] = { { "Row1-Column1", "Row1-Column2", "Row1-Column3","Row1-Column1", "Row1-Column2", "Row1-Column3"  },
-				{ "Row1-Column1", "Row1-Column2", "Row1-Column3" ,"Row2-Column1", "Row2-Column2", "Row2-Column3" } };
-		Object columnNames[] = { "Date", "Morning", "Lunch","Evening", "Total" };
+		Object rowData[][] = { { "Row1-Column1", "Row1-Column2", "Row1-Column3", "Row1-Column1", "Row1-Column2", "Row1-Column3" },
+				{ "Row1-Column1", "Row1-Column2", "Row1-Column3", "Row2-Column1", "Row2-Column2", "Row2-Column3" } };
+		Object columnNames[] = { "Date", "Morning", "Lunch", "Evening", "Total" };
 
 		JTable time_tabel = new JTable(rowData, columnNames);
 		time_tabel.setFillsViewportHeight(true);
@@ -337,5 +393,48 @@ public class View2 extends JFrame {
 		JLabel lblYouAreOnline = new JLabel("You [" + ucl.getYou().getName() + "] are online");
 		online_panel.add(lblYouAreOnline);
 
+		class Receiver extends Thread {
+			public void run() {
+				while (true) {
+					chattext.removeAll();
+					List<Message> messages = new ArrayList<Message>();
+					try {
+						messages = ucl.getServer().returnMessages();
+					} catch (RemoteException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					for (Message i : messages) {
+						append(i.getName() + i.getMsg());
+						try {
+							ucl.getServer().rmvPrintedMsgs();
+						} catch (RemoteException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+					chattext.repaint();
+					try {
+						Thread.sleep(20);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			}
+		}
+
+		// Thread starten für den Chat
+		Thread msgreceive = new Thread(new Receiver());
+		msgreceive.start();
+	}
+
+	public void append(String s) {
+		try {
+			Document doc = chattext.getDocument();
+			doc.insertString(doc.getLength(), s, null);
+		} catch (BadLocationException exc) {
+			exc.printStackTrace();
+		}
 	}
 }

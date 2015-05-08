@@ -2,6 +2,7 @@ package server;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.util.List;
 
 import jdbc.Arbeiter;
 
@@ -25,9 +26,39 @@ public interface UserIntf extends Remote {
 	public Arbeiter getYourArbeiter(String kuerzel) throws RemoteException;
 	
 	/**
+	 * Gibt dem UserClient eine Liste seiner Mitarbeiter mit für das GUI.
+	 * @param kuerzel
+	 * @return Liste der Mitarbeiter des gleichen Teams
+	 * @throws RemoteException
+	 */
+	public List<Arbeiter> getYourTeam(String kuerzel) throws RemoteException;
+	
+	/**
 	 * Setzt neuen User auf die Anwesenheitsliste des Servers.
 	 * @param user
 	 * @throws RemoteException
 	 */
 	public void setUser(Arbeiter user) throws RemoteException;
+
+	/**
+	 * Gibt die Messages den Clients weiter
+	 * @return Messages an die Clients
+	 * @throws RemoteException
+	 */
+	public List<Message> returnMessages() throws RemoteException;
+
+	/**
+	 * Entfernt die Bereits gesendeten Nachrichten wieder aus dem Array um Nachrichten
+	 * nicht mehrmals anzeigen zu lassen.
+	 * @throws RemoteException
+	 */
+	public void rmvPrintedMsgs() throws RemoteException;
+
+	/**
+	 * Schickt die Nachricht des Clients an den Server, 
+	 * der diese dann verarbeitet.
+	 * @param msg
+	 * @throws RemoteException
+	 */
+	public void send(Message msg) throws RemoteException;
 }
