@@ -42,10 +42,10 @@ public class Server extends UnicastRemoteObject implements CardIntf, UserIntf {
 	// User Teil
 	public List<Arbeiter> whoishere = new ArrayList<Arbeiter>();
 	// Ende User Teil
-	
+
 	// Chat Teil
 	private static List<Message> msgs = new ArrayList<Message>();
-	
+
 	// Ende Variabeln deklarieren
 
 	// Konstruktor
@@ -107,27 +107,39 @@ public class Server extends UnicastRemoteObject implements CardIntf, UserIntf {
 	}
 
 	@Override
+	public List<String> getWorktimes(String arbeiterid) throws RemoteException {
+		List<String> zeiten = null;
+		try {
+			zeiten = this.getZeitDb().arbeitszeitauslesen(arbeiterid);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return zeiten;
+	}
+
+	@Override
 	public void setUser(Arbeiter user) throws RemoteException {
 		// TODO: User auf die 'whoishere' liste setzen
 	}
-	
-	@Override 
+
+	@Override
 	public boolean removeUser(String kuerzel) throws RemoteException {
-		for(Arbeiter a : this.getWhoishere()) {
-			if(a.getKuerzel().equals(kuerzel)) {
+		for (Arbeiter a : this.getWhoishere()) {
+			if (a.getKuerzel().equals(kuerzel)) {
 				this.getWhoishere().remove(a);
 				return true;
 			}
 		}
 		return false;
 	}
-	
+
 	@Override
 	public boolean addUser(Arbeiter a) throws RemoteException {
 		this.getWhoishere().add(a);
 		return true;
 	}
-	
+
 	// Methoden für Chat
 	@Override
 	public List<Message> returnMessages() throws RemoteException {
@@ -150,12 +162,11 @@ public class Server extends UnicastRemoteObject implements CardIntf, UserIntf {
 		msgarray.clear();
 		this.setMsgs(msgarray);
 	}
-	
+
 	@Override
 	public void send(Message msg) throws RemoteException {
 		getMsgs().add(msg);
 	}
-
 
 	// Getters and Setters
 	public String getResponse() {
