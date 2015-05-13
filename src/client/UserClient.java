@@ -9,6 +9,7 @@ import java.rmi.RemoteException;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.swing.JOptionPane;
@@ -35,7 +36,7 @@ public class UserClient {
 	private static UserClient client;
 	private Arbeiter you;
 	private List<Arbeiter> team;
-	private ArrayList<ArrayList<String>> arbeitszeit;
+	private ArrayList<ArrayList<Date>> arbeitszeit;
 	// Für den Chat
 	private Message msg;
 
@@ -82,9 +83,12 @@ public class UserClient {
 			ucl.setTeam(getServer().getYourTeam(ucl.getYou().getAbteilung(), ucl.getKuerzel()));
 			Zeit z = new Zeit();
 			try {
-				ucl.setArbeitszeit(z.totalberechnen(z.zeitenorganisieren(getServer().getWorktimes(ucl.getYou().getIdarbeiter()))));
+				if(getServer().getWorktimes(ucl.getYou().getIdarbeiter()) == null) {
+				  ucl.setArbeitszeit(z.totalberechnen(z.zeitenorganisieren(getServer().getWorktimes(ucl.getYou().getIdarbeiter()))));
+				} else {
+					ucl.setArbeitszeit(new ArrayList<ArrayList<String>>());
+				}
 			} catch (SQLException | ParseException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 
@@ -176,11 +180,11 @@ public class UserClient {
 		this.team = team;
 	}
 
-	public ArrayList<ArrayList<String>> getArbeitszeit() {
+	public ArrayList<ArrayList<Date>> getArbeitszeit() {
 		return arbeitszeit;
 	}
 
-	public void setArbeitszeit(ArrayList<ArrayList<String>> arrayList) {
+	public void setArbeitszeit(ArrayList<ArrayList<Date>> arrayList) {
 		this.arbeitszeit = arrayList;
 	}
 

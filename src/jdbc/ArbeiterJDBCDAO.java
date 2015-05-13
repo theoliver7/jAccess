@@ -12,7 +12,7 @@ public class ArbeiterJDBCDAO extends Datenbank implements ArbeiterDAO {
 	@Override
 	public Arbeiter findPersonBykuerzel(String kuerzel) throws SQLException {
 		Arbeiter a = new Arbeiter();
-		String sql = "SELECT A.idArbeiter, A.Name, A.Nachname, A.kuerzel, " + "A.Wohnort, A.Funktion, ABT.Abteilungsname FROM arbeiter as A "
+		String sql = "SELECT A.idArbeiter, A.Name, A.Nachname, A.kuerzel, " + "A.Wohnort, A.Funktion, ABT.Abteilungsname, A.Pic FROM arbeiter as A "
 				+ "INNER JOIN abteilung as ABT ON A.AbteilungID = ABT.idAbteilung " + "WHERE kuerzel = '" + kuerzel + "';";
 		con = getCon();
 		ps = con.prepareStatement(sql);
@@ -26,6 +26,7 @@ public class ArbeiterJDBCDAO extends Datenbank implements ArbeiterDAO {
 			a.setWohnort(rs.getString("Wohnort"));
 			a.setFunktion(rs.getString("Funktion"));
 			a.setAbteilung(rs.getString("Abteilungsname"));
+			a.setPic(rs.getString("Pic"));
 			break;
 		}
 		return a;
@@ -34,7 +35,7 @@ public class ArbeiterJDBCDAO extends Datenbank implements ArbeiterDAO {
 	@Override
 	public List<Arbeiter> findTeam(String teamname, String kuerzel) throws SQLException {
 		List<Arbeiter> team = new ArrayList<Arbeiter>();
-		String sql = "Select A.Name, A.Nachname, A.kuerzel, A.Wohnort, A.Funktion, ABT.Abteilungsname " + "FROM arbeiter as A INNER JOIN abteilung as ABT on A.AbteilungID = ABT.idAbteilung "
+		String sql = "Select A.Name, A.Nachname, A.kuerzel, A.Wohnort, A.Funktion, ABT.Abteilungsname, A.Pic " + "FROM arbeiter as A INNER JOIN abteilung as ABT on A.AbteilungID = ABT.idAbteilung "
 				+ "WHERE abteilungsname = '" + teamname + "';";
 		con = getCon();
 		ps = con.prepareStatement(sql);
@@ -47,8 +48,17 @@ public class ArbeiterJDBCDAO extends Datenbank implements ArbeiterDAO {
 			a.setWohnort(rs.getString("Wohnort"));
 			a.setFunktion(rs.getString("Funktion"));
 			a.setAbteilung(rs.getString("Abteilungsname"));
+			a.setPic(rs.getString("Pic"));
 			team.add(a);
 		}
 		return team;
+	}
+
+	@Override
+	public void updatePic(String kuerzel, String pic) throws SQLException {
+		String sql = "UPDATE arbeiter SET Pic = '" + pic + "' WHERE kuerzel = '" + kuerzel + "';";
+		con = getCon();
+		ps = con.prepareStatement(sql);
+		ps.executeQuery();
 	}
 }

@@ -11,15 +11,17 @@ import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.net.URL;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import javax.swing.BoxLayout;
-import javax.swing.DefaultListModel;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -40,6 +42,7 @@ import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
@@ -47,7 +50,9 @@ import javax.swing.text.Document;
 import jdbc.Arbeiter;
 import server.Message;
 import client.UserClient;
-import javax.swing.table.DefaultTableModel;
+
+
+import listener.ProfileListener;
 
 public class View2 extends JFrame {
 
@@ -61,6 +66,18 @@ public class View2 extends JFrame {
 	private JPanel youteam_panel;
 	private JPanel teamPanel;
 	private JScrollPane teamScroll;
+	
+	public JLabel profilePic = new JLabel();
+	public JPanel profileInfo = new JPanel();
+	public JLabel vornameLabel = new JLabel();
+	public JLabel nachnameLabel = new JLabel();
+	public JLabel funktionLabel = new JLabel();
+	public JLabel abteilungLabel = new JLabel();
+	public JLabel wohnortLabel = new JLabel();
+	public JLabel statusLabel = new JLabel();
+	
+	public JButton picButton;
+	public JLabel profileInfoPanel = new JLabel("Profil links auswählen");
 
 	// Icons fürs GUI
 	private static final Icon online = loadIcon("bullet_green.png");
@@ -218,44 +235,36 @@ public class View2 extends JFrame {
 		profile_panel.setBounds(234, 26, 267, 458);
 		overview.add(profile_panel);
 		profile_panel.setLayout(null);
-
-		JPanel profilePic = new JPanel();
+		
 		profilePic.setBackground(new Color(204, 204, 204));
 		profilePic.setBounds(20, 30, 96, 96);
 		profile_panel.add(profilePic);
 
-		JPanel profileInfo = new JPanel();
 		profileInfo.setBackground(UIManager.getColor("DesktopPane.background"));
-		profileInfo.setBounds(20, 138, 224, 303);
+		profileInfo.setBounds(20, 138, 149, 292);
 		profile_panel.add(profileInfo);
 		profileInfo.setLayout(new GridLayout(0, 2, 0, 0));
 
-		JLabel vornameLabel = new JLabel("Vorname");
 		vornameLabel.setHorizontalAlignment(SwingConstants.LEFT);
 		profileInfo.add(vornameLabel);
 
-		JLabel nachnameLabel = new JLabel("Nachname");
 		profileInfo.add(nachnameLabel);
 
-		JLabel funktionLabel = new JLabel("Funktion");
 		profileInfo.add(funktionLabel);
 
 		JLabel lblNewLabel_3 = new JLabel("");
 		profileInfo.add(lblNewLabel_3);
 
-		JLabel abteilungLabel = new JLabel("Abteilung");
 		profileInfo.add(abteilungLabel);
 
 		JLabel lblNewLabel_5 = new JLabel("");
 		profileInfo.add(lblNewLabel_5);
 
-		JLabel wohnortLabel = new JLabel("Wohnort");
 		profileInfo.add(wohnortLabel);
 
 		JLabel lblNewLabel_7 = new JLabel("");
 		profileInfo.add(lblNewLabel_7);
 
-		JLabel statusLabel = new JLabel("Status");
 		profileInfo.add(statusLabel);
 
 		JLabel lblNewLabel_10 = new JLabel("");
@@ -272,6 +281,9 @@ public class View2 extends JFrame {
 
 		JLabel lblNewLabel_14 = new JLabel("");
 		profileInfo.add(lblNewLabel_14);
+		
+		JLabel label_7 = new JLabel("");
+		profileInfo.add(label_7);
 
 		JLabel lblNewLabel_15 = new JLabel("");
 		profileInfo.add(lblNewLabel_15);
@@ -284,15 +296,41 @@ public class View2 extends JFrame {
 
 		JLabel lblNewLabel_18 = new JLabel("");
 		profileInfo.add(lblNewLabel_18);
+		
+		JLabel lblNewLabel = new JLabel("");
+		profileInfo.add(lblNewLabel);
+		
+		JLabel label_4 = new JLabel("");
+		profileInfo.add(label_4);
+		
+		JLabel label_6 = new JLabel("");
+		profileInfo.add(label_6);
+		
+		JLabel label_5 = new JLabel("");
+		profileInfo.add(label_5);
+		
+		JLabel label_2 = new JLabel("");
+		profileInfo.add(label_2);
+		
+		JLabel label_3 = new JLabel("");
+		profileInfo.add(label_3);
 
 		JLabel lblNewLabel_19 = new JLabel("");
 		profileInfo.add(lblNewLabel_19);
 
 		JLabel lblNewLabel_20 = new JLabel("");
 		profileInfo.add(lblNewLabel_20);
-
-		JLabel label = new JLabel("");
-		profileInfo.add(label);
+		
+		picButton = new JButton();
+		picButton.setText("Profilbild");
+		picButton.setToolTipText("Profilbild ändern");
+		picButton.setVisible(false);
+		picButton.setBounds(185, 6, 76, 28);
+		picButton.addActionListener(new PicListener(this, this.getUcl().getYou()));
+		profile_panel.add(picButton);
+	
+		profileInfoPanel.setBounds(74, 425, 129, 27);
+		profile_panel.add(profileInfoPanel);
 
 		JPanel chat_panel = new JPanel();
 		chat_panel.setBounds(509, 26, 457, 458);
@@ -422,16 +460,17 @@ public class View2 extends JFrame {
 
 		Object rowData[][] = new String[ucl.getArbeitszeit().size()][];
 		for (int i = 0; i < ucl.getArbeitszeit().size(); i++) {
-			ArrayList<String> row = ucl.getArbeitszeit().get(i);
+			ArrayList<Date> row = ucl.getArbeitszeit().get(i);
 			rowData[i] = row.toArray(new String[row.size()]);
 		}
 		Object columnNames[] = { "Date", "Morning", "Lunch", "Evening", "Total" };
 
 		JTable time_tabel = new JTable(rowData, columnNames);
-		
+		time_tabel.setEnabled(false);
+
 		String[][] daten = new String[ucl.getArbeitszeit().size()][];
 		for (int i = 0; i < ucl.getArbeitszeit().size(); i++) {
-			ArrayList<String> row = ucl.getArbeitszeit().get(i);
+			ArrayList<Date> row = ucl.getArbeitszeit().get(i);
 			daten[i] = row.toArray(new String[row.size()]);
 		}
 		time_tabel.setModel(new DefaultTableModel(daten, new String[] { "Date", "Morning", "Lunch", "Noon", "Evening", "Total" }));
@@ -480,6 +519,7 @@ public class View2 extends JFrame {
 
 	private void usrReceiver() {
 		try {
+			String you = null;
 			teamPanel.removeAll();
 			List<Arbeiter> workers = UserClient.getServer().getWhoishere();
 			List<Arbeiter> team = this.getUcl().getTeam();
@@ -487,9 +527,16 @@ public class View2 extends JFrame {
 			for (Arbeiter a : team) {
 				for (Arbeiter mitglied : workers) {
 					if (a.getKuerzel().equals(mitglied.getKuerzel())) {
-						teamPanel.add(new JLabel(a.getName() + " " + a.getNachname(), online, JLabel.LEFT));
+						if(a.getKuerzel().equals(ucl.getYou().getKuerzel())) {
+							you = "(You)";
+						}
+						JLabel label = new JLabel(a.getName() + " " + a.getNachname() + " " + you, online, JLabel.LEFT);
+						label.addMouseListener(new ProfileListener(this, a));
+						teamPanel.add(label);
 					} else {
-						teamPanel.add(new JLabel(a.getName() + " " + a.getNachname(), offline, JLabel.LEFT));
+						JLabel label = new JLabel(a.getName() + " " + a.getNachname(), offline, JLabel.LEFT);
+						label.addMouseListener(new ProfileListener(this, a));
+						teamPanel.add(label);
 					}
 				}
 			}
@@ -538,7 +585,7 @@ public class View2 extends JFrame {
 		}
 	}
 
-	private static Icon loadIcon(String iconName) {
+	public static Icon loadIcon(String iconName) {
 		final URL resource = View2.class.getResource("/images/" + iconName);
 
 		if (resource == null) {

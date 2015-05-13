@@ -13,6 +13,7 @@ public class Arbeiter implements Serializable {
 	private String funktion;
 	private String abteilung;
 	private String kuerzel;
+	private String pic;
 
 	public String getIdArbeiter() {
 		return idarbeiter;
@@ -80,5 +81,13 @@ public class Arbeiter implements Serializable {
 
 	public void setAbteilung(String abteilung) {
 		this.abteilung = abteilung;
+	}
+
+	public String getPic() {
+		return pic;
+	}
+
+	public void setPic(String pic) {
+		this.pic = pic;
 	}
 }
