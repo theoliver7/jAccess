@@ -54,9 +54,7 @@ public class Zeit {
 				tag = new ArrayList<String>();
 			}
 			i++;
-			System.out.println();
-			System.out.println("______________________________________________________________________________________");
-			System.out.println();
+			
 		}
 		return alleTage;
 	}
