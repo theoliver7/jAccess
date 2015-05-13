@@ -164,5 +164,4 @@ public class UserClient {
 	public void setTeam(List<Arbeiter> team) {
 		this.team = team;
 	}
-
 }

@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -47,6 +48,10 @@ import jdbc.Arbeiter;
 import server.Message;
 import client.UserClient;
 
+import java.awt.GridLayout;
+
+import javax.swing.table.DefaultTableModel;
+
 public class View2 extends JFrame {
 
 	private static final long serialVersionUID = 4701804783439921041L;
@@ -61,8 +66,8 @@ public class View2 extends JFrame {
 	private JScrollPane teamScroll;
 	
 	// Icons fürs GUI
-	private static final Icon online = loadIcon("");
-	private static final Icon offline = loadIcon("");
+	private static final Icon online = loadIcon("bullet_green.png");
+	private static final Icon offline = loadIcon("bullet_red.png");
 
 	/**
 	 * Create the frame.
@@ -209,6 +214,7 @@ public class View2 extends JFrame {
 		youteam_panel.add(teamScroll);
 		
 		teamPanel = new JPanel();
+		teamPanel.setLayout(new BoxLayout(teamPanel, BoxLayout.Y_AXIS));
 		teamScroll.setViewportView(teamPanel);
 
 		JPanel profile_panel = new JPanel();
@@ -422,6 +428,16 @@ public class View2 extends JFrame {
 		Object columnNames[] = { "Date", "Morning", "Lunch", "Evening", "Total" };
 
 		JTable time_tabel = new JTable(rowData, columnNames);
+		time_tabel.setModel(new DefaultTableModel(
+			new Object[][] {
+				{null, null, null, null, null, null},
+				{null, null, null, null, null, null},
+				{null, null, null, null, null, null},
+			},
+			new String[] {
+				 "Date", "Morning", "Lunch","Noon", "Evening", "Total"
+			}
+		));
 		time_tabel.setFillsViewportHeight(true);
 		time_tabel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		time_tabel.setShowGrid(false);
@@ -467,22 +483,21 @@ public class View2 extends JFrame {
 
 	private void usrReceiver() {
 		try {
+			teamPanel.removeAll();
 			List<Arbeiter> workers = UserClient.getServer().getWhoishere();
 			List<Arbeiter> team = this.getUcl().getTeam();
-			
-			
 
-			for (Arbeiter a : workers) {
-				for (Arbeiter mitglied : team) {
+			for (Arbeiter a : team) {
+				for (Arbeiter mitglied : workers) {
 					if(a.getKuerzel().equals(mitglied.getKuerzel())) {
-						
+						teamPanel.add(new JLabel(a.getName() + " " +  a.getNachname(), online, JLabel.LEFT));
 					} else {
-						
+						teamPanel.add(new JLabel(a.getName() + " " + a.getNachname(), offline, JLabel.LEFT));
 					}
 				}
 			}
-			
-
+			teamPanel.repaint();
+			teamPanel.revalidate();
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
