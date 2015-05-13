@@ -19,7 +19,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import javax.swing.BoxLayout;
-import javax.swing.DefaultListModel;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -40,6 +39,7 @@ import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
@@ -47,7 +47,6 @@ import javax.swing.text.Document;
 import jdbc.Arbeiter;
 import server.Message;
 import client.UserClient;
-import javax.swing.table.DefaultTableModel;
 
 public class View2 extends JFrame {
 
@@ -428,6 +427,7 @@ public class View2 extends JFrame {
 		Object columnNames[] = { "Date", "Morning", "Lunch", "Evening", "Total" };
 
 		JTable time_tabel = new JTable(rowData, columnNames);
+		time_tabel.setEnabled(false);
 		
 		String[][] daten = new String[ucl.getArbeitszeit().size()][];
 		for (int i = 0; i < ucl.getArbeitszeit().size(); i++) {
