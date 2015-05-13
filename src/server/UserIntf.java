@@ -2,6 +2,7 @@ package server;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.util.Date;
 import java.util.List;
 
 import jdbc.Arbeiter;
@@ -103,5 +104,5 @@ public interface UserIntf extends Remote {
 	 */
 	public boolean addUser(Arbeiter a) throws RemoteException;
 
-	public List<String> getWorktimes(String arbeiterid) throws RemoteException;
+	public List<Date> getWorktimes(String arbeiterid) throws RemoteException;
 }

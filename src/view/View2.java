@@ -14,6 +14,7 @@ import java.awt.event.KeyListener;
 import java.net.URL;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -421,7 +422,7 @@ public class View2 extends JFrame {
 
 		Object rowData[][] = new String[ucl.getArbeitszeit().size()][];
 		for (int i = 0; i < ucl.getArbeitszeit().size(); i++) {
-			ArrayList<String> row = ucl.getArbeitszeit().get(i);
+			ArrayList<Date> row = ucl.getArbeitszeit().get(i);
 			rowData[i] = row.toArray(new String[row.size()]);
 		}
 		Object columnNames[] = { "Date", "Morning", "Lunch", "Evening", "Total" };
@@ -431,7 +432,7 @@ public class View2 extends JFrame {
 		
 		String[][] daten = new String[ucl.getArbeitszeit().size()][];
 		for (int i = 0; i < ucl.getArbeitszeit().size(); i++) {
-			ArrayList<String> row = ucl.getArbeitszeit().get(i);
+			ArrayList<Date> row = ucl.getArbeitszeit().get(i);
 			daten[i] = row.toArray(new String[row.size()]);
 		}
 		time_tabel.setModel(new DefaultTableModel(daten, new String[] { "Date", "Morning", "Lunch", "Noon", "Evening", "Total" }));
