@@ -47,9 +47,6 @@ import javax.swing.text.Document;
 import jdbc.Arbeiter;
 import server.Message;
 import client.UserClient;
-
-import java.awt.GridLayout;
-
 import javax.swing.table.DefaultTableModel;
 
 public class View2 extends JFrame {
@@ -64,7 +61,7 @@ public class View2 extends JFrame {
 	private JPanel youteam_panel;
 	private JPanel teamPanel;
 	private JScrollPane teamScroll;
-	
+
 	// Icons fürs GUI
 	private static final Icon online = loadIcon("bullet_green.png");
 	private static final Icon offline = loadIcon("bullet_red.png");
@@ -208,11 +205,11 @@ public class View2 extends JFrame {
 		youteam_panel.setBounds(7, 26, 215, 458);
 		overview.add(youteam_panel);
 		youteam_panel.setLayout(null);
-		
+
 		teamScroll = new JScrollPane();
 		teamScroll.setBounds(6, 6, 203, 446);
 		youteam_panel.add(teamScroll);
-		
+
 		teamPanel = new JPanel();
 		teamPanel.setLayout(new BoxLayout(teamPanel, BoxLayout.Y_AXIS));
 		teamScroll.setViewportView(teamPanel);
@@ -423,21 +420,21 @@ public class View2 extends JFrame {
 		time_panel.add(table_panel);
 		table_panel.setLayout(null);
 
-		Object rowData[][] = { { "Row1-Column1", "Row1-Column2", "Row1-Column3", "Row1-Column1", "Row1-Column2", "Row1-Column3" },
-				{ "Row1-Column1", "Row1-Column2", "Row1-Column3", "Row2-Column1", "Row2-Column2", "Row2-Column3" } };
+		Object rowData[][] = new String[ucl.getArbeitszeit().size()][];
+		for (int i = 0; i < ucl.getArbeitszeit().size(); i++) {
+			ArrayList<String> row = ucl.getArbeitszeit().get(i);
+			rowData[i] = row.toArray(new String[row.size()]);
+		}
 		Object columnNames[] = { "Date", "Morning", "Lunch", "Evening", "Total" };
 
 		JTable time_tabel = new JTable(rowData, columnNames);
-		time_tabel.setModel(new DefaultTableModel(
-			new Object[][] {
-				{null, null, null, null, null, null},
-				{null, null, null, null, null, null},
-				{null, null, null, null, null, null},
-			},
-			new String[] {
-				 "Date", "Morning", "Lunch","Noon", "Evening", "Total"
-			}
-		));
+		
+		String[][] daten = new String[ucl.getArbeitszeit().size()][];
+		for (int i = 0; i < ucl.getArbeitszeit().size(); i++) {
+			ArrayList<String> row = ucl.getArbeitszeit().get(i);
+			daten[i] = row.toArray(new String[row.size()]);
+		}
+		time_tabel.setModel(new DefaultTableModel(daten, new String[] { "Date", "Morning", "Lunch", "Noon", "Evening", "Total" }));
 		time_tabel.setFillsViewportHeight(true);
 		time_tabel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		time_tabel.setShowGrid(false);
@@ -489,8 +486,8 @@ public class View2 extends JFrame {
 
 			for (Arbeiter a : team) {
 				for (Arbeiter mitglied : workers) {
-					if(a.getKuerzel().equals(mitglied.getKuerzel())) {
-						teamPanel.add(new JLabel(a.getName() + " " +  a.getNachname(), online, JLabel.LEFT));
+					if (a.getKuerzel().equals(mitglied.getKuerzel())) {
+						teamPanel.add(new JLabel(a.getName() + " " + a.getNachname(), online, JLabel.LEFT));
 					} else {
 						teamPanel.add(new JLabel(a.getName() + " " + a.getNachname(), offline, JLabel.LEFT));
 					}
@@ -540,13 +537,12 @@ public class View2 extends JFrame {
 			exc.printStackTrace();
 		}
 	}
-	
+
 	private static Icon loadIcon(String iconName) {
 		final URL resource = View2.class.getResource("/images/" + iconName);
-		
+
 		if (resource == null) {
-			System.err.println("Error in " + View2.class.getName()
-					+ ": Icon /images/" + iconName + " could not be loaded.");
+			System.err.println("Error in " + View2.class.getName() + ": Icon /images/" + iconName + " could not be loaded.");
 			return new ImageIcon();
 		}
 		return new ImageIcon(resource);
