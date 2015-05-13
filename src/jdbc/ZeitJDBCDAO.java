@@ -36,9 +36,6 @@ public class ZeitJDBCDAO extends Datenbank implements ZeitDAO {
 
 		while (rs.next()) {
 			z = new Zeit();
-			z.setIdZeit(rs.getString("idZeit"));
-			// z.setTimestamp(rs.getString("timestamp"));
-//			z.setArbeiterID(rs.getString("ArbeiterID"));
 			daten.add(rs.getString("timestamp"));
 		}
 		return daten;

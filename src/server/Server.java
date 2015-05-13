@@ -105,6 +105,18 @@ public class Server extends UnicastRemoteObject implements CardIntf, UserIntf {
 		}
 		return team;
 	}
+	
+	@Override
+	public List<String> getWorktimes(String arbeiterid) throws RemoteException {
+		List<String> zeiten = null;
+		try {
+			zeiten = this.getZeitDb().arbeitszeitauslesen(arbeiterid);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return zeiten;
+	}
 
 	@Override
 	public void setUser(Arbeiter user) throws RemoteException {

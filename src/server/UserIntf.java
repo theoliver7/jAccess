@@ -91,5 +91,7 @@ public interface UserIntf extends Remote {
 	 * @throws RemoteException
 	 */
 	public boolean addUser(Arbeiter a) throws RemoteException;
+	
+	public List<String> getWorktimes(String arbeiterid) throws RemoteException;
 
 }
