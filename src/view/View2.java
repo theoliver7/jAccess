@@ -14,7 +14,6 @@ import java.awt.event.KeyListener;
 import java.net.URL;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -35,17 +34,23 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
-import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.EmptyBorder;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.JTableHeader;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 
 import jdbc.Arbeiter;
+
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.data.xy.DefaultXYDataset;
+import org.jfree.data.xy.XYDataset;
+
 import server.Message;
 import client.UserClient;
 
@@ -77,8 +82,10 @@ public class View2 extends JFrame {
 		setBounds(100, 100, 992, 651);
 
 		try {
-			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
-		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
+			UIManager
+					.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+		} catch (ClassNotFoundException | InstantiationException
+				| IllegalAccessException | UnsupportedLookAndFeelException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -309,7 +316,9 @@ public class View2 extends JFrame {
 					e.consume();
 					try {
 						if (!message.getText().equals("")) {
-							getUcl().send(new Message("[" + getUcl().getKuerzel() + "] ", message.getText() + "\n"));
+							getUcl().send(
+									new Message("[" + getUcl().getKuerzel()
+											+ "] ", message.getText() + "\n"));
 							message.setText("");
 						}
 					} catch (RemoteException e1) {
@@ -332,7 +341,9 @@ public class View2 extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					if (!message.getText().equals("")) {
-						getUcl().send(new Message("[" + getUcl().getKuerzel() + "] ", message.getText() + "\n"));
+						getUcl().send(
+								new Message("[" + getUcl().getKuerzel() + "] ",
+										message.getText() + "\n"));
 						message.setText("");
 					}
 				} catch (RemoteException e1) {
@@ -349,14 +360,18 @@ public class View2 extends JFrame {
 
 		JScrollPane scrollPane = new JScrollPane(chattext);
 		scrollPane.setBounds(10, 6, 441, 407);
-		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-		scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		scrollPane.getVerticalScrollBar().addAdjustmentListener(new AdjustmentListener() {
-			@Override
-			public void adjustmentValueChanged(AdjustmentEvent e) {
-				e.getAdjustable().setValue(e.getAdjustable().getMaximum());
-			}
-		});
+		scrollPane
+				.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+		scrollPane
+				.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		scrollPane.getVerticalScrollBar().addAdjustmentListener(
+				new AdjustmentListener() {
+					@Override
+					public void adjustmentValueChanged(AdjustmentEvent e) {
+						e.getAdjustable().setValue(
+								e.getAdjustable().getMaximum());
+					}
+				});
 		chat_panel.add(scrollPane);
 
 		JPanel time_panel = new JPanel();
@@ -420,35 +435,37 @@ public class View2 extends JFrame {
 		time_panel.add(table_panel);
 		table_panel.setLayout(null);
 
-		Object rowData[][] = new String[ucl.getArbeitszeit().size()][];
-		for (int i = 0; i < ucl.getArbeitszeit().size(); i++) {
-			ArrayList<Date> row = ucl.getArbeitszeit().get(i);
-			rowData[i] = row.toArray(new String[row.size()]);
-		}
-		Object columnNames[] = { "Date", "Morning", "Lunch", "Evening", "Total" };
-
-		JTable time_tabel = new JTable(rowData, columnNames);
-		time_tabel.setEnabled(false);
-		
-		String[][] daten = new String[ucl.getArbeitszeit().size()][];
-		for (int i = 0; i < ucl.getArbeitszeit().size(); i++) {
-			ArrayList<Date> row = ucl.getArbeitszeit().get(i);
-			daten[i] = row.toArray(new String[row.size()]);
-		}
-		time_tabel.setModel(new DefaultTableModel(daten, new String[] { "Date", "Morning", "Lunch", "Noon", "Evening", "Total" }));
-		time_tabel.setFillsViewportHeight(true);
-		time_tabel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		time_tabel.setShowGrid(false);
-		time_tabel.setShowVerticalLines(true);
-		time_tabel.setShowHorizontalLines(true);
-		time_tabel.setBackground(Color.WHITE);
-		time_tabel.setBounds(6, 6, 952, 169);
-
-		JTableHeader header = time_tabel.getTableHeader();
-		table_panel.setLayout(new BorderLayout());
-		table_panel.add(header, BorderLayout.NORTH);
-		table_panel.add(time_tabel, BorderLayout.CENTER);
-		table_panel.add(time_tabel);
+		// Object rowData[][] = new String[ucl.getArbeitszeit().size()][];
+		// for (int i = 0; i < ucl.getArbeitszeit().size(); i++) {
+		// ArrayList<String> row = ucl.getArbeitszeit().get(i);
+		// rowData[i] = row.toArray(new String[row.size()]);
+		// }
+		// Object columnNames[] = { "Date", "Morning", "Lunch", "Evening",
+		// "Total" };
+		//
+		// JTable time_tabel = new JTable(rowData, columnNames);
+		// time_tabel.setEnabled(false);
+		//
+		// String[][] daten = new String[ucl.getArbeitszeit().size()][];
+		// for (int i = 0; i < ucl.getArbeitszeit().size(); i++) {
+		// ArrayList<String> row = ucl.getArbeitszeit().get(i);
+		// daten[i] = row.toArray(new String[row.size()]);
+		// }
+		// time_tabel.setModel(new DefaultTableModel(daten, new String[] {
+		// "Date", "Morning", "Lunch", "Noon", "Evening", "Total" }));
+		// time_tabel.setFillsViewportHeight(true);
+		// time_tabel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		// time_tabel.setShowGrid(false);
+		// time_tabel.setShowVerticalLines(true);
+		// time_tabel.setShowHorizontalLines(true);
+		// time_tabel.setBackground(Color.WHITE);
+		// time_tabel.setBounds(6, 6, 952, 169);
+		//
+		// JTableHeader header = time_tabel.getTableHeader();
+		// table_panel.setLayout(new BorderLayout());
+		// table_panel.add(header, BorderLayout.NORTH);
+		// table_panel.add(time_tabel, BorderLayout.CENTER);
+		// table_panel.add(time_tabel);
 
 		JPanel chart_panel = new JPanel();
 		chart_panel.setBounds(7, 255, 964, 228);
@@ -461,7 +478,8 @@ public class View2 extends JFrame {
 		JSeparator separator = new JSeparator();
 		online_panel.add(separator);
 
-		JLabel lblYouAreOnline = new JLabel("You [" + getUcl().getYou().getName() + "] are online");
+		JLabel lblYouAreOnline = new JLabel("You ["
+				+ getUcl().getYou().getName() + "] are online");
 		online_panel.add(lblYouAreOnline);
 
 		class Prozess extends TimerTask {
@@ -488,9 +506,11 @@ public class View2 extends JFrame {
 			for (Arbeiter a : team) {
 				for (Arbeiter mitglied : workers) {
 					if (a.getKuerzel().equals(mitglied.getKuerzel())) {
-						teamPanel.add(new JLabel(a.getName() + " " + a.getNachname(), online, JLabel.LEFT));
+						teamPanel.add(new JLabel(a.getName() + " "
+								+ a.getNachname(), online, JLabel.LEFT));
 					} else {
-						teamPanel.add(new JLabel(a.getName() + " " + a.getNachname(), offline, JLabel.LEFT));
+						teamPanel.add(new JLabel(a.getName() + " "
+								+ a.getNachname(), offline, JLabel.LEFT));
 					}
 				}
 			}
@@ -543,7 +563,8 @@ public class View2 extends JFrame {
 		final URL resource = View2.class.getResource("/images/" + iconName);
 
 		if (resource == null) {
-			System.err.println("Error in " + View2.class.getName() + ": Icon /images/" + iconName + " could not be loaded.");
+			System.err.println("Error in " + View2.class.getName()
+					+ ": Icon /images/" + iconName + " could not be loaded.");
 			return new ImageIcon();
 		}
 		return new ImageIcon(resource);
@@ -564,4 +585,5 @@ public class View2 extends JFrame {
 	public void setUcl(UserClient ucl) {
 		this.ucl = ucl;
 	}
+
 }

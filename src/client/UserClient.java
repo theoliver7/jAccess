@@ -6,6 +6,8 @@ import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -34,7 +36,7 @@ public class UserClient {
 	private static UserClient client;
 	private Arbeiter you;
 	private List<Arbeiter> team;
-	private ArrayList<ArrayList<Date>> arbeitszeit;
+	private ArrayList<ArrayList<String>> arbeitszeit;
 	// Für den Chat
 	private Message msg;
 
@@ -80,13 +82,7 @@ public class UserClient {
 			ucl.setYou(getServer().getYourArbeiter(ucl.getKuerzel()));
 			ucl.setTeam(getServer().getYourTeam(ucl.getYou().getAbteilung(), ucl.getKuerzel()));
 			Zeit z = new Zeit();
-//			try {
-//				ucl.setArbeitszeit(z.totalberechnen(z.zeitenorganisieren(getServer().getWorktimes(ucl.getYou().getIdarbeiter()))));
-//			} catch (SQLException | ParseException e1) {
-//				// TODO Auto-generated catch block
-//				e1.printStackTrace();
-//			}
-
+		//		ucl.setArbeitszeit(z.totalberechnen(z.zeitenorganisieren(getServer().getWorktimes(ucl.getYou().getIdarbeiter()))));
 			for (Arbeiter a : getServer().getYourTeam(ucl.getYou().getAbteilung(), ucl.getKuerzel())) {
 				if (a.getKuerzel().equals(ucl.getKuerzel())) {
 					UserClient.getServer().addUser(a);
@@ -175,11 +171,11 @@ public class UserClient {
 		this.team = team;
 	}
 
-	public ArrayList<ArrayList<Date>> getArbeitszeit() {
+	public ArrayList<ArrayList<String>> getArbeitszeit() {
 		return arbeitszeit;
 	}
 
-	public void setArbeitszeit(ArrayList<ArrayList<Date>> arrayList) {
+	public void setArbeitszeit(ArrayList<ArrayList<String>> arrayList) {
 		this.arbeitszeit = arrayList;
 	}
 
