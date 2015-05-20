@@ -1,31 +1,5 @@
--- phpMyAdmin SQL Dump
--- version 4.2.11
--- http://www.phpmyadmin.net
---
--- Host: 127.0.0.1:3307
--- Erstellungszeit: 13. Mai 2015 um 15:45
--- Server Version: 5.6.21
--- PHP-Version: 5.6.3
-
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET time_zone = "+00:00";
-
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
-
---
--- Datenbank: `jaccess`
---
-
--- --------------------------------------------------------
-
---
--- Tabellenstruktur für Tabelle `abteilung`
---
-
+﻿
+USE jAccess;
 CREATE TABLE IF NOT EXISTS `abteilung` (
 `idAbteilung` int(11) NOT NULL,
   `Abteilungsname` varchar(45) COLLATE utf8_bin NOT NULL,
@@ -38,8 +12,8 @@ CREATE TABLE IF NOT EXISTS `abteilung` (
 --
 
 INSERT INTO `abteilung` (`idAbteilung`, `Abteilungsname`, `Gebaeude`, `Leiter`) VALUES
-(1, 'Informatik', 'ZH1', 'Peter'),
-(2, 'KV', 'ZH4', 'Peter Meier');
+(10, 'Informatik', 'ZH1', 'Peter'),
+(20, 'KV', 'ZH4', 'Peter Meier');
 
 -- --------------------------------------------------------
 
@@ -159,6 +133,4 @@ MODIFY `idAbteilung` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
 --
 ALTER TABLE `zeit`
 MODIFY `idZeit` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=63;
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+s
