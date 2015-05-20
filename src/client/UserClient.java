@@ -2,23 +2,28 @@ package client;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.FileReader;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Properties;
 
 import javax.swing.JOptionPane;
 
 import jdbc.Arbeiter;
 import jdbc.Zeit;
+import listener.ExitListener;
 import server.Message;
 import server.UserIntf;
-import view.View2;
+import view.View;
 
 /**
  * Client für den Server um dem User die Entsprechenden Zeiten und die Anderen
@@ -41,7 +46,7 @@ public class UserClient {
 	private Message msg;
 
 	/**
-	 * Private Konstruktor für Singleton
+	 * Privater Konstruktor für Singleton
 	 */
 	private UserClient() {
 	}
@@ -66,7 +71,15 @@ public class UserClient {
 	public static UserIntf getServer() {
 		UserIntf serverobj = null;
 		try {
-			serverobj = (UserIntf) Naming.lookup("//localhost/Server");
+			String server = "";
+			try (FileReader reader = new FileReader("config.properties")) {
+				Properties properties = new Properties();
+				properties.load(reader);
+				server = properties.getProperty("server");
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			serverobj = (UserIntf) Naming.lookup(server);
 		} catch (MalformedURLException | RemoteException | NotBoundException e) {
 			JOptionPane.showMessageDialog(null, "Der Server hat zurzeit Probleme! \nBitte wenden " + "Sie sich an den IT-Support.", "Fehler", JOptionPane.ERROR_MESSAGE);
 			e.printStackTrace();
@@ -81,26 +94,18 @@ public class UserClient {
 		try {
 			ucl.setYou(getServer().getYourArbeiter(ucl.getKuerzel()));
 			ucl.setTeam(getServer().getYourTeam(ucl.getYou().getAbteilung(), ucl.getKuerzel()));
+
 			Zeit z = new Zeit();
-			
-//			try {
-//				if(getServer().getWorktimes(ucl.getYou().getIdarbeiter()) == null) {
-//				  ucl.setArbeitszeit(z.totalberechnen(z.zeitenorganisieren(getServer().getWorktimes(ucl.getYou().getIdarbeiter()))));
-//				} else {
-//					ucl.setArbeitszeit(new ArrayList<ArrayList<String>>());
-//				}
-//			} catch (SQLException | ParseException e1) {
-//				e1.printStackTrace();
-//			}
-			
-//			try {
-//				ucl.setArbeitszeit(z.totalberechnen(z.zeitenorganisieren(getServer().getWorktimes(ucl.getYou().getIdarbeiter()))));
-//			} catch (SQLException | ParseException e1) {
-//				// TODO Auto-generated catch block
-//				e1.printStackTrace();
-//			}
-			
-		//		ucl.setArbeitszeit(z.totalberechnen(z.zeitenorganisieren(getServer().getWorktimes(ucl.getYou().getIdarbeiter()))));
+			try {
+				if (getServer().getWorktimes(ucl.getYou().getIdarbeiter()) == null) {
+					ucl.setArbeitszeit(z.totalberechnen(z.zeitenorganisieren(getServer().getWorktimes(ucl.getYou().getIdarbeiter()))));
+				} else {
+					ucl.setArbeitszeit(new ArrayList<ArrayList<String>>());
+				}
+			} catch (SQLException | ParseException e1) {
+				e1.printStackTrace();
+			}
+
 			for (Arbeiter a : getServer().getYourTeam(ucl.getYou().getAbteilung(), ucl.getKuerzel())) {
 				if (a.getKuerzel().equals(ucl.getKuerzel())) {
 					UserClient.getServer().addUser(a);
@@ -114,7 +119,7 @@ public class UserClient {
 			e.printStackTrace();
 		}
 
-		View2 frame = new View2(ucl);
+		View frame = new View(ucl);
 		frame.setVisible(true);
 
 		frame.append("Erfolgreich mit dem Chat Verbunden!\n");
@@ -130,16 +135,17 @@ public class UserClient {
 		}
 		frame.repaint();
 
-		frame.addWindowListener(new WindowAdapter() {
-			@Override
-			public void windowClosing(WindowEvent e) {
-				try {
-					getServer().removeUser(ucl.getKuerzel());
-				} catch (RemoteException e1) {
-					e1.printStackTrace();
-				}
-			}
-		});
+		frame.addWindowListener(new ExitListener(frame));
+		// frame.addWindowListener(new WindowAdapter() {
+		// @Override
+		// public void windowClosing(WindowEvent e) {
+		// try {
+		// getServer().removeUser(ucl.getKuerzel());
+		// } catch (RemoteException e1) {
+		// e1.printStackTrace();
+		// }
+		// }
+		// });
 	}
 
 	/**

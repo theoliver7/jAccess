@@ -18,7 +18,6 @@ public class ArbeiterJDBCDAO extends Datenbank implements ArbeiterDAO {
 		ps = con.prepareStatement(sql);
 		rs = ps.executeQuery();
 		while (rs.next()) {
-			a = new Arbeiter();
 			a.setIdarbeiter(rs.getString("idArbeiter"));
 			a.setName(rs.getString("Name"));
 			a.setNachname(rs.getString("Nachname"));
@@ -59,6 +58,6 @@ public class ArbeiterJDBCDAO extends Datenbank implements ArbeiterDAO {
 		String sql = "UPDATE arbeiter SET Pic = '" + pic + "' WHERE kuerzel = '" + kuerzel + "';";
 		con = getCon();
 		ps = con.prepareStatement(sql);
-		ps.executeQuery();
+		ps.executeUpdate();
 	}
 }

@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -27,8 +28,8 @@ public class ZeitJDBCDAO extends Datenbank implements ZeitDAO {
 	 */
 	
 	@Override
-	public List<Date> arbeitszeitauslesen(String uid) throws SQLException {
-		List<Date> daten = new ArrayList<Date>();
+	public List<Timestamp> arbeitszeitauslesen(String uid) throws SQLException {
+		List<Timestamp> daten = new ArrayList<Timestamp>();
 		String sql = "SELECT idZeit, timestamp, ArbeiterID FROM zeit WHERE ArbeiterID =(?)ORDER BY timestamp ASC";
 		con = getCon();
 		ps = con.prepareStatement(sql);
@@ -36,7 +37,6 @@ public class ZeitJDBCDAO extends Datenbank implements ZeitDAO {
 		rs = ps.executeQuery();
 
 		while (rs.next()) {
-			z = new Zeit();
 			daten.add(rs.getTimestamp("timestamp"));
 		}
 		return daten;
@@ -48,12 +48,11 @@ public class ZeitJDBCDAO extends Datenbank implements ZeitDAO {
 	 * @throws SQLException 
 	 */
 	@Override
-	public Zeit zeiteintragen(String uid) throws SQLException {
+	public void zeiteintragen(String uid) throws SQLException {
 		String sql = "INSERT INTO `zeit`(`ArbeiterID`) VALUES (?)";
 		con = getCon();
 		ps = con.prepareStatement(sql);
 		ps.setString(1, uid);
 		ps.executeUpdate();
-		return null;
 	}
 }

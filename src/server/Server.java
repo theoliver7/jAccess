@@ -1,14 +1,18 @@
 package server;
 
+import java.io.FileReader;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.server.UnicastRemoteObject;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Properties;
 
 import jdbc.Arbeiter;
 import jdbc.ArbeiterDAO;
@@ -66,13 +70,20 @@ public class Server extends UnicastRemoteObject implements CardIntf, UserIntf {
 		}
 		Server server = new Server();
 		try {
-			Naming.rebind("//localhost/Server", server);
+			String servername = "";
+			try (FileReader reader = new FileReader("config.properties")) {
+				Properties properties = new Properties();
+				properties.load(reader);
+				servername = properties.getProperty("server");
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			Naming.rebind(servername, server);
 			System.out.println("Server ist bereit");
 		} catch (MalformedURLException e) {
 			System.err.println("Fehler mit Server");
 			e.printStackTrace();
 		}
-
 	}
 
 	// Methoden für Reader
@@ -85,11 +96,10 @@ public class Server extends UnicastRemoteObject implements CardIntf, UserIntf {
 	// Methoden für Client
 	@Override
 	public Arbeiter getYourArbeiter(String kuerzel) throws RemoteException {
-		Arbeiter you = null;
+		Arbeiter you = new Arbeiter();
 		try {
 			you = this.getArbeiterDb().findPersonBykuerzel(kuerzel);
 		} catch (SQLException e) {
-			// TODO: Meldung wenn DB nicht funktioniert.
 			e.printStackTrace();
 		}
 		return you;
@@ -108,20 +118,14 @@ public class Server extends UnicastRemoteObject implements CardIntf, UserIntf {
 	}
 
 	@Override
-	public List<Date> getWorktimes(String arbeiterid) throws RemoteException {
-		List<Date> zeiten = null;
+	public List<Timestamp> getWorktimes(String arbeiterid) throws RemoteException {
+		List<Timestamp> zeiten = null;
 		try {
 			zeiten = this.getZeitDb().arbeitszeitauslesen(arbeiterid);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return zeiten;
-	}
-
-	@Override
-	public void setUser(Arbeiter user) throws RemoteException {
-		// TODO: User auf die 'whoishere' liste setzen
 	}
 
 	@Override
@@ -139,6 +143,16 @@ public class Server extends UnicastRemoteObject implements CardIntf, UserIntf {
 	public boolean addUser(Arbeiter a) throws RemoteException {
 		this.getWhoishere().add(a);
 		return true;
+	}
+
+	@Override
+	public void changePic(String kuerzel, String pic) throws RemoteException {
+		try {
+			this.getArbeiterDb().updatePic(kuerzel, pic);
+		} catch (SQLException e) {
+			System.err.println();
+			e.printStackTrace();
+		}
 	}
 
 	// Methoden für Chat

@@ -7,7 +7,6 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Properties;
-
 import java.sql.PreparedStatement;
 
 public class Datenbank {
@@ -32,8 +31,8 @@ public class Datenbank {
 		}
 
 		try {
-			Class.forName("com.mysql.jdbc.Driver");
-		} catch (ClassNotFoundException e) {
+			Class.forName("com.mysql.jdbc.Driver").newInstance();
+		} catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
 			System.out.println("Treiber Problem");
 			e.printStackTrace();
 
@@ -48,7 +47,7 @@ public class Datenbank {
 		}
 
 		if (con != null) {
-	
+
 		} else {
 			System.out.println("Failed to make connection!");
 		}
@@ -56,7 +55,7 @@ public class Datenbank {
 		return con;
 	}
 
-	public void setCon(Connection con){
+	public void setCon(Connection con) {
 		this.con = con;
 	}
 

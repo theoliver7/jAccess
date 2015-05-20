@@ -2,6 +2,7 @@ package server;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
@@ -34,14 +35,6 @@ public interface UserIntf extends Remote {
 	 * @throws RemoteException
 	 */
 	public List<Arbeiter> getYourTeam(String teamname, String kuerzel) throws RemoteException;
-
-	/**
-	 * Setzt neuen User auf die Anwesenheitsliste des Servers.
-	 * 
-	 * @param user
-	 * @throws RemoteException
-	 */
-	public void setUser(Arbeiter user) throws RemoteException;
 
 	/**
 	 * Gibt die Messages den Clients weiter
@@ -104,5 +97,13 @@ public interface UserIntf extends Remote {
 	 */
 	public boolean addUser(Arbeiter a) throws RemoteException;
 
-	public List<Date> getWorktimes(String arbeiterid) throws RemoteException;
+	public List<Timestamp> getWorktimes(String arbeiterid) throws RemoteException;
+	
+	/**
+	 * Methode um das Profilbild des Users zu ändern.
+	 * @param kuerzel
+	 * @param pic
+	 * @throws RemoteException
+	 */
+	public void changePic(String kuerzel, String pic) throws RemoteException;
 }

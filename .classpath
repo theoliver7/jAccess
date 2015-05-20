@@ -2,9 +2,9 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="C:/Users/olive_000/Downloads/mysql-connector-java-5.1.18-bin.jar"/>
-	<classpathentry kind="lib" path="C:/Users/olive_000/Downloads/commons-lang3-3.4.jar"/>
-	<classpathentry kind="lib" path="C:/Users/olive_000/Downloads/jfreechart-1.0.19/lib/jcommon-1.0.23.jar"/>
-	<classpathentry kind="lib" path="C:/Users/olive_000/Downloads/jfreechart-1.0.19/lib/jfreechart-1.0.19.jar"/>
+	<classpathentry kind="lib" path="D:/extjars/commons-lang3-3.3.1.jar"/>
+	<classpathentry kind="lib" path="D:/extjars/commons-lang3-3.3.1-javadoc.jar"/>
+	<classpathentry kind="lib" path="D:/extjars/joda-time-2.3-javadoc.jar"/>
+	<classpathentry kind="lib" path="D:/extjars/mysql-connector-java-5.1.30.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
