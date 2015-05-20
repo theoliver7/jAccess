@@ -7,6 +7,7 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.server.UnicastRemoteObject;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import jdbc.Arbeiter;
@@ -107,8 +108,8 @@ public class Server extends UnicastRemoteObject implements CardIntf, UserIntf {
 	}
 
 	@Override
-	public List<String> getWorktimes(String arbeiterid) throws RemoteException {
-		List<String> zeiten = null;
+	public List<Date> getWorktimes(String arbeiterid) throws RemoteException {
+		List<Date> zeiten = null;
 		try {
 			zeiten = this.getZeitDb().arbeitszeitauslesen(arbeiterid);
 		} catch (SQLException e) {

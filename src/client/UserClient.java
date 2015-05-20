@@ -6,8 +6,6 @@ import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
-import java.sql.SQLException;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -82,6 +80,7 @@ public class UserClient {
 			ucl.setYou(getServer().getYourArbeiter(ucl.getKuerzel()));
 			ucl.setTeam(getServer().getYourTeam(ucl.getYou().getAbteilung(), ucl.getKuerzel()));
 			Zeit z = new Zeit();
+			
 			try {
 				if(getServer().getWorktimes(ucl.getYou().getIdarbeiter()) == null) {
 				  ucl.setArbeitszeit(z.totalberechnen(z.zeitenorganisieren(getServer().getWorktimes(ucl.getYou().getIdarbeiter()))));
@@ -91,7 +90,14 @@ public class UserClient {
 			} catch (SQLException | ParseException e1) {
 				e1.printStackTrace();
 			}
-
+			
+//			try {
+//				ucl.setArbeitszeit(z.totalberechnen(z.zeitenorganisieren(getServer().getWorktimes(ucl.getYou().getIdarbeiter()))));
+//			} catch (SQLException | ParseException e1) {
+//				// TODO Auto-generated catch block
+//				e1.printStackTrace();
+//			}
+			
 			for (Arbeiter a : getServer().getYourTeam(ucl.getYou().getAbteilung(), ucl.getKuerzel())) {
 				if (a.getKuerzel().equals(ucl.getKuerzel())) {
 					UserClient.getServer().addUser(a);

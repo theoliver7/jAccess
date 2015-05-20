@@ -51,7 +51,6 @@ import jdbc.Arbeiter;
 import server.Message;
 import client.UserClient;
 
-
 import listener.ProfileListener;
 
 public class View2 extends JFrame {
@@ -467,7 +466,6 @@ public class View2 extends JFrame {
 
 		JTable time_tabel = new JTable(rowData, columnNames);
 		time_tabel.setEnabled(false);
-
 		String[][] daten = new String[ucl.getArbeitszeit().size()][];
 		for (int i = 0; i < ucl.getArbeitszeit().size(); i++) {
 			ArrayList<Date> row = ucl.getArbeitszeit().get(i);
