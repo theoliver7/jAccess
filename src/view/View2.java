@@ -50,7 +50,7 @@ import javax.swing.text.Document;
 import jdbc.Arbeiter;
 import server.Message;
 import client.UserClient;
-
+import listener.PicListener;
 import listener.ProfileListener;
 
 public class View2 extends JFrame {

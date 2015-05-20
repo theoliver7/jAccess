@@ -6,6 +6,7 @@ import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -81,15 +82,15 @@ public class UserClient {
 			ucl.setTeam(getServer().getYourTeam(ucl.getYou().getAbteilung(), ucl.getKuerzel()));
 			Zeit z = new Zeit();
 			
-			try {
-				if(getServer().getWorktimes(ucl.getYou().getIdarbeiter()) == null) {
-				  ucl.setArbeitszeit(z.totalberechnen(z.zeitenorganisieren(getServer().getWorktimes(ucl.getYou().getIdarbeiter()))));
-				} else {
-					ucl.setArbeitszeit(new ArrayList<ArrayList<String>>());
-				}
-			} catch (SQLException | ParseException e1) {
-				e1.printStackTrace();
-			}
+//			try {
+//				if(getServer().getWorktimes(ucl.getYou().getIdarbeiter()) == null) {
+//				  ucl.setArbeitszeit(z.totalberechnen(z.zeitenorganisieren(getServer().getWorktimes(ucl.getYou().getIdarbeiter()))));
+//				} else {
+//					ucl.setArbeitszeit(new ArrayList<ArrayList<String>>());
+//				}
+//			} catch (SQLException | ParseException e1) {
+//				e1.printStackTrace();
+//			}
 			
 //			try {
 //				ucl.setArbeitszeit(z.totalberechnen(z.zeitenorganisieren(getServer().getWorktimes(ucl.getYou().getIdarbeiter()))));
@@ -106,7 +107,8 @@ public class UserClient {
 
 			System.out.println(getServer().getWhoishere());
 			System.out.println(ucl.getKuerzel());
-		} catch (RemoteException e) {
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Keine Verbindung zur Datenbank! \nBitte wenden " + "Sie sich an den IT-Support.", "Fehler", JOptionPane.ERROR_MESSAGE);
 			e.printStackTrace();
 		}
 
@@ -121,7 +123,7 @@ public class UserClient {
 		try {
 			UserClient.getServer().send(msg);
 		} catch (RemoteException e1) {
-			// TODO eigene exception wenn nachricht nicht senden kann
+			JOptionPane.showMessageDialog(null, "Die Nachricht konnte nicht gesendet werden! \nBitte wenden " + "Sie sich an den IT-Support.", "Fehler", JOptionPane.ERROR_MESSAGE);
 			e1.printStackTrace();
 		}
 		frame.repaint();

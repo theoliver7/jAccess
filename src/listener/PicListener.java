@@ -1,8 +1,9 @@
-package view;
+package listener;
 
 import java.awt.BorderLayout;
 import java.awt.Dialog;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -13,6 +14,7 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import view.View2;
 import jdbc.Arbeiter;
 
 public class PicListener implements ActionListener {
@@ -43,7 +45,9 @@ public class PicListener implements ActionListener {
 			JButton button = new JButton();
 			ImageIcon icon = (ImageIcon) this.getView().loadIcon(pics[i]);
 			Image img = icon.getImage();
-			button.setIcon();
+			Image newimg = img.getScaledInstance(100, 100, java.awt.Image.SCALE_SMOOTH);
+			ImageIcon newicon = new ImageIcon(newimg);
+			button.setIcon(newicon);
 			button.addActionListener(new ActionListener() {
 
 				@Override
