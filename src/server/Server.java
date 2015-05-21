@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+import validator.Validator;
+import validator.ValidatorImpl;
 import jdbc.Arbeiter;
 import jdbc.ArbeiterDAO;
 import jdbc.ArbeiterJDBCDAO;
@@ -85,6 +87,10 @@ public class Server extends UnicastRemoteObject implements CardIntf, UserIntf {
 				e.printStackTrace();
 			}
 			System.out.println(servername + " || " + server.toString());
+			
+			Validator validator = new ValidatorImpl();
+			Naming.rebind("//localhost/Validator", validator);
+			System.out.println("Validator eingebunden!");
 			Naming.rebind(servername, server);
 			System.out.println("Server ist bereit");
 		} catch (MalformedURLException e) {
@@ -110,6 +116,17 @@ public class Server extends UnicastRemoteObject implements CardIntf, UserIntf {
 			e.printStackTrace();
 		}
 		return you;
+	}
+	
+	@Override
+	public List<Arbeiter> getAllArbeiter() throws RemoteException {
+		List<Arbeiter> mitarbeiter = null;
+		try {
+			mitarbeiter = this.getArbeiterDb().getAllMitarbeiter();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return mitarbeiter;
 	}
 
 	@Override
