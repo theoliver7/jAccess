@@ -97,9 +97,10 @@ public class UserClient {
 
 			Zeit z = new Zeit();
 			try {
-				if (getServer().getWorktimes(ucl.getYou().getIdarbeiter()) == null) {
+				if (getServer().getWorktimes(ucl.getYou().getIdarbeiter()) != null) {
 					ucl.setArbeitszeit(z.totalberechnen(z.zeitenorganisieren(getServer().getWorktimes(ucl.getYou().getIdarbeiter()))));
 				} else {
+					System.out.println("hello");
 					ucl.setArbeitszeit(new ArrayList<ArrayList<String>>());
 				}
 			} catch (SQLException | ParseException e1) {
@@ -136,16 +137,7 @@ public class UserClient {
 		frame.repaint();
 
 		frame.addWindowListener(new ExitListener(frame));
-		// frame.addWindowListener(new WindowAdapter() {
-		// @Override
-		// public void windowClosing(WindowEvent e) {
-		// try {
-		// getServer().removeUser(ucl.getKuerzel());
-		// } catch (RemoteException e1) {
-		// e1.printStackTrace();
-		// }
-		// }
-		// });
+
 	}
 
 	/**
