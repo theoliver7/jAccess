@@ -60,7 +60,7 @@ public class ArbeiterJDBCDAO implements ArbeiterDAO {
 	public List<Arbeiter> getAllMitarbeiter() throws SQLException {
 		List<Arbeiter> mitarbeiter = new ArrayList<Arbeiter>();
 		String sql = "select * from arbeiter right join abteilung on arbeiter.AbteilungID = abteilung.idAbteilung;";
-		con = getCon();
+		con = Datenbank.getCon();
 		ps = con.prepareStatement(sql);
 		rs = ps.executeQuery();
 		while (rs.next()) {
@@ -80,7 +80,7 @@ public class ArbeiterJDBCDAO implements ArbeiterDAO {
 	@Override
 	public boolean updateUser(Arbeiter a, String kuerzel) throws SQLException {
 		String sql = "Select * from abteilung where Abteilungsname='" + a.getAbteilung() + "';";
-		con = getCon();
+		con = Datenbank.getCon();
 		ps = con.prepareStatement(sql);
 		rs = ps.executeQuery();
 		int abteilungid = rs.getInt("idAbteilung");
@@ -95,7 +95,7 @@ public class ArbeiterJDBCDAO implements ArbeiterDAO {
 	@Override
 	public boolean createUser(Arbeiter a) throws SQLException {
 		String sql = "Select * from abteilung where Abteilungsname='" + a.getAbteilung() + "';";
-		con = getCon();
+		con = Datenbank.getCon();
 		ps = con.prepareStatement(sql);
 		rs = ps.executeQuery();
 		int abteilungid = rs.getInt("idAbteilung");
