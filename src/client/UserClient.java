@@ -71,7 +71,7 @@ public class UserClient {
 	public static UserIntf getServer() {
 		UserIntf serverobj = null;
 		try {
-			String server = "";
+			String server = "//localhost/Server";
 			try (FileReader reader = new FileReader("config.properties")) {
 				Properties properties = new Properties();
 				properties.load(reader);
@@ -79,6 +79,7 @@ public class UserClient {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
+			System.out.println(server);
 			serverobj = (UserIntf) Naming.lookup(server);
 		} catch (MalformedURLException | RemoteException | NotBoundException e) {
 			JOptionPane.showMessageDialog(null, "Der Server hat zurzeit Probleme! \nBitte wenden " + "Sie sich an den IT-Support.", "Fehler", JOptionPane.ERROR_MESSAGE);
@@ -137,7 +138,10 @@ public class UserClient {
 		frame.repaint();
 
 		frame.addWindowListener(new ExitListener(frame));
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/master
 	}
 
 	/**

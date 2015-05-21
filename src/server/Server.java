@@ -67,10 +67,17 @@ public class Server extends UnicastRemoteObject implements CardIntf, UserIntf {
 			System.out.println("Registry gestartet");
 		} catch (RemoteException re) {
 			System.err.println("Registry existiert schon");
+			try {
+			LocateRegistry.createRegistry(1100);
+			System.out.println("1099 ist besetzt. Neues Registry wird erstellt.");
+			} catch (RemoteException re1) {
+				System.out.println("Registry existiert ebenfalls schon");
+				re1.printStackTrace();
+			}
 		}
 		Server server = new Server();
 		try {
-			String servername = "";
+			String servername = "//localhost/Server";
 			try (FileReader reader = new FileReader("config.properties")) {
 				Properties properties = new Properties();
 				properties.load(reader);
@@ -78,6 +85,7 @@ public class Server extends UnicastRemoteObject implements CardIntf, UserIntf {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
+			System.out.println(servername + " || " + server.toString());
 			Naming.rebind(servername, server);
 			System.out.println("Server ist bereit");
 		} catch (MalformedURLException e) {
