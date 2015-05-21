@@ -2,9 +2,8 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="D:/extjars/commons-lang3-3.3.1.jar"/>
-	<classpathentry kind="lib" path="D:/extjars/commons-lang3-3.3.1-javadoc.jar"/>
-	<classpathentry kind="lib" path="D:/extjars/joda-time-2.3-javadoc.jar"/>
-	<classpathentry kind="lib" path="D:/extjars/mysql-connector-java-5.1.30.jar"/>
+	<classpathentry kind="lib" path="T:/_Team/zascho/08 - Anwendungsentwicklung/workspace/jAccess/libs/commons-lang3-3.3.1.jar"/>
+	<classpathentry kind="lib" path="T:/_Team/zascho/08 - Anwendungsentwicklung/workspace/jAccess/libs/commons-lang3-3.3.1-javadoc.jar"/>
+	<classpathentry kind="lib" path="T:/_Team/zascho/08 - Anwendungsentwicklung/workspace/jAccess/libs/mysql-connector-java-5.1.30.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
