@@ -21,6 +21,8 @@ public class AdminView extends JFrame {
 	private JTextField textField_2;
 	private JTextField textField_3;
 	private JTextField textField_4;
+	private JTextField textField_5;
+	private JTextField textField_6;
 
 	/**
 	 * Create the frame.
@@ -74,17 +76,17 @@ public class AdminView extends JFrame {
 		
 		textField_2 = new JTextField();
 		textField_2.setColumns(10);
-		textField_2.setBounds(127, 61, 124, 20);
+		textField_2.setBounds(127, 58, 124, 20);
 		panel_3.add(textField_2);
 		
 		textField_3 = new JTextField();
 		textField_3.setColumns(10);
-		textField_3.setBounds(127, 89, 124, 20);
+		textField_3.setBounds(127, 83, 124, 20);
 		panel_3.add(textField_3);
 		
 		textField_4 = new JTextField();
 		textField_4.setColumns(10);
-		textField_4.setBounds(127, 115, 124, 20);
+		textField_4.setBounds(127, 108, 124, 20);
 		panel_3.add(textField_4);
 		
 		JLabel lblNewLabel_2 = new JLabel("Kuerzel");
@@ -102,6 +104,16 @@ public class AdminView extends JFrame {
 		JLabel lblNewLabel_5 = new JLabel("New label");
 		lblNewLabel_5.setBounds(10, 161, 46, 14);
 		panel_3.add(lblNewLabel_5);
+		
+		textField_5 = new JTextField();
+		textField_5.setColumns(10);
+		textField_5.setBounds(127, 133, 124, 20);
+		panel_3.add(textField_5);
+		
+		textField_6 = new JTextField();
+		textField_6.setColumns(10);
+		textField_6.setBounds(127, 158, 124, 20);
+		panel_3.add(textField_6);
 		
 		JPanel panel_1 = new JPanel();
 		contentPane.add(panel_1, BorderLayout.NORTH);
