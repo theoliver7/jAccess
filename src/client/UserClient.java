@@ -79,6 +79,7 @@ public class UserClient {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
+			
 			serverobj = (UserIntf) Naming.lookup(server);
 		} catch (MalformedURLException | RemoteException | NotBoundException e) {
 			JOptionPane.showMessageDialog(null, "Der Server hat zurzeit Probleme! \nBitte wenden " + "Sie sich an den IT-Support.", "Fehler", JOptionPane.ERROR_MESSAGE);
@@ -97,9 +98,10 @@ public class UserClient {
 
 			Zeit z = new Zeit();
 			try {
-				if (getServer().getWorktimes(ucl.getYou().getIdarbeiter()) == null) {
+				if (getServer().getWorktimes(ucl.getYou().getIdarbeiter()) != null) {
 					ucl.setArbeitszeit(z.totalberechnen(z.zeitenorganisieren(getServer().getWorktimes(ucl.getYou().getIdarbeiter()))));
 				} else {
+					System.out.println("hello");
 					ucl.setArbeitszeit(new ArrayList<ArrayList<String>>());
 				}
 			} catch (SQLException | ParseException e1) {

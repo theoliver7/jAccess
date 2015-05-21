@@ -57,26 +57,28 @@ public class Zeit {
 		Timestamp ersterTag = list.get(0);
 		int arraygroesse = list.size();
 		while (i <= arraygroesse) {
+			//System.out.printf(ersterTag, list.get(0));
 			if (DateUtils.isSameDay(ersterTag, list.get(0))) {
 				tag.add(list.get(position));
 				list.remove(position);
 				System.out.println(tag.toString());
-				if(tag.size() == 4) {
+				System.out.println(tag);
+				if (tag.size() == 4) {
+					
 					alleTage.add(tag);
 					System.out.println(alleTage);
 					tag = new ArrayList<Timestamp>();
 					System.out.println(tag);
 				}
 			} else {
-				alleTage.add(tag);
-				System.out.println(alleTage);
+
 				ersterTag = list.get(0);
-				System.out.println(ersterTag);
+
 				tag = new ArrayList<Timestamp>();
 				System.out.println(tag);
 			}
 			i++;
-			System.out.println(i);
+	
 		}
 		return alleTage;
 	}
