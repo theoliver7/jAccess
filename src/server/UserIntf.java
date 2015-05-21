@@ -26,6 +26,14 @@ public interface UserIntf extends Remote {
 	 * @return Arbeiter Objekt des Users
 	 */
 	public Arbeiter getYourArbeiter(String kuerzel) throws RemoteException;
+	
+	/**
+	 * Gibt alle Arbeiter der Datenbank in einer Liste zurück.
+	 * Nur Für Admin anwenden.
+	 * @return
+	 * @throws RemoteException
+	 */
+	public List<Arbeiter> getAllArbeiter() throws RemoteException;
 
 	/**
 	 * Gibt dem UserClient eine Liste seiner Mitarbeiter mit für das GUI.

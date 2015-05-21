@@ -46,6 +46,7 @@ import javax.swing.text.Document;
 
 import jdbc.Arbeiter;
 import listener.ExitListener;
+import listener.LoginListener;
 import listener.PicListener;
 import listener.ProfileListener;
 import server.Message;
@@ -86,6 +87,7 @@ public class View extends JFrame {
 	 * Create the frame.
 	 */
 	public View(UserClient ucl) {
+		setTitle("jAccess");
 		this.setUcl(ucl);
 		setBackground(Color.WHITE);
 		setResizable(false);
@@ -119,6 +121,7 @@ public class View extends JFrame {
 		mnSettings.add(mntmAccount);
 		
 		JMenuItem mntmAdminLogin = new JMenuItem("Admin Login");
+		mntmAdminLogin.addActionListener(new LoginListener());
 		mnSettings.add(mntmAdminLogin);
 
 		JMenu mnHelp = new JMenu("Help");

@@ -52,6 +52,56 @@ public class ArbeiterJDBCDAO extends Datenbank implements ArbeiterDAO {
 		}
 		return team;
 	}
+	
+	public List<Arbeiter> getAllMitarbeiter() throws SQLException {
+		List<Arbeiter> mitarbeiter = new ArrayList<Arbeiter>();
+		String sql = "select * from arbeiter right join abteilung on arbeiter.AbteilungID = abteilung.idAbteilung;";
+		con = getCon();
+		ps = con.prepareStatement(sql);
+		rs = ps.executeQuery();
+		while (rs.next()) {
+			Arbeiter a = new Arbeiter();
+			a.setIdarbeiter(rs.getString("idArbeiter"));
+			a.setName(rs.getString("Name"));
+			a.setNachname(rs.getString("Nachname"));
+			a.setWohnort(rs.getString("Wohnort"));
+			a.setFunktion(rs.getString("Funktion"));
+			a.setAbteilung(rs.getString("Abteilungsname"));
+			a.setKuerzel(rs.getString("kuerzel"));
+			mitarbeiter.add(a);
+		}
+		return mitarbeiter;
+	}
+	
+	@Override
+	public boolean updateUser(Arbeiter a, String kuerzel) throws SQLException {
+		String sql = "Select * from abteilung where Abteilungsname='" + a.getAbteilung() + "';";
+		con = getCon();
+		ps = con.prepareStatement(sql);
+		rs = ps.executeQuery();
+		int abteilungid = rs.getInt("idAbteilung");
+		String sql1 = "UPDATE arbeiter set idArbeiter='" + a.getIdarbeiter() + "', Name='" + a.getName() + "', Nachname='" + a.getNachname() + "', "
+				+ "Wohnort='" + a.getWohnort() + "', "
+				+ "Funktion='" + a.getFunktion() + "', AbteilungID=" + abteilungid + ", kuerzel='" + a.getKuerzel() + "' where kuerzel='" + kuerzel + "'";
+		ps = con.prepareStatement(sql1);
+		ps.executeUpdate();
+		return true;
+	}
+	
+	@Override
+	public boolean createUser(Arbeiter a) throws SQLException {
+		String sql = "Select * from abteilung where Abteilungsname='" + a.getAbteilung() + "';";
+		con = getCon();
+		ps = con.prepareStatement(sql);
+		rs = ps.executeQuery();
+		int abteilungid = rs.getInt("idAbteilung");
+		String sql2 = "INSERT INTO arbeiter (idArbeiter, Name, Nachname, Wohnort, Funktion, AbteilungID, kuerzel) values ('" + a.getIdarbeiter() + "', "
+				+ "'" + a.getName() + "', '" + a.getNachname() + "', '" + a.getWohnort() + "', '" + a.getFunktion() + "', " + abteilungid + ", "
+						+ "'" + a.getKuerzel() + "')";
+		ps = con.prepareStatement(sql2);
+		rs = ps.executeQuery();
+		return true;
+	}
 
 	@Override
 	public void updatePic(String kuerzel, String pic) throws SQLException {
