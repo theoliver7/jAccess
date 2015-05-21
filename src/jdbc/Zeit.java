@@ -22,32 +22,46 @@ public class Zeit {
 		int zeitzaehler = 0;
 		System.out.println(arrayList.size());
 		for (int i = 0; i < arrayList.size(); i++) {
-			zeitzaehler = 0;
-			System.out.println(tagzaehler + "    " + zeitzaehler);
+			System.out.println("hi");
+			if (arrayList.get(tagzaehler).size() == 4) {
+				zeitzaehler = 0;
+				System.out.println(tagzaehler + "    " + zeitzaehler);
 
-			Timestamp beginnMorgen = arrayList.get(tagzaehler).get(zeitzaehler);
-			zeitzaehler++;
-			Timestamp endeMorgen = arrayList.get(tagzaehler).get(zeitzaehler);
-			zeitzaehler++;
-			Timestamp beginnNachmittag = arrayList.get(tagzaehler).get(zeitzaehler);
-			zeitzaehler++;
-			Timestamp endeNachmittag = arrayList.get(tagzaehler).get(zeitzaehler);
-			zeitzaehler++;
-			String datum = datumformatieren(beginnMorgen);
-			String total = leserlichmachen(rechnen(beginnMorgen, endeMorgen, beginnNachmittag, endeNachmittag));
-			finaltag.add(0, datum);
-			finaltag.add(1, zeitformatieren(beginnMorgen));
-			finaltag.add(2, zeitformatieren(endeMorgen));
-			finaltag.add(3, zeitformatieren(beginnNachmittag));
-			finaltag.add(4, zeitformatieren(endeNachmittag));
-			finaltag.add(5, total);
-			finalalleTage.add(finaltag);
-			finaltag = new ArrayList<String>();
-			System.out.println(total);
-			System.out.println(finalalleTage);
+				Timestamp beginnMorgen = arrayList.get(tagzaehler).get(zeitzaehler);
+				zeitzaehler++;
+				Timestamp endeMorgen = arrayList.get(tagzaehler).get(zeitzaehler);
+				zeitzaehler++;
+				Timestamp beginnNachmittag = arrayList.get(tagzaehler).get(zeitzaehler);
+				zeitzaehler++;
+				Timestamp endeNachmittag = arrayList.get(tagzaehler).get(zeitzaehler);
+				zeitzaehler++;
+				String datum = datumformatieren(beginnMorgen);
+				String total = leserlichmachen(rechnen(beginnMorgen, endeMorgen, beginnNachmittag, endeNachmittag));
+				finaltag.add(0, datum);
+				finaltag.add(1, zeitformatieren(beginnMorgen));
+				finaltag.add(2, zeitformatieren(endeMorgen));
+				finaltag.add(3, zeitformatieren(beginnNachmittag));
+				finaltag.add(4, zeitformatieren(endeNachmittag));
+				finaltag.add(5, total);
+				finalalleTage.add(finaltag);
+				finaltag = new ArrayList<String>();
+				System.out.println(finalalleTage);
+
+			} else {
+				System.out.println();
+				System.out.println("--------------------------------------");
+				System.out.println();
+				finaltag.add("Zeiten nicht  ");
+				finaltag.add("korrekt eingetragen");
+				finaltag.add("am " + datumformatieren(arrayList.get(tagzaehler).get(0)));
+				finalalleTage.add(finaltag);
+				finaltag = new ArrayList<String>();
+				System.out.println(finalalleTage);
+			}
 			tagzaehler++;
-		}
 
+		}
+		System.out.println(finalalleTage);
 		return finalalleTage;
 	}
 
@@ -56,30 +70,24 @@ public class Zeit {
 		int position = 0;
 		Timestamp ersterTag = list.get(0);
 		int arraygroesse = list.size();
-		while (i <= arraygroesse) {
-			//System.out.printf(ersterTag, list.get(0));
+		while (i < arraygroesse) {
 			if (DateUtils.isSameDay(ersterTag, list.get(0))) {
 				tag.add(list.get(position));
+				System.out.println(list);
 				list.remove(position);
-				System.out.println(tag.toString());
-				System.out.println(tag);
-				if (tag.size() == 4) {
-					
-					alleTage.add(tag);
-					System.out.println(alleTage);
-					tag = new ArrayList<Timestamp>();
-					System.out.println(tag);
-				}
+				System.out.println("Tag"+tag);
 			} else {
-
+				alleTage.add(tag);
 				ersterTag = list.get(0);
-
 				tag = new ArrayList<Timestamp>();
-				System.out.println(tag);
 			}
 			i++;
-	
 		}
+		if (list.size() > 1) {
+			tag.add(list.get(0));
+		}
+		alleTage.add(tag);
+		System.out.println("SALII:" + alleTage);
 		return alleTage;
 	}
 
@@ -100,19 +108,12 @@ public class Zeit {
 		return timestamp_string;
 	}
 
-	// public Date umwandeln(String timestamp_string) throws ParseException {
-	// SimpleDateFormat dateFormat = new
-	// SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
-	// Date umgewandeltertimestamp = dateFormat.parse(timestamp_string);
-	// return umgewandeltertimestamp;
-	// }
-
 	public String leserlichmachen(long diff) {
 		long second = (diff / 1000) % 60;
 		long minute = (diff / (1000 * 60)) % 60;
 		long hour = (diff / (1000 * 60 * 60)) % 24;
 		diff = diff % 1000;
-		String time = String.format("%02d:%02d:%02d:%d", hour, minute, second, diff);
+		String time = String.format("%02d:%02d", hour, minute,second, diff);
 		return time;
 	}
 }

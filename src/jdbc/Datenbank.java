@@ -11,11 +11,11 @@ import java.sql.PreparedStatement;
 
 public class Datenbank {
 
-	protected Connection con = null;
+	public static Connection con = null;
 	protected PreparedStatement ps = null;
 	protected ResultSet rs = null;
 
-	public Connection getCon() throws SQLException {
+	public static Connection getCon() throws SQLException {
 		String user = "";
 		String database = "";
 		String password = "";

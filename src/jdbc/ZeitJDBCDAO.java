@@ -15,8 +15,7 @@ import java.util.List;
  *
  */
 
-public class ZeitJDBCDAO extends Datenbank implements ZeitDAO {
-	private Zeit z;
+public class ZeitJDBCDAO implements ZeitDAO {
 	private Connection con = null;
 	private PreparedStatement ps = null;
 	private ResultSet rs = null;
@@ -31,7 +30,7 @@ public class ZeitJDBCDAO extends Datenbank implements ZeitDAO {
 	public List<Timestamp> arbeitszeitauslesen(String uid) throws SQLException {
 		List<Timestamp> daten = new ArrayList<Timestamp>();
 		String sql = "SELECT idZeit, timestamp, ArbeiterID FROM zeit WHERE ArbeiterID =(?)ORDER BY timestamp ASC";
-		con = getCon();
+		con = Datenbank.getCon();
 		ps = con.prepareStatement(sql);
 		ps.setString(1, uid);
 		rs = ps.executeQuery();
@@ -50,7 +49,7 @@ public class ZeitJDBCDAO extends Datenbank implements ZeitDAO {
 	@Override
 	public void zeiteintragen(String uid) throws SQLException {
 		String sql = "INSERT INTO `zeit`(`ArbeiterID`) VALUES (?)";
-		con = getCon();
+		con = Datenbank.getCon();
 		ps = con.prepareStatement(sql);
 		ps.setString(1, uid);
 		ps.executeUpdate();

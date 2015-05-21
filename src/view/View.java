@@ -2,6 +2,7 @@ package view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -48,6 +49,16 @@ import jdbc.Arbeiter;
 import listener.ExitListener;
 import listener.PicListener;
 import listener.ProfileListener;
+
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.data.category.DefaultCategoryDataset;
+import org.jfree.data.xy.XYSeries;
+import org.jfree.data.xy.XYSeriesCollection;
+import org.jfree.ui.RefineryUtilities;
+
 import server.Message;
 import client.UserClient;
 
@@ -107,7 +118,7 @@ public class View extends JFrame {
 
 		JMenuItem mntmPrint = new JMenuItem("Print");
 		mnFile.add(mntmPrint);
-		
+
 		JMenuItem mntmExit = new JMenuItem("Exit");
 		mntmExit.addActionListener(new ExitListener(this));
 		mnFile.add(mntmExit);
@@ -117,7 +128,7 @@ public class View extends JFrame {
 
 		JMenuItem mntmAccount = new JMenuItem("Account");
 		mnSettings.add(mntmAccount);
-		
+
 		JMenuItem mntmAdminLogin = new JMenuItem("Admin Login");
 		mnSettings.add(mntmAdminLogin);
 
@@ -126,7 +137,7 @@ public class View extends JFrame {
 
 		JMenuItem mntmVersion = new JMenuItem("About");
 		mnHelp.add(mntmVersion);
-		
+
 		JMenuItem mntmVersion_1 = new JMenuItem("Version");
 		mnHelp.add(mntmVersion_1);
 		content = new JPanel();
@@ -499,6 +510,22 @@ public class View extends JFrame {
 
 		JPanel chart_panel = new JPanel();
 		chart_panel.setBounds(7, 255, 964, 228);
+		chart_panel.setLayout(new BorderLayout());
+
+		XYSeries series = new XYSeries("Random Data");
+		series.add(10, 0);
+		series.add(4, 1);
+		series.add(4.6, 2);
+		series.add(9,3);
+
+		XYSeriesCollection data = new XYSeriesCollection(series);
+		JFreeChart chart = ChartFactory.createXYLineChart(null, "X", "Y" , data, PlotOrientation.VERTICAL, true, true, true);
+
+		ChartPanel chartPanel = new ChartPanel(chart);
+		chartPanel.getPreferredSize();
+
+		chart_panel.add(chartPanel, BorderLayout.NORTH);
+
 		time_panel.add(chart_panel);
 
 		JPanel online_panel = new JPanel();
@@ -619,4 +646,5 @@ public class View extends JFrame {
 	public void setUcl(UserClient ucl) {
 		this.ucl = ucl;
 	}
+
 }

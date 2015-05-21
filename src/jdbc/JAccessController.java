@@ -11,7 +11,7 @@ public class JAccessController {
 
 	public static void main(String[] args) throws SQLException, ParseException {
 
-		System.out.println(Zeit.zeitenorganisieren(Zeit_DAO.arbeitszeitauslesen("45-459-5415")).toString());
+		Zeit.totalberechnen(Zeit.zeitenorganisieren(Zeit_DAO.arbeitszeitauslesen("45-459-5415"))).toString();
 		
 		
 	}
