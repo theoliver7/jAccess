@@ -16,8 +16,8 @@ public class ArbeiterJDBCDAO extends Datenbank implements ArbeiterDAO {
 	@Override
 	public Arbeiter findPersonBykuerzel(String kuerzel) throws SQLException {
 		Arbeiter a = new Arbeiter();
-		String sql = "SELECT A.idArbeiter, A.Name, A.Nachname, A.kuerzel, " + "A.Wohnort, A.Funktion, ABT.Abteilungsname, A.Pic FROM arbeiter as A "
-				+ "INNER JOIN abteilung as ABT ON A.AbteilungID = ABT.idAbteilung " + "WHERE kuerzel = '" + kuerzel + "';";
+		String sql = "SELECT A.idArbeiter, A.Name, A.Nachname, A.kuerzel, " + "A.Wohnort, A.Funktion, ABT.Abteilungsname, A.Pic FROM arbeiter AS A "
+				+ "INNER JOIN abteilung AS ABT ON A.AbteilungID = ABT.idAbteilung " + "WHERE kuerzel = '" + kuerzel + "';";
 		con = Datenbank.getCon();
 		ps = con.prepareStatement(sql);
 		rs = ps.executeQuery();
@@ -39,7 +39,7 @@ public class ArbeiterJDBCDAO extends Datenbank implements ArbeiterDAO {
 	@Override
 	public List<Arbeiter> findTeam(String teamname, String kuerzel) throws SQLException {
 		List<Arbeiter> team = new ArrayList<Arbeiter>();
-		String sql = "Select A.Name, A.Nachname, A.kuerzel, A.Wohnort, A.Funktion, ABT.Abteilungsname, A.Pic " + "FROM arbeiter as A INNER JOIN abteilung as ABT on A.AbteilungID = ABT.idAbteilung "
+		String sql = "SELECT A.Name, A.Nachname, A.kuerzel, A.Wohnort, A.Funktion, ABT.Abteilungsname, A.Pic " + "FROM arbeiter AS A INNER JOIN abteilung AS ABT ON A.AbteilungID = ABT.idAbteilung "
 				+ "WHERE abteilungsname = '" + teamname + "';";
 		con = Datenbank.getCon();
 		ps = con.prepareStatement(sql);
@@ -61,7 +61,7 @@ public class ArbeiterJDBCDAO extends Datenbank implements ArbeiterDAO {
 
 	public List<Arbeiter> getAllMitarbeiter() throws SQLException {
 		List<Arbeiter> mitarbeiter = new ArrayList<Arbeiter>();
-		String sql = "select * from arbeiter right join abteilung on arbeiter.AbteilungID = abteilung.idAbteilung;";
+		String sql = "SELECT * FROM arbeiter RIGHT JOIN abteilung ON arbeiter.AbteilungID = abteilung.idAbteilung ORDER BY Name ASC;";
 		con = Datenbank.getCon();
 		ps = con.prepareStatement(sql);
 		rs = ps.executeQuery();
@@ -82,13 +82,18 @@ public class ArbeiterJDBCDAO extends Datenbank implements ArbeiterDAO {
 
 	@Override
 	public boolean updateUser(Arbeiter a, String kuerzel) throws SQLException {
-		String sql = "Select * from abteilung where Abteilungsname='" + a.getAbteilung() + "';";
+		String sql = "SELECT * FROM abteilung WHERE Abteilungsname='" + a.getAbteilung() + "';";
 		con = Datenbank.getCon();
 		ps = con.prepareStatement(sql);
 		rs = ps.executeQuery();
-		int abteilungid = rs.getInt("idAbteilung");
-		String sql1 = "UPDATE arbeiter set idArbeiter='" + a.getIdarbeiter() + "', Name='" + a.getName() + "', Nachname='" + a.getNachname() + "', " + "Wohnort='" + a.getWohnort() + "', "
-				+ "Funktion='" + a.getFunktion() + "', AbteilungID=" + abteilungid + ", kuerzel='" + a.getKuerzel() + "' where kuerzel='" + kuerzel + "'";
+		int abteilungid = 0;
+		while(rs.next()) {
+			 abteilungid = rs.getInt("idAbteilung");
+		}
+		ps = null;
+		rs = null;
+		String sql1 = "UPDATE arbeiter SET Name='" + a.getName() + "', Nachname='" + a.getNachname() + "', " + "Wohnort='" + a.getWohnort() + "', "
+				+ "Funktion='" + a.getFunktion() + "', AbteilungID=" + abteilungid + ", kuerzel='" + a.getKuerzel() + "' WHERE kuerzel='" + kuerzel + "'";
 		ps = con.prepareStatement(sql1);
 		ps.executeUpdate();
 		closeCon();
@@ -97,17 +102,30 @@ public class ArbeiterJDBCDAO extends Datenbank implements ArbeiterDAO {
 
 	@Override
 	public boolean createUser(Arbeiter a) throws SQLException {
-		String sql = "Select * from abteilung where Abteilungsname='" + a.getAbteilung() + "';";
+		String sql = "SELECT * FROM abteilung WHERE Abteilungsname='" + a.getAbteilung() + "';";
 		con = Datenbank.getCon();
 		ps = con.prepareStatement(sql);
 		rs = ps.executeQuery();
-		int abteilungid = rs.getInt("idAbteilung");
+		int abteilungid = 0;
+		while(rs.next()) {
+			 abteilungid = rs.getInt("idAbteilung");
+		}
 		ps = null;
 		rs = null;
 		String sql2 = "INSERT INTO arbeiter (idArbeiter, Name, Nachname, Wohnort, Funktion, AbteilungID, kuerzel) values ('" + a.getIdarbeiter() + "', " + "'" + a.getName() + "', '" + a.getNachname()
 				+ "', '" + a.getWohnort() + "', '" + a.getFunktion() + "', " + abteilungid + ", " + "'" + a.getKuerzel() + "')";
 		ps = con.prepareStatement(sql2);
-		rs = ps.executeQuery();
+		ps.executeUpdate();
+		closeCon();
+		return true;
+	}
+	
+	@Override
+	public boolean deleteUser(String uid) throws SQLException {
+		String sql = "DELETE FROM arbeiter WHERE idArbeiter='" + uid + "';";
+		con = Datenbank.getCon();
+		ps = con.prepareStatement(sql);
+		ps.executeUpdate();
 		closeCon();
 		return true;
 	}
@@ -117,14 +135,14 @@ public class ArbeiterJDBCDAO extends Datenbank implements ArbeiterDAO {
 		String sql = "UPDATE arbeiter SET Pic = '" + pic + "' WHERE kuerzel = '" + kuerzel + "';";
 		con = Datenbank.getCon();
 		ps = con.prepareStatement(sql);
-		closeCon();
 		ps.executeUpdate();
+		closeCon();
 	}
 
 	@Override
 	public List<String> getAllAbteilungen() throws SQLException {
 		List<String> abteilungen = new ArrayList<String>();
-		String sql = "Select * from abteilung;";
+		String sql = "SELECT * FROM abteilung;";
 		con = Datenbank.getCon();
 		ps = con.prepareStatement(sql);
 		rs = ps.executeQuery();

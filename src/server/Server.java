@@ -145,7 +145,6 @@ public class Server extends UnicastRemoteObject implements CardIntf, UserIntf {
 		List<String> abteilungen = null;
 		try {
 			abteilungen = this.getArbeiterDb().getAllAbteilungen();
-			abteilungen.add(0, new String(""));
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -168,6 +167,16 @@ public class Server extends UnicastRemoteObject implements CardIntf, UserIntf {
 			this.getArbeiterDb().updateUser(a, kuerzel);
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(null, "Arbeiter konnte nicht updatet werden!", "Fehler", JOptionPane.ERROR_MESSAGE);
+			e.printStackTrace();
+		}
+	}
+	
+	@Override
+	public void deleteArbeiter(String uid) throws RemoteException {
+		try {
+			this.getArbeiterDb().deleteUser(uid);
+		} catch (SQLException e) {
+			JOptionPane.showMessageDialog(null, "Arbeiter konnte nicht gelöscht werden!", "Fehler", JOptionPane.ERROR_MESSAGE);
 			e.printStackTrace();
 		}
 	}

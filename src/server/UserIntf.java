@@ -39,6 +39,8 @@ public interface UserIntf extends Remote {
 	
 	public void updateArbeiter(Arbeiter a, String kuerzel) throws RemoteException;
 	
+	public void deleteArbeiter(String uid) throws RemoteException;
+	
 	public List<String> getAbteilungen() throws RemoteException;
 
 	/**

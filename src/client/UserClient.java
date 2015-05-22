@@ -125,7 +125,7 @@ public class UserClient {
 		frame.append("-------------------------------------------------------" + "--------------------------------------------------\n");
 		frame.message.requestFocusInWindow();
 
-		Message msg = new Message("[" + ucl.getKuerzel() + "]", " got connected.\n");
+		Message msg = new Message("[" + ucl.getKuerzel() + " - " + ucl.getYou().getAbteilung() + "]", " got connected.\n");
 		try {
 			UserClient.getServer().send(msg);
 		} catch (RemoteException e1) {

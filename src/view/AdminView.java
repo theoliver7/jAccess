@@ -42,6 +42,8 @@ import java.util.Vector;
 
 import jdbc.Arbeiter;
 import listener.ProfileListener;
+import java.awt.Window.Type;
+import java.awt.Toolkit;
 
 public class AdminView extends JFrame {
 
@@ -63,9 +65,10 @@ public class AdminView extends JFrame {
 	 * Create the frame.
 	 */
 	public AdminView(View view) {
-		this.setView(view);
+		setIconImage(Toolkit.getDefaultToolkit().getImage(AdminView.class.getResource("/images/user.png")));
 		setResizable(false);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setTitle("Mitarbeiterverwaltung");
+		this.setView(view);
 		setBounds(100, 100, 540, 501);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -179,7 +182,7 @@ public class AdminView extends JFrame {
 						a.setKuerzel(kuerzel.getText());
 						a.setWohnort(wohnort.getText());
 						a.setFunktion(funktion.getText());
-						a.setAbteilung((String) abteilungBox.getSelectedItem());
+						a.setAbteilung(abteilungBox.getSelectedItem().toString());
 						UserClient.getServer().insertArbeiter(a);
 					} else {
 						JOptionPane.showMessageDialog(null, "Bitte alle Felder ausfüllen!", "Fehler", JOptionPane.ERROR_MESSAGE);
@@ -194,10 +197,53 @@ public class AdminView extends JFrame {
 		panel_3.add(createbtn);
 
 		JButton savebtn = new JButton("Speichern");
+		savebtn.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					if(!(uid.getText().equals("")) || !(vorname.getText().equals("")) || !(nachname.getText().equals("")) || !(kuerzel.getText().equals(""))
+							|| !(wohnort.getText().equals("")) || !(funktion.getText().equals("")) || !(abteilungBox.getSelectedItem().equals(""))) {
+						Arbeiter a = new Arbeiter();
+						a.setIdarbeiter(uid.getText());
+						a.setName(vorname.getText());
+						a.setNachname(nachname.getText());
+						a.setKuerzel(kuerzel.getText());
+						a.setWohnort(wohnort.getText());
+						a.setFunktion(funktion.getText());
+						a.setAbteilung(abteilungBox.getSelectedItem().toString());
+						UserClient.getServer().updateArbeiter(a, a.getKuerzel());
+					} else {
+						JOptionPane.showMessageDialog(null, "Bitte alle Felder ausfüllen!", "Fehler", JOptionPane.ERROR_MESSAGE);
+					}
+				} catch (RemoteException e1) {
+					JOptionPane.showMessageDialog(null, "Kann nicht gespeichert werden; User existiert nicht!\n"
+							+ "Bitte bestehenden User auswählen.", "Fehler", JOptionPane.ERROR_MESSAGE);
+					e1.printStackTrace();
+				}
+			}
+			
+		});
 		savebtn.setBounds(112, 302, 90, 28);
 		panel_3.add(savebtn);
 
 		JButton delbtn = new JButton("Löschen");
+		delbtn.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					if(!uid.getText().equals("")) {
+						UserClient.getServer().deleteArbeiter(uid.getText());
+					}
+				} catch (RemoteException e1) {
+					JOptionPane.showMessageDialog(null, "Konnte nicht gelöscht werden!\n"
+							+ "UID des Users ist nicht bekannt!", "Fehler", JOptionPane.ERROR_MESSAGE);
+					e1.printStackTrace();
+				}
+			}
+			
+		});
 		delbtn.setBounds(10, 302, 90, 28);
 		panel_3.add(delbtn);
 
@@ -286,6 +332,7 @@ public class AdminView extends JFrame {
 						kuerzel.setText(a.getKuerzel());
 						wohnort.setText(a.getWohnort());
 						funktion.setText(a.getFunktion());
+						abteilungBox.setSelectedItem(a.getAbteilung());
 					}
 
 					@Override

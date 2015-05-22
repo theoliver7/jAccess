@@ -159,8 +159,8 @@ public class View extends JFrame {
 		tabbedPanel.addTab("Übersicht", null, overview, null);
 		overview.setLayout(null);
 
-		JLabel yourteam_label = new JLabel("Dein Team");
-		yourteam_label.setBounds(51, 17, 85, 16);
+		JLabel yourteam_label = new JLabel("Dein Team " + "[" + ucl.getYou().getAbteilung() + "]");
+		yourteam_label.setBounds(31, 17, 161, 16);
 		overview.add(yourteam_label);
 
 		JLabel profile_label = new JLabel("Profil");
@@ -172,7 +172,7 @@ public class View extends JFrame {
 		overview.add(chat_label);
 
 		JSeparator separator_1 = new JSeparator();
-		separator_1.setBounds(106, 26, 116, 7);
+		separator_1.setBounds(204, 26, 18, 7);
 		overview.add(separator_1);
 
 		JSeparator separator_2 = new JSeparator();
@@ -181,7 +181,7 @@ public class View extends JFrame {
 		overview.add(separator_2);
 
 		JSeparator separator_3 = new JSeparator();
-		separator_3.setBounds(7, 26, 33, 7);
+		separator_3.setBounds(7, 26, 18, 7);
 		overview.add(separator_3);
 
 		JSeparator separator_4 = new JSeparator();
@@ -366,7 +366,7 @@ public class View extends JFrame {
 					e.consume();
 					try {
 						if (!message.getText().equals("")) {
-							getUcl().send(new Message("[" + getUcl().getKuerzel() + "] ", message.getText() + "\n"));
+							getUcl().send(new Message("[" + ucl.getKuerzel() + " - " + ucl.getYou().getAbteilung() + "] ", message.getText() + "\n"));
 							message.setText("");
 						}
 					} catch (RemoteException e1) {
