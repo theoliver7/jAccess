@@ -86,7 +86,9 @@ public class UserClient {
 
 	public static void main(String[] args) {
 		UserClient ucl = UserClient.getInstance();
-		ucl.setKuerzel(System.getProperty("user.name"));
+		//ucl.setKuerzel(System.getProperty("user.name"));
+		
+		ucl.setKuerzel(JOptionPane.showInputDialog("Name:").toString());
 
 		try {
 			ucl.setYou(getServer().getYourArbeiter(ucl.getKuerzel()));

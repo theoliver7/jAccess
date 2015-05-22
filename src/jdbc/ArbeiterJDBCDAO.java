@@ -18,7 +18,7 @@ public class ArbeiterJDBCDAO extends Datenbank implements ArbeiterDAO {
 		Arbeiter a = new Arbeiter();
 		String sql = "SELECT A.idArbeiter, A.Name, A.Nachname, A.kuerzel, " + "A.Wohnort, A.Funktion, ABT.Abteilungsname, A.Pic FROM arbeiter as A "
 				+ "INNER JOIN abteilung as ABT ON A.AbteilungID = ABT.idAbteilung " + "WHERE kuerzel = '" + kuerzel + "';";
-		con = Datenbank.getCon();
+		con = getCon();
 		ps = con.prepareStatement(sql);
 		rs = ps.executeQuery();
 		while (rs.next()) {

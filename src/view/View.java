@@ -537,7 +537,7 @@ public class View extends JFrame {
 					FileWriter filewriter = new FileWriter(file.getAbsoluteFile());
 					BufferedWriter bufferdwriter = new BufferedWriter(filewriter);
 					bufferdwriter.write(System.getProperty("line.separator"));
-					bufferdwriter.write("Arbeitszeiten von "+ getUcl().getYou().getName()+"\t\t\t\t\t\t\t\t\t JAccess");
+					bufferdwriter.write("Arbeitszeiten von " + getUcl().getYou().getName() + "\t\t\t\t\t\t\t\t\t JAccess");
 					bufferdwriter.write(System.getProperty("line.separator"));
 					bufferdwriter.write(getUcl().getYou().getNachname());
 					bufferdwriter.write(System.getProperty("line.separator"));
@@ -621,7 +621,6 @@ public class View extends JFrame {
 
 	private void usrReceiver() {
 		try {
-			String you = null;
 			teamPanel.removeAll();
 			List<Arbeiter> workers = UserClient.getServer().getWhoishere();
 			List<Arbeiter> team = UserClient.getServer().getYourTeam(ucl.getYou().getAbteilung(), ucl.getKuerzel());
@@ -632,6 +631,7 @@ public class View extends JFrame {
 						JLabel label = new JLabel(a.getName() + " " + a.getNachname(), online, JLabel.LEFT);
 						label.addMouseListener(new ProfileListener(this, a));
 						teamPanel.add(label);
+
 					} else {
 						JLabel label = new JLabel(a.getName() + " " + a.getNachname(), offline, JLabel.LEFT);
 						label.addMouseListener(new ProfileListener(this, a));
