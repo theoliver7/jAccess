@@ -108,7 +108,7 @@ public class UserClient {
 				} else {
 					ucl.setArbeitszeit(new ArrayList<ArrayList<String>>());
 				}
-			} catch (RemoteException  | IndexOutOfBoundsException e ) {
+			} catch (RemoteException | IndexOutOfBoundsException e) {
 				ArrayList<ArrayList<String>> notimes = new ArrayList<ArrayList<String>>();
 				ArrayList<String> row = new ArrayList<String>();
 				row.add("Noch keine Arbeitszeiten!");
@@ -119,11 +119,10 @@ public class UserClient {
 		}
 
 		try {
-			for (Arbeiter a : getServer().getYourTeam(ucl.getYou().getAbteilung(), ucl.getKuerzel())) {
-				if (a.getKuerzel().equals(ucl.getKuerzel())) {
-					UserClient.getServer().addUser(a);
-				}
-			}
+			boolean test = UserClient.getServer().updateUser(ucl.getYou());
+			boolean test2 = UserClient.getServer().updateUser(ucl.getYou());
+			System.out.println(test);
+			System.out.println(test2);
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}

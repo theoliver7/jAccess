@@ -601,7 +601,7 @@ public class View extends JFrame {
 		JSeparator separator = new JSeparator();
 		online_panel.add(separator);
 
-		JLabel lblYouAreOnline = new JLabel("Sie [<dynamic>] sind Online");
+		JLabel lblYouAreOnline = new JLabel("Sie [" + this.getUcl().getYou().getName() + "] sind Online");
 		online_panel.add(lblYouAreOnline);
 
 		class Prozess extends TimerTask {
@@ -629,10 +629,7 @@ public class View extends JFrame {
 			for (Arbeiter a : team) {
 				for (Arbeiter mitglied : workers) {
 					if (a.getKuerzel().equals(mitglied.getKuerzel())) {
-						if (a.getKuerzel().equals(ucl.getYou().getKuerzel())) {
-							you = "(You)";
-						}
-						JLabel label = new JLabel(a.getName() + " " + a.getNachname() + " " + you, online, JLabel.LEFT);
+						JLabel label = new JLabel(a.getName() + " " + a.getNachname(), online, JLabel.LEFT);
 						label.addMouseListener(new ProfileListener(this, a));
 						teamPanel.add(label);
 					} else {

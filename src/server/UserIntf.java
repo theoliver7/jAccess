@@ -104,14 +104,8 @@ public interface UserIntf extends Remote {
 	 * @throws RemoteException
 	 */
 	public boolean removeUser(String kuerzel) throws RemoteException;
-
-	/**
-	 * 
-	 * @param a
-	 * @return
-	 * @throws RemoteException
-	 */
-	public boolean addUser(Arbeiter a) throws RemoteException;
+	
+	public boolean updateUser(Arbeiter a) throws RemoteException;
 
 	public List<Timestamp> getWorktimes(String arbeiterid) throws RemoteException;
 	

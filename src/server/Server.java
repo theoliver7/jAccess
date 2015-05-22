@@ -187,7 +187,6 @@ public class Server extends UnicastRemoteObject implements CardIntf, UserIntf {
 		try {
 			team = this.getArbeiterDb().findTeam(teamname, kuerzel);
 		} catch (SQLException e) {
-			// TODO Meldung wenn DB nicht funktioniert.
 			e.printStackTrace();
 		}
 		return team;
@@ -214,11 +213,18 @@ public class Server extends UnicastRemoteObject implements CardIntf, UserIntf {
 		}
 		return false;
 	}
-
+	
 	@Override
-	public boolean addUser(Arbeiter a) throws RemoteException {
+	public boolean updateUser(Arbeiter a) throws RemoteException {
+		for(Arbeiter arb : this.getWhoishere()) {
+			if(a.getKuerzel().equals(arb.getKuerzel())) {
+				this.getWhoishere().remove(arb);
+				this.getWhoishere().add(a);
+				return true;
+			}
+		}
 		this.getWhoishere().add(a);
-		return true;
+		return false;
 	}
 
 	@Override
@@ -299,4 +305,6 @@ public class Server extends UnicastRemoteObject implements CardIntf, UserIntf {
 	public static void setMsgs(List<Message> msgs) {
 		Server.msgs = msgs;
 	}
+
+	
 }
