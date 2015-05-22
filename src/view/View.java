@@ -2,6 +2,7 @@ package view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -34,11 +35,13 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
+import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 
@@ -52,8 +55,10 @@ import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
+import org.jfree.ui.RefineryUtilities;
 
 import server.Message;
 import client.UserClient;
@@ -88,7 +93,6 @@ public class View extends JFrame {
 	// Icons fürs GUI
 	private static final Icon online = loadIcon("bullet_green.png");
 	private static final Icon offline = loadIcon("bullet_red.png");
-	private JTable time_tabel_1;
 
 	/**
 	 * Create the frame.
@@ -111,17 +115,17 @@ public class View extends JFrame {
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
 
-		JMenu mnFile = new JMenu("Datei");
+		JMenu mnFile = new JMenu("File");
 		menuBar.add(mnFile);
 
-		JMenuItem mntmPrint = new JMenuItem("Drucken");
+		JMenuItem mntmPrint = new JMenuItem("Print");
 		mnFile.add(mntmPrint);
 
-		JMenuItem mntmExit = new JMenuItem("Beenden");
+		JMenuItem mntmExit = new JMenuItem("Exit");
 		mntmExit.addActionListener(new ExitListener(this));
 		mnFile.add(mntmExit);
 
-		JMenu mnSettings = new JMenu("Einstellungen");
+		JMenu mnSettings = new JMenu("Settings");
 		menuBar.add(mnSettings);
 
 		JMenuItem mntmAccount = new JMenuItem("Account");
@@ -131,10 +135,10 @@ public class View extends JFrame {
 		mntmAdminLogin.addActionListener(new LoginListener(this));
 		mnSettings.add(mntmAdminLogin);
 
-		JMenu mnHelp = new JMenu("Hilfe");
+		JMenu mnHelp = new JMenu("Help");
 		menuBar.add(mnHelp);
 
-		JMenuItem mntmVersion = new JMenuItem("\u00DCber");
+		JMenuItem mntmVersion = new JMenuItem("About");
 		mnHelp.add(mntmVersion);
 
 		JMenuItem mntmVersion_1 = new JMenuItem("Version");
@@ -159,11 +163,11 @@ public class View extends JFrame {
 		tabbedPanel.addTab("Übersicht", null, overview, null);
 		overview.setLayout(null);
 
-		JLabel yourteam_label = new JLabel("Dein Team");
-		yourteam_label.setBounds(51, 17, 85, 16);
+		JLabel yourteam_label = new JLabel("Your Team");
+		yourteam_label.setBounds(44, 17, 85, 16);
 		overview.add(yourteam_label);
 
-		JLabel profile_label = new JLabel("Profil");
+		JLabel profile_label = new JLabel("Profile");
 		profile_label.setBounds(270, 17, 85, 16);
 		overview.add(profile_label);
 
@@ -384,7 +388,7 @@ public class View extends JFrame {
 			}
 		});
 
-		JButton message_send = new JButton("Senden");
+		JButton message_send = new JButton("Send");
 		message_send.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -420,7 +424,11 @@ public class View extends JFrame {
 		tabbedPanel.addTab("Arbeitszeiten", null, time_panel, null);
 		time_panel.setLayout(null);
 
-		JLabel chart_label = new JLabel("Diagramm");
+		JLabel tabel_label = new JLabel("Tabel");
+		tabel_label.setBounds(44, 6, 55, 16);
+		time_panel.add(tabel_label);
+
+		JLabel chart_label = new JLabel("Chart");
 		chart_label.setBounds(44, 245, 55, 16);
 		time_panel.add(chart_label);
 
@@ -429,7 +437,7 @@ public class View extends JFrame {
 		time_panel.add(separator_17);
 
 		JSeparator separator_16 = new JSeparator();
-		separator_16.setBounds(109, 17, 861, 16);
+		separator_16.setBounds(79, 17, 891, 16);
 		time_panel.add(separator_16);
 
 		JSeparator separator_18 = new JSeparator();
@@ -461,13 +469,50 @@ public class View extends JFrame {
 		time_panel.add(separator_23);
 
 		JSeparator separator_24 = new JSeparator();
-		separator_24.setBounds(95, 254, 875, 16);
+		separator_24.setBounds(79, 254, 891, 16);
 		time_panel.add(separator_24);
 
 		JSeparator separator_25 = new JSeparator();
 		separator_25.setBounds(7, 254, 33, 7);
 		time_panel.add(separator_25);
 
+<<<<<<< HEAD
+=======
+		JPanel table_panel = new JPanel();
+		table_panel.setBounds(6, 26, 964, 181);
+		time_panel.add(table_panel);
+		table_panel.setLayout(null);
+
+		Object rowData[][] = new String[ucl.getArbeitszeit().size()][];
+		for (int i = 0; i < ucl.getArbeitszeit().size(); i++) {
+			ArrayList<String> row = ucl.getArbeitszeit().get(i);
+			rowData[i] = row.toArray(new String[row.size()]);
+		}
+		Object columnNames[] = { "Date", "Morning", "Lunch", "Evening", "Total" };
+
+		JTable time_tabel = new JTable(rowData, columnNames);
+		time_tabel.setEnabled(false);
+
+		String[][] daten = new String[ucl.getArbeitszeit().size()][];
+		for (int i = 0; i < ucl.getArbeitszeit().size(); i++) {
+			ArrayList<String> row = ucl.getArbeitszeit().get(i);
+			daten[i] = row.toArray(new String[row.size()]);
+		}
+		time_tabel.setModel(new DefaultTableModel(daten, new String[] { "Date", "Morning", "Lunch", "Noon", "Evening", "Total" }));
+		time_tabel.setFillsViewportHeight(true);
+		time_tabel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		time_tabel.setShowGrid(false);
+		time_tabel.setShowVerticalLines(true);
+		time_tabel.setShowHorizontalLines(true);
+		time_tabel.setBackground(Color.WHITE);
+		time_tabel.setBounds(6, 6, 952, 169);
+
+		JTableHeader header = time_tabel.getTableHeader();
+		table_panel.setLayout(new BorderLayout());
+		table_panel.add(header, BorderLayout.NORTH);
+		table_panel.add(time_tabel, BorderLayout.CENTER);
+		table_panel.add(time_tabel);
+>>>>>>> parent of b853a5b... libs
 
 		JPanel chart_panel = new JPanel();
 		chart_panel.setBounds(7, 255, 964, 228);
@@ -485,7 +530,7 @@ public class View extends JFrame {
 				total = total.replace(':', '.');
 				System.out.println(total);
 				Double toal_float = Double.valueOf(total);
-
+				
 				System.out.println(toal_float);
 				series.add(emptydouble, toal_float);
 				emptydouble++;
@@ -508,23 +553,6 @@ public class View extends JFrame {
 
 		time_panel.add(chart_panel);
 
-		JScrollPane scrollPane_1 = new JScrollPane();
-		scrollPane_1.setBounds(7, 30, 963, 178);
-		time_panel.add(scrollPane_1);
-
-		String[][] daten = new String[ucl.getArbeitszeit().size()][];
-		for (int i = 0; i < ucl.getArbeitszeit().size(); i++) {
-			ArrayList<String> row = ucl.getArbeitszeit().get(i);
-			daten[i] = row.toArray(new String[row.size()]);
-		}
-		time_tabel_1 = new JTable();
-		time_tabel_1.setModel(new DefaultTableModel(daten, new String[] { "Datum", "Morgen", "Mittag", "Nachmittag", "Abend", "Total" }));
-		scrollPane_1.setViewportView(time_tabel_1);
-
-		JLabel tabel_label = new JLabel("Arbeitszeiten");
-		tabel_label.setBounds(44, 11, 71, 14);
-		time_panel.add(tabel_label);
-
 		JPanel online_panel = new JPanel();
 		content.add(online_panel, BorderLayout.SOUTH);
 		online_panel.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
@@ -535,7 +563,7 @@ public class View extends JFrame {
 		JSeparator separator = new JSeparator();
 		online_panel.add(separator);
 
-		JLabel lblYouAreOnline = new JLabel("Sie [" + getUcl().getYou().getName() + "] sind Online");
+		JLabel lblYouAreOnline = new JLabel("You [" + getUcl().getYou().getName() + "] are online");
 		online_panel.add(lblYouAreOnline);
 
 		class Prozess extends TimerTask {
@@ -646,4 +674,5 @@ public class View extends JFrame {
 	public void setUcl(UserClient ucl) {
 		this.ucl = ucl;
 	}
+
 }
