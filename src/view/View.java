@@ -513,27 +513,49 @@ public class View extends JFrame {
 
 		JPanel chart_panel = new JPanel();
 		chart_panel.setBounds(7, 255, 964, 228);
-		chart_panel.setLayout(new BorderLayout());
+		chart_panel.setLayout(new GridLayout());
 
-		XYSeries series = new XYSeries("Random Data");
-		series.add(10, 0);
-		series.add(4, 1);
-		series.add(4.6, 2);
-		series.add(9,3);
+		int totalzeahler = 5;
+		int tagzeahler = 0;
+		String total = "";
+		Double emptydouble = 0.0;
+		Double novalues = 0.0;
+		XYSeries series = new XYSeries("Work Progress");
+		for (int i = 0; i < ucl.getArbeitszeit().size(); i++) {
+			try {
+				total = ucl.getArbeitszeit().get(tagzeahler).get(totalzeahler);
+				total = total.replace(':', '.');
+				System.out.println(total);
+				Double toal_float = Double.valueOf(total);
+				
+				System.out.println(toal_float);
+				series.add(emptydouble, toal_float);
+				emptydouble++;
+				tagzeahler = tagzeahler + 1;
+				System.out.println(series.toString());
+			} catch (IndexOutOfBoundsException e) {
+				series.add(emptydouble, novalues);
+				emptydouble++;
+				tagzeahler = tagzeahler + 1;
+			}
+		}
 
 		XYSeriesCollection data = new XYSeriesCollection(series);
-		JFreeChart chart = ChartFactory.createXYLineChart(null, "X", "Y" , data, PlotOrientation.VERTICAL, true, true, true);
+		JFreeChart chart = ChartFactory.createXYLineChart(null, "Days", "Hours", data, PlotOrientation.VERTICAL, true, true, true);
 
 		ChartPanel chartPanel = new ChartPanel(chart);
 		chartPanel.getPreferredSize();
 
-		chart_panel.add(chartPanel, BorderLayout.NORTH);
+		chart_panel.add(chartPanel);
 
 		time_panel.add(chart_panel);
 
 		JPanel online_panel = new JPanel();
 		content.add(online_panel, BorderLayout.SOUTH);
 		online_panel.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
+
+		JLabel test = new JLabel();
+		online_panel.add(test);
 
 		JSeparator separator = new JSeparator();
 		online_panel.add(separator);

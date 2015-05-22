@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ArbeiterJDBCDAO implements ArbeiterDAO {
+public class ArbeiterJDBCDAO extends Datenbank implements ArbeiterDAO {
 
 	private Connection con = null;
 	private PreparedStatement ps = null;
@@ -32,6 +32,7 @@ public class ArbeiterJDBCDAO implements ArbeiterDAO {
 			a.setPic(rs.getString("Pic"));
 			break;
 		}
+		closeCon();
 		return a;
 	}
 
@@ -54,6 +55,7 @@ public class ArbeiterJDBCDAO implements ArbeiterDAO {
 			a.setPic(rs.getString("Pic"));
 			team.add(a);
 		}
+		closeCon();
 		return team;
 	}
 	
@@ -74,6 +76,7 @@ public class ArbeiterJDBCDAO implements ArbeiterDAO {
 			a.setKuerzel(rs.getString("kuerzel"));
 			mitarbeiter.add(a);
 		}
+		closeCon();
 		return mitarbeiter;
 	}
 	
@@ -89,6 +92,7 @@ public class ArbeiterJDBCDAO implements ArbeiterDAO {
 				+ "Funktion='" + a.getFunktion() + "', AbteilungID=" + abteilungid + ", kuerzel='" + a.getKuerzel() + "' where kuerzel='" + kuerzel + "'";
 		ps = con.prepareStatement(sql1);
 		ps.executeUpdate();
+		closeCon();
 		return true;
 	}
 	
@@ -104,6 +108,7 @@ public class ArbeiterJDBCDAO implements ArbeiterDAO {
 						+ "'" + a.getKuerzel() + "')";
 		ps = con.prepareStatement(sql2);
 		rs = ps.executeQuery();
+		closeCon();
 		return true;
 	}
 
@@ -112,6 +117,7 @@ public class ArbeiterJDBCDAO implements ArbeiterDAO {
 		String sql = "UPDATE arbeiter SET Pic = '" + pic + "' WHERE kuerzel = '" + kuerzel + "';";
 		con = Datenbank.getCon();
 		ps = con.prepareStatement(sql);
+		closeCon();
 		ps.executeUpdate();
 	}
 }

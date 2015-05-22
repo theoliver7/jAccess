@@ -59,7 +59,7 @@ public class Datenbank {
 		this.con = con;
 	}
 
-	protected void closeCon() {
+	public void closeCon() {
 		try {
 			if (rs != null) {
 				rs.close();
