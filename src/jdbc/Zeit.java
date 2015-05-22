@@ -44,9 +44,9 @@ public class Zeit {
 				finaltag = new ArrayList<String>();
 
 			} else {
-				finaltag.add("Zeiten nicht  ");
-				finaltag.add("korrekt eingetragen");
-				finaltag.add("am " + datumformatieren(arrayList.get(tagzaehler).get(0)));
+				finaltag.add(datumformatieren(arrayList.get(tagzaehler).get(0)));
+				finaltag.add("Zeiten nicht korrekt eingetragen ");
+				
 				finalalleTage.add(finaltag);
 				finaltag = new ArrayList<String>();
 
@@ -74,10 +74,12 @@ public class Zeit {
 			}
 			i++;
 		}
-		if (list.size() > 1) {
+		if (list.size() >= 1) {
 			tag.add(list.get(0));
 		}
 		alleTage.add(tag);
+		System.out.println(list);
+		System.out.println(alleTage);
 		return alleTage;
 	}
 
