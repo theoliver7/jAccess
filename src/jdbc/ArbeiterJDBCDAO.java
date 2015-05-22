@@ -56,7 +56,7 @@ public class ArbeiterJDBCDAO implements ArbeiterDAO {
 		}
 		return team;
 	}
-	
+
 	public List<Arbeiter> getAllMitarbeiter() throws SQLException {
 		List<Arbeiter> mitarbeiter = new ArrayList<Arbeiter>();
 		String sql = "select * from arbeiter right join abteilung on arbeiter.AbteilungID = abteilung.idAbteilung;";
@@ -76,7 +76,7 @@ public class ArbeiterJDBCDAO implements ArbeiterDAO {
 		}
 		return mitarbeiter;
 	}
-	
+
 	@Override
 	public boolean updateUser(Arbeiter a, String kuerzel) throws SQLException {
 		String sql = "Select * from abteilung where Abteilungsname='" + a.getAbteilung() + "';";
@@ -84,14 +84,13 @@ public class ArbeiterJDBCDAO implements ArbeiterDAO {
 		ps = con.prepareStatement(sql);
 		rs = ps.executeQuery();
 		int abteilungid = rs.getInt("idAbteilung");
-		String sql1 = "UPDATE arbeiter set idArbeiter='" + a.getIdarbeiter() + "', Name='" + a.getName() + "', Nachname='" + a.getNachname() + "', "
-				+ "Wohnort='" + a.getWohnort() + "', "
+		String sql1 = "UPDATE arbeiter set idArbeiter='" + a.getIdarbeiter() + "', Name='" + a.getName() + "', Nachname='" + a.getNachname() + "', " + "Wohnort='" + a.getWohnort() + "', "
 				+ "Funktion='" + a.getFunktion() + "', AbteilungID=" + abteilungid + ", kuerzel='" + a.getKuerzel() + "' where kuerzel='" + kuerzel + "'";
 		ps = con.prepareStatement(sql1);
 		ps.executeUpdate();
 		return true;
 	}
-	
+
 	@Override
 	public boolean createUser(Arbeiter a) throws SQLException {
 		String sql = "Select * from abteilung where Abteilungsname='" + a.getAbteilung() + "';";
@@ -101,9 +100,8 @@ public class ArbeiterJDBCDAO implements ArbeiterDAO {
 		int abteilungid = rs.getInt("idAbteilung");
 		ps = null;
 		rs = null;
-		String sql2 = "INSERT INTO arbeiter (idArbeiter, Name, Nachname, Wohnort, Funktion, AbteilungID, kuerzel) values ('" + a.getIdarbeiter() + "', "
-				+ "'" + a.getName() + "', '" + a.getNachname() + "', '" + a.getWohnort() + "', '" + a.getFunktion() + "', " + abteilungid + ", "
-						+ "'" + a.getKuerzel() + "')";
+		String sql2 = "INSERT INTO arbeiter (idArbeiter, Name, Nachname, Wohnort, Funktion, AbteilungID, kuerzel) values ('" + a.getIdarbeiter() + "', " + "'" + a.getName() + "', '" + a.getNachname()
+				+ "', '" + a.getWohnort() + "', '" + a.getFunktion() + "', " + abteilungid + ", " + "'" + a.getKuerzel() + "')";
 		ps = con.prepareStatement(sql2);
 		rs = ps.executeQuery();
 		return true;
@@ -123,9 +121,8 @@ public class ArbeiterJDBCDAO implements ArbeiterDAO {
 		String sql = "Select * from abteilung;";
 		con = Datenbank.getCon();
 		ps = con.prepareStatement(sql);
-		closeCon();
 		rs = ps.executeQuery();
-		while(rs.next()) {
+		while (rs.next()) {
 			abteilungen.add(new String(rs.getString("Abteilungsname")));
 		}
 		return abteilungen;
