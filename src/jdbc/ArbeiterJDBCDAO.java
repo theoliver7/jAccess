@@ -103,6 +103,8 @@ public class ArbeiterJDBCDAO extends Datenbank implements ArbeiterDAO {
 		ps = con.prepareStatement(sql);
 		rs = ps.executeQuery();
 		int abteilungid = rs.getInt("idAbteilung");
+		ps = null;
+		rs = null;
 		String sql2 = "INSERT INTO arbeiter (idArbeiter, Name, Nachname, Wohnort, Funktion, AbteilungID, kuerzel) values ('" + a.getIdarbeiter() + "', "
 				+ "'" + a.getName() + "', '" + a.getNachname() + "', '" + a.getWohnort() + "', '" + a.getFunktion() + "', " + abteilungid + ", "
 						+ "'" + a.getKuerzel() + "')";
@@ -117,7 +119,20 @@ public class ArbeiterJDBCDAO extends Datenbank implements ArbeiterDAO {
 		String sql = "UPDATE arbeiter SET Pic = '" + pic + "' WHERE kuerzel = '" + kuerzel + "';";
 		con = Datenbank.getCon();
 		ps = con.prepareStatement(sql);
-		closeCon();
 		ps.executeUpdate();
+	}
+
+	@Override
+	public List<String> getAllAbteilungen() throws SQLException {
+		List<String> abteilungen = new ArrayList<String>();
+		String sql = "Select * from abteilung;";
+		con = Datenbank.getCon();
+		ps = con.prepareStatement(sql);
+		closeCon();
+		rs = ps.executeQuery();
+		while(rs.next()) {
+			abteilungen.add(new String(rs.getString("Abteilungsname")));
+		}
+		return abteilungen;
 	}
 }

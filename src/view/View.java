@@ -132,7 +132,7 @@ public class View extends JFrame {
 		mnSettings.add(mntmAccount);
 
 		JMenuItem mntmAdminLogin = new JMenuItem("Admin Login");
-		mntmAdminLogin.addActionListener(new LoginListener());
+		mntmAdminLogin.addActionListener(new LoginListener(this));
 		mnSettings.add(mntmAdminLogin);
 
 		JMenu mnHelp = new JMenu("Help");
@@ -548,7 +548,6 @@ public class View extends JFrame {
 
 		chart_panel.add(chartPanel);
 
-		time_panel.add(chart_panel);
 
 		JPanel online_panel = new JPanel();
 		content.add(online_panel, BorderLayout.SOUTH);
