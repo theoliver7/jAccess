@@ -5,5 +5,7 @@
 	<classpathentry kind="lib" path="T:/_Team/zascho/08 - Anwendungsentwicklung/workspace/jAccess/libs/commons-lang3-3.3.1.jar"/>
 	<classpathentry kind="lib" path="T:/_Team/zascho/08 - Anwendungsentwicklung/workspace/jAccess/libs/commons-lang3-3.3.1-javadoc.jar"/>
 	<classpathentry kind="lib" path="T:/_Team/zascho/08 - Anwendungsentwicklung/workspace/jAccess/libs/mysql-connector-java-5.1.30.jar"/>
+	<classpathentry kind="lib" path="D:/Users/zascho/Downloads/jfreechart-1.0.19/lib/jcommon-1.0.23.jar"/>
+	<classpathentry kind="lib" path="D:/Users/zascho/Downloads/jfreechart-1.0.19/lib/jfreechart-1.0.19.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
