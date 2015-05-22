@@ -27,7 +27,7 @@ public class ZeitJDBCDAO extends Datenbank implements ZeitDAO {
 	@Override
 	public List<Timestamp> arbeitszeitauslesen(String uid) throws SQLException {
 		List<Timestamp> daten = new ArrayList<Timestamp>();
-		String sql = "SELECT idZeit, timestamp, ArbeiterID FROM zeit WHERE ArbeiterID =(?)ORDER BY timestamp ASC";
+		String sql = "SELECT * FROM zeit WHERE ArbeiterID =(?) AND MONTH(timestamp) = MONTH(CURDATE()) AND YEAR(timestamp) = YEAR(CURDATE()) ORDER BY timestamp ASC ";
 		con = Datenbank.getCon();
 		ps = con.prepareStatement(sql);
 		ps.setString(1, uid);
