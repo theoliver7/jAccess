@@ -75,7 +75,7 @@ public class UserClient {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			
+
 			serverobj = (UserIntf) Naming.lookup(server);
 		} catch (MalformedURLException | RemoteException | NotBoundException e) {
 			JOptionPane.showMessageDialog(null, "Der Server hat zurzeit Probleme! \nBitte wenden " + "Sie sich an den IT-Support.", "Fehler", JOptionPane.ERROR_MESSAGE);
@@ -90,33 +90,50 @@ public class UserClient {
 
 		try {
 			ucl.setYou(getServer().getYourArbeiter(ucl.getKuerzel()));
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
+		try {
 			ucl.setTeam(getServer().getYourTeam(ucl.getYou().getAbteilung(), ucl.getKuerzel()));
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
 
-			Zeit z = new Zeit();
+		Zeit z = new Zeit();
+		try {
 			try {
-				if (getServer().getWorktimes(ucl.getYou().getIdarbeiter()) != null || !(getServer().getWorktimes(ucl.getYou().getIdarbeiter()).isEmpty()) || 
-						getServer().getWorktimes(ucl.getYou().getIdarbeiter()).size() != 0) {
+				if (getServer().getWorktimes(ucl.getYou().getIdarbeiter()) != null || !(getServer().getWorktimes(ucl.getYou().getIdarbeiter()).isEmpty())
+						|| getServer().getWorktimes(ucl.getYou().getIdarbeiter()).size() != 0) {
 					ucl.setArbeitszeit(z.totalberechnen(z.zeitenorganisieren(getServer().getWorktimes(ucl.getYou().getIdarbeiter()))));
 				} else {
-					System.out.println("hello");
 					ucl.setArbeitszeit(new ArrayList<ArrayList<String>>());
 				}
-			} catch (SQLException | ParseException e1) {
-				e1.printStackTrace();
+			} catch (RemoteException  | IndexOutOfBoundsException e ) {
+				ArrayList<ArrayList<String>> notimes = new ArrayList<ArrayList<String>>();
+				ArrayList<String> row = new ArrayList<String>();
+				row.add("Noch keine Arbeitszeiten!");
+				notimes.add(row);
+				ucl.setArbeitszeit(notimes);
 			}
+		} catch (SQLException | ParseException e1) {
+		}
 
+		try {
 			for (Arbeiter a : getServer().getYourTeam(ucl.getYou().getAbteilung(), ucl.getKuerzel())) {
 				if (a.getKuerzel().equals(ucl.getKuerzel())) {
 					UserClient.getServer().addUser(a);
 				}
 			}
-
-			System.out.println(getServer().getWhoishere());
-			System.out.println(ucl.getKuerzel());
-		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, "Keine Verbindung zur Datenbank! \nBitte wenden " + "Sie sich an den IT-Support.", "Fehler", JOptionPane.ERROR_MESSAGE);
+		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
+
+		try {
+			System.out.println(getServer().getWhoishere());
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
+		System.out.println(ucl.getKuerzel());
 
 		View frame = new View(ucl);
 		frame.setVisible(true);

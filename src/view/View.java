@@ -11,6 +11,9 @@ import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.net.URL;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -27,6 +30,7 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
@@ -88,7 +92,7 @@ public class View extends JFrame {
 	// Icons fürs GUI
 	private static final Icon online = loadIcon("bullet_green.png");
 	private static final Icon offline = loadIcon("bullet_red.png");
-	private JTable time_tabel_1;
+	private JTable time_table_1;
 
 	/**
 	 * Create the frame.
@@ -115,6 +119,7 @@ public class View extends JFrame {
 		menuBar.add(mnFile);
 
 		JMenuItem mntmPrint = new JMenuItem("Drucken");
+
 		mnFile.add(mntmPrint);
 
 		JMenuItem mntmExit = new JMenuItem("Beenden");
@@ -421,7 +426,7 @@ public class View extends JFrame {
 		time_panel.setLayout(null);
 
 		JLabel chart_label = new JLabel("Diagramm");
-		chart_label.setBounds(44, 245, 55, 16);
+		chart_label.setBounds(44, 245, 71, 16);
 		time_panel.add(chart_label);
 
 		JSeparator separator_17 = new JSeparator();
@@ -461,7 +466,7 @@ public class View extends JFrame {
 		time_panel.add(separator_23);
 
 		JSeparator separator_24 = new JSeparator();
-		separator_24.setBounds(95, 254, 875, 16);
+		separator_24.setBounds(109, 254, 861, 16);
 		time_panel.add(separator_24);
 
 		JSeparator separator_25 = new JSeparator();
@@ -513,9 +518,74 @@ public class View extends JFrame {
 			ArrayList<String> row = ucl.getArbeitszeit().get(i);
 			daten[i] = row.toArray(new String[row.size()]);
 		}
-		time_tabel_1 = new JTable();
-		time_tabel_1.setModel(new DefaultTableModel(daten, new String[] { "Datum", "Morgen", "Mittag", "Nachmittag", "Abend", "Total" }));
-		scrollPane_1.setViewportView(time_tabel_1);
+		time_table_1 = new JTable();
+		time_table_1.setModel(new DefaultTableModel(daten, new String[] { "Datum", "Morgen", "Mittag", "Nachmittag", "Abend", "Total" }));
+		time_table_1.getColumnModel().getColumn(1).setPreferredWidth(120);
+		scrollPane_1.setViewportView(time_table_1);
+		mntmPrint.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					// the file path
+					File file = new File("D:\\Users\\zascho\\Desktop\\Zeitnachweisblatt.txt");
+					// if the file not exist create one
+					if (!file.exists()) {
+						file.createNewFile();
+					}
+
+					FileWriter filewriter = new FileWriter(file.getAbsoluteFile());
+					BufferedWriter bufferdwriter = new BufferedWriter(filewriter);
+					bufferdwriter.write(System.getProperty("line.separator"));
+					bufferdwriter.write("Arbeitszeiten von "+ getUcl().getYou().getName()+"\t\t\t\t\t\t\t\t\t JAccess");
+					bufferdwriter.write(System.getProperty("line.separator"));
+					bufferdwriter.write(getUcl().getYou().getNachname());
+					bufferdwriter.write(System.getProperty("line.separator"));
+					bufferdwriter.write(getUcl().getYou().getAbteilung());
+					bufferdwriter.write(System.getProperty("line.separator"));
+					bufferdwriter.write(getUcl().getYou().getWohnort());
+					bufferdwriter.write(System.getProperty("line.separator"));
+					bufferdwriter.write(System.getProperty("line.separator"));
+					bufferdwriter.write(System.getProperty("line.separator"));
+
+					bufferdwriter.write("________________________________________________________________________________________________________");
+
+					bufferdwriter.write(System.getProperty("line.separator"));
+					bufferdwriter.write("|");
+					bufferdwriter.write("\t\t\t\t\t\t\t\t\t\t\t\t\t");
+					bufferdwriter.write("|");
+					bufferdwriter.write(System.getProperty("line.separator"));
+
+					// loop for jtable rows
+					for (int i = 0; i < time_table_1.getRowCount(); i++) {
+						// loop for jtable column
+						bufferdwriter.write("|");
+						for (int j = 0; j < time_table_1.getColumnCount(); j++) {
+							bufferdwriter.write("\t");
+							if (time_table_1.getModel().getValueAt(i, j) != null) {
+								bufferdwriter.write(time_table_1.getModel().getValueAt(i, j) + " ");
+								bufferdwriter.write("\t");
+							}
+
+						}
+						// break line at the begin
+						// break line at the end
+						bufferdwriter.write("|");
+						bufferdwriter.write(System.getProperty("line.separator"));
+
+					}
+					// close BufferedWriter
+					bufferdwriter.write("________________________________________________________________________________________________________");
+					bufferdwriter.close();
+					// close FileWriter
+					filewriter.close();
+					JOptionPane.showMessageDialog(null, "Zeitnachweisblatt wurde in den Desktop exportiert");
+
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				}
+			}
+		});
 
 		JLabel tabel_label = new JLabel("Arbeitszeiten");
 		tabel_label.setBounds(44, 11, 71, 14);
@@ -531,7 +601,7 @@ public class View extends JFrame {
 		JSeparator separator = new JSeparator();
 		online_panel.add(separator);
 
-		JLabel lblYouAreOnline = new JLabel ("Sie[" + getUcl().getYou().getName() + "] sind Online");
+		JLabel lblYouAreOnline = new JLabel("Sie [<dynamic>] sind Online");
 		online_panel.add(lblYouAreOnline);
 
 		class Prozess extends TimerTask {
