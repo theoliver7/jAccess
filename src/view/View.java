@@ -426,7 +426,7 @@ public class View extends JFrame {
 		time_panel.setLayout(null);
 
 		JLabel chart_label = new JLabel("Diagramm");
-		chart_label.setBounds(44, 245, 55, 16);
+		chart_label.setBounds(44, 245, 71, 16);
 		time_panel.add(chart_label);
 
 		JSeparator separator_17 = new JSeparator();
@@ -466,7 +466,7 @@ public class View extends JFrame {
 		time_panel.add(separator_23);
 
 		JSeparator separator_24 = new JSeparator();
-		separator_24.setBounds(95, 254, 875, 16);
+		separator_24.setBounds(109, 254, 861, 16);
 		time_panel.add(separator_24);
 
 		JSeparator separator_25 = new JSeparator();
@@ -601,7 +601,7 @@ public class View extends JFrame {
 		JSeparator separator = new JSeparator();
 		online_panel.add(separator);
 
-		JLabel lblYouAreOnline = new JLabel("Sie[" + getUcl().getYou().getName() + "] sind Online");
+		JLabel lblYouAreOnline = new JLabel("Sie [<dynamic>] sind Online");
 		online_panel.add(lblYouAreOnline);
 
 		class Prozess extends TimerTask {

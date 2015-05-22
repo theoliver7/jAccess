@@ -117,8 +117,8 @@ public class ArbeiterJDBCDAO extends Datenbank implements ArbeiterDAO {
 		String sql = "UPDATE arbeiter SET Pic = '" + pic + "' WHERE kuerzel = '" + kuerzel + "';";
 		con = Datenbank.getCon();
 		ps = con.prepareStatement(sql);
-		closeCon();
 		ps.executeUpdate();
+		closeCon();
 	}
 
 	@Override
