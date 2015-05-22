@@ -17,26 +17,18 @@ public class Zeit {
 	private ArrayList<Timestamp> tag = new ArrayList<Timestamp>();
 	private ArrayList<ArrayList<Timestamp>> alleTage = new ArrayList<ArrayList<Timestamp>>();
 
-	public ArrayList<ArrayList<String>> totalberechnen(
-			ArrayList<ArrayList<Timestamp>> arrayList) throws SQLException,
-			ParseException {
+	public ArrayList<ArrayList<String>> totalberechnen(ArrayList<ArrayList<Timestamp>> arrayList) throws SQLException, ParseException {
 		int tagzaehler = 0;
 		int zeitzaehler = 0;
-		System.out.println(arrayList.size());
 		for (int i = 0; i < arrayList.size(); i++) {
-			System.out.println("hi");
 			if (arrayList.get(tagzaehler).size() == 4) {
 				zeitzaehler = 0;
-				System.out.println(tagzaehler + "    " + zeitzaehler);
 
-				Timestamp beginnMorgen = arrayList.get(tagzaehler).get(
-						zeitzaehler);
+				Timestamp beginnMorgen = arrayList.get(tagzaehler).get(zeitzaehler);
 				zeitzaehler++;
-				Timestamp endeMorgen = arrayList.get(tagzaehler).get(
-						zeitzaehler);
+				Timestamp endeMorgen = arrayList.get(tagzaehler).get(zeitzaehler);
 				zeitzaehler++;
-				Timestamp beginnNachmittag = arrayList.get(tagzaehler).get(
-						zeitzaehler);
+				Timestamp beginnNachmittag = arrayList.get(tagzaehler).get(zeitzaehler);
 				zeitzaehler++;
 				Timestamp endeNachmittag = arrayList.get(tagzaehler).get(zeitzaehler);
 				zeitzaehler++;
@@ -50,23 +42,18 @@ public class Zeit {
 				finaltag.add(5, total);
 				finalalleTage.add(finaltag);
 				finaltag = new ArrayList<String>();
-				System.out.println(finalalleTage);
 
 			} else {
-				System.out.println();
-				System.out.println("--------------------------------------");
-				System.out.println();
 				finaltag.add("Zeiten nicht  ");
 				finaltag.add("korrekt eingetragen");
 				finaltag.add("am " + datumformatieren(arrayList.get(tagzaehler).get(0)));
 				finalalleTage.add(finaltag);
 				finaltag = new ArrayList<String>();
-				System.out.println(finalalleTage);
+
 			}
 			tagzaehler++;
 
 		}
-		System.out.println(finalalleTage);
 		return finalalleTage;
 	}
 
@@ -78,9 +65,8 @@ public class Zeit {
 		while (i < arraygroesse) {
 			if (DateUtils.isSameDay(ersterTag, list.get(0))) {
 				tag.add(list.get(position));
-				System.out.println(list);
 				list.remove(position);
-				System.out.println("Tag"+tag);
+
 			} else {
 				alleTage.add(tag);
 				ersterTag = list.get(0);
@@ -92,14 +78,11 @@ public class Zeit {
 			tag.add(list.get(0));
 		}
 		alleTage.add(tag);
-		System.out.println("SALII:" + alleTage);
 		return alleTage;
 	}
 
-	public long rechnen(Timestamp date1, Timestamp date2, Timestamp date3,
-			Timestamp date4) {
-		long diffInMillies = date2.getTime() - date1.getTime()
-				+ date4.getTime() - date3.getTime();
+	public long rechnen(Timestamp date1, Timestamp date2, Timestamp date3, Timestamp date4) {
+		long diffInMillies = date2.getTime() - date1.getTime() + date4.getTime() - date3.getTime();
 		return diffInMillies;
 	}
 
@@ -120,11 +103,7 @@ public class Zeit {
 		long minute = (diff / (1000 * 60)) % 60;
 		long hour = (diff / (1000 * 60 * 60)) % 24;
 		diff = diff % 1000;
-		String time = String.format("%02d:%02d", hour, minute,second, diff);
+		String time = String.format("%02d:%02d", hour, minute, second, diff);
 		return time;
 	}
 }
-
-
-
-

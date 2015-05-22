@@ -468,7 +468,6 @@ public class View extends JFrame {
 		separator_25.setBounds(7, 254, 33, 7);
 		time_panel.add(separator_25);
 
-
 		JPanel chart_panel = new JPanel();
 		chart_panel.setBounds(7, 255, 964, 228);
 		chart_panel.setLayout(new GridLayout());
@@ -483,14 +482,11 @@ public class View extends JFrame {
 			try {
 				total = ucl.getArbeitszeit().get(tagzeahler).get(totalzeahler);
 				total = total.replace(':', '.');
-				System.out.println(total);
 				Double toal_float = Double.valueOf(total);
-
-				System.out.println(toal_float);
 				series.add(emptydouble, toal_float);
 				emptydouble++;
 				tagzeahler = tagzeahler + 1;
-				System.out.println(series.toString());
+
 			} catch (IndexOutOfBoundsException e) {
 				series.add(emptydouble, novalues);
 				emptydouble++;
@@ -535,7 +531,7 @@ public class View extends JFrame {
 		JSeparator separator = new JSeparator();
 		online_panel.add(separator);
 
-		JLabel lblYouAreOnline = new JLabel("Sie [<dynamic>] sind online");
+		JLabel lblYouAreOnline = new JLabel ("Sie[" + getUcl().getYou().getName() + "] sind Online");
 		online_panel.add(lblYouAreOnline);
 
 		class Prozess extends TimerTask {
