@@ -94,7 +94,8 @@ public class UserClient {
 
 			Zeit z = new Zeit();
 			try {
-				if (getServer().getWorktimes(ucl.getYou().getIdarbeiter()) != null) {
+				if (getServer().getWorktimes(ucl.getYou().getIdarbeiter()) != null || !(getServer().getWorktimes(ucl.getYou().getIdarbeiter()).isEmpty()) || 
+						getServer().getWorktimes(ucl.getYou().getIdarbeiter()).size() != 0) {
 					ucl.setArbeitszeit(z.totalberechnen(z.zeitenorganisieren(getServer().getWorktimes(ucl.getYou().getIdarbeiter()))));
 				} else {
 					System.out.println("hello");

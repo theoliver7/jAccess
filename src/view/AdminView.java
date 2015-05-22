@@ -13,6 +13,8 @@ import java.awt.Font;
 import java.awt.Color;
 import java.awt.SystemColor;
 
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JSeparator;
 import javax.swing.JScrollPane;
@@ -32,9 +34,11 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.rmi.RemoteException;
+import java.util.Collection;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.Vector;
 
 import jdbc.Arbeiter;
 import listener.ProfileListener;
@@ -50,13 +54,16 @@ public class AdminView extends JFrame {
 	private JTextField kuerzel;
 	private JTextField wohnort;
 	private JTextField funktion;
+	private JComboBox abteilungBox;
 
 	private Timer timer;
+	private View view;
 
 	/**
 	 * Create the frame.
 	 */
-	public AdminView() {
+	public AdminView(View view) {
+		this.setView(view);
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 540, 501);
@@ -144,12 +151,45 @@ public class AdminView extends JFrame {
 		funktion.setColumns(10);
 		funktion.setBounds(127, 209, 191, 28);
 		panel_3.add(funktion);
-
-		JComboBox abteilungBox = new JComboBox();
+		
+		Vector<String> comboBoxItems = new Vector<String>();
+		try {
+			Collection<String> abteilungen = UserClient.getServer().getAbteilungen();
+			comboBoxItems.addAll(abteilungen);
+		} catch (RemoteException e2) {
+			e2.printStackTrace();
+		}
+		DefaultComboBoxModel<String> model = new DefaultComboBoxModel<String>(comboBoxItems);
+		abteilungBox = new JComboBox(model);
 		abteilungBox.setBounds(127, 244, 191, 26);
 		panel_3.add(abteilungBox);
 
 		JButton createbtn = new JButton("Erstellen");
+		createbtn.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					if(!(uid.getText().equals("")) || !(vorname.getText().equals("")) || !(nachname.getText().equals("")) || !(kuerzel.getText().equals(""))
+							|| !(wohnort.getText().equals("")) || !(funktion.getText().equals("")) || !(abteilungBox.getSelectedItem().equals(""))) {
+						Arbeiter a = new Arbeiter();
+						a.setIdarbeiter(uid.getText());
+						a.setName(vorname.getText());
+						a.setNachname(nachname.getText());
+						a.setKuerzel(kuerzel.getText());
+						a.setWohnort(wohnort.getText());
+						a.setFunktion(funktion.getText());
+						a.setAbteilung((String) abteilungBox.getSelectedItem());
+						UserClient.getServer().insertArbeiter(a);
+					} else {
+						JOptionPane.showMessageDialog(null, "Bitte alle Felder ausfüllen!", "Fehler", JOptionPane.ERROR_MESSAGE);
+					}
+				} catch (RemoteException e1) {
+					e1.printStackTrace();
+				}
+			}
+			
+		});
 		createbtn.setBounds(214, 302, 90, 28);
 		panel_3.add(createbtn);
 
@@ -157,7 +197,7 @@ public class AdminView extends JFrame {
 		savebtn.setBounds(112, 302, 90, 28);
 		panel_3.add(savebtn);
 
-		JButton delbtn = new JButton("L\u00F6schen");
+		JButton delbtn = new JButton("Löschen");
 		delbtn.setBounds(10, 302, 90, 28);
 		panel_3.add(delbtn);
 
@@ -194,6 +234,20 @@ public class AdminView extends JFrame {
 		panel_1.add(lblMitarbeiterverwaltung, gbc_lblMitarbeiterverwaltung);
 
 		JButton btnNeuerBenutzer = new JButton("Neuer Benutzer");
+		btnNeuerBenutzer.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				uid.setText("");
+				vorname.setText("");
+				nachname.setText("");
+				kuerzel.setText("");
+				wohnort.setText("");
+				funktion.setText("");
+				abteilungBox.setSelectedIndex(0);
+			}
+			
+		});
 		GridBagConstraints gbc_btnNeuerBenutzer = new GridBagConstraints();
 		gbc_btnNeuerBenutzer.insets = new Insets(0, 0, 0, 5);
 		gbc_btnNeuerBenutzer.gridx = 9;
@@ -221,12 +275,17 @@ public class AdminView extends JFrame {
 			List<Arbeiter> team = UserClient.getServer().getAllArbeiter();
 
 			for (Arbeiter a : team) {
-				JLabel label = new JLabel(a.getName() + " " + a.getNachname() + " " + you, JLabel.LEFT);
+				JLabel label = new JLabel(a.getName() + " " + a.getNachname(), JLabel.LEFT);
 				label.addMouseListener(new MouseListener() {
 
 					@Override
 					public void mousePressed(MouseEvent e) {
-						// TODO Actions für drücken auf profil
+						uid.setText(a.getIdarbeiter());
+						vorname.setText(a.getName());
+						nachname.setText(a.getNachname());
+						kuerzel.setText(a.getKuerzel());
+						wohnort.setText(a.getWohnort());
+						funktion.setText(a.getFunktion());
 					}
 
 					@Override
@@ -261,5 +320,13 @@ public class AdminView extends JFrame {
 
 	public void setTimer(Timer timer) {
 		this.timer = timer;
+	}
+
+	public View getView() {
+		return view;
+	}
+
+	public void setView(View view) {
+		this.view = view;
 	}
 }

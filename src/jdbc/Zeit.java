@@ -38,12 +38,10 @@ public class Zeit {
 				Timestamp beginnNachmittag = arrayList.get(tagzaehler).get(
 						zeitzaehler);
 				zeitzaehler++;
-				Timestamp endeNachmittag = arrayList.get(tagzaehler).get(
-						zeitzaehler);
+				Timestamp endeNachmittag = arrayList.get(tagzaehler).get(zeitzaehler);
 				zeitzaehler++;
 				String datum = datumformatieren(beginnMorgen);
-				String total = leserlichmachen(rechnen(beginnMorgen,
-						endeMorgen, beginnNachmittag, endeNachmittag));
+				String total = leserlichmachen(rechnen(beginnMorgen, endeMorgen, beginnNachmittag, endeNachmittag));
 				finaltag.add(0, datum);
 				finaltag.add(1, zeitformatieren(beginnMorgen));
 				finaltag.add(2, zeitformatieren(endeMorgen));
@@ -60,8 +58,7 @@ public class Zeit {
 				System.out.println();
 				finaltag.add("Zeiten nicht  ");
 				finaltag.add("korrekt eingetragen");
-				finaltag.add("am "
-						+ datumformatieren(arrayList.get(tagzaehler).get(0)));
+				finaltag.add("am " + datumformatieren(arrayList.get(tagzaehler).get(0)));
 				finalalleTage.add(finaltag);
 				finaltag = new ArrayList<String>();
 				System.out.println(finalalleTage);
@@ -81,27 +78,21 @@ public class Zeit {
 		while (i < arraygroesse) {
 			if (DateUtils.isSameDay(ersterTag, list.get(0))) {
 				tag.add(list.get(position));
-				System.out.println("List:"+list);
+				System.out.println(list);
 				list.remove(position);
-				System.out.println("Tag: "+tag);
-				System.out.println();
+				System.out.println("Tag"+tag);
 			} else {
 				alleTage.add(tag);
-				System.out.println();
-				System.out.println("Alletag: "+alleTage);
-				System.out.println();
 				ersterTag = list.get(0);
 				tag = new ArrayList<Timestamp>();
 			}
 			i++;
 		}
-		while(list.size() != 0){
+		if (list.size() > 1) {
 			tag.add(list.get(0));
-			list.remove(0);
 		}
-		
 		alleTage.add(tag);
-		System.out.println("Final:" + alleTage);
+		System.out.println("SALII:" + alleTage);
 		return alleTage;
 	}
 
@@ -129,7 +120,7 @@ public class Zeit {
 		long minute = (diff / (1000 * 60)) % 60;
 		long hour = (diff / (1000 * 60 * 60)) % 24;
 		diff = diff % 1000;
-		String time = String.format("%02d:%02d", hour, minute, second, diff);
+		String time = String.format("%02d:%02d", hour, minute,second, diff);
 		return time;
 	}
 }

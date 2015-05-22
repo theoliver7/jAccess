@@ -15,4 +15,6 @@ public interface ArbeiterDAO {
 	public boolean updateUser(Arbeiter a, String kuerzel) throws SQLException;
 	
 	public boolean createUser(Arbeiter a) throws SQLException;
+	
+	public List<String> getAllAbteilungen() throws SQLException;
 }

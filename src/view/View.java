@@ -128,7 +128,7 @@ public class View extends JFrame {
 		mnSettings.add(mntmAccount);
 
 		JMenuItem mntmAdminLogin = new JMenuItem("Admin Login");
-		mntmAdminLogin.addActionListener(new LoginListener());
+		mntmAdminLogin.addActionListener(new LoginListener(this));
 		mnSettings.add(mntmAdminLogin);
 
 		JMenu mnHelp = new JMenu("Hilfe");
@@ -468,6 +468,44 @@ public class View extends JFrame {
 		separator_25.setBounds(7, 254, 33, 7);
 		time_panel.add(separator_25);
 
+<<<<<<< HEAD
+=======
+		JPanel table_panel = new JPanel();
+		table_panel.setBounds(6, 26, 964, 181);
+		time_panel.add(table_panel);
+		table_panel.setLayout(null);
+
+		Object rowData[][] = new String[ucl.getArbeitszeit().size()][];
+		for (int i = 0; i < ucl.getArbeitszeit().size(); i++) {
+			ArrayList<String> row = ucl.getArbeitszeit().get(i);
+			rowData[i] = row.toArray(new String[row.size()]);
+		}
+		Object columnNames[] = { "Date", "Morning", "Lunch", "Evening", "Total" };
+
+		JTable time_tabel = new JTable(rowData, columnNames);
+		time_tabel.setEnabled(false);
+
+		String[][] daten = new String[ucl.getArbeitszeit().size()][];
+		for (int i = 0; i < ucl.getArbeitszeit().size(); i++) {
+			ArrayList<String> row = ucl.getArbeitszeit().get(i);
+			daten[i] = row.toArray(new String[row.size()]);
+		}
+		time_tabel.setModel(new DefaultTableModel(daten, new String[] { "Date", "Morning", "Lunch", "Noon", "Evening", "Total" }));
+		time_tabel.setFillsViewportHeight(true);
+		time_tabel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		time_tabel.setShowGrid(false);
+		time_tabel.setShowVerticalLines(true);
+		time_tabel.setShowHorizontalLines(true);
+		time_tabel.setBackground(Color.WHITE);
+		time_tabel.setBounds(6, 6, 952, 169);
+
+		JTableHeader header = time_tabel.getTableHeader();
+		table_panel.setLayout(new BorderLayout());
+		table_panel.add(header, BorderLayout.NORTH);
+		table_panel.add(time_tabel, BorderLayout.CENTER);
+		table_panel.add(time_tabel);
+
+>>>>>>> origin/master
 		JPanel chart_panel = new JPanel();
 		chart_panel.setBounds(7, 255, 964, 228);
 		chart_panel.setLayout(new GridLayout());
@@ -505,7 +543,6 @@ public class View extends JFrame {
 
 		chart_panel.add(chartPanel);
 
-		time_panel.add(chart_panel);
 
 		JScrollPane scrollPane_1 = new JScrollPane();
 		scrollPane_1.setBounds(7, 30, 963, 178);

@@ -30,23 +30,13 @@ public class Login extends JDialog {
 	private JTextField textField;
 	private JPasswordField passwordField;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		try {
-			Login dialog = new Login();
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+	private View view;
 
 	/**
 	 * Create the dialog.
 	 */
-	public Login() {
+	public Login(View view) {
+		this.setView(view);
 		setResizable(false);
 		setTitle("jAccess - Admin Login");
 		setBounds(100, 100, 271, 205);
@@ -99,10 +89,12 @@ public class Login extends JDialog {
 						try {
 							Remote remote = Naming.lookup("//localhost/Validator");
 							Validator validator = (Validator) remote;
-							String id = lblUsername.getText();
-							String pw = lblPasswort.getText();
-							if(validator.validate(id, pw)) {
-								AdminView frame = new AdminView();
+							String id = textField.getText();
+							String pw = passwordField.getText();
+							boolean bool = validator.validate(id, pw);
+							if(bool == true) {
+								setVisible(false);
+								AdminView frame = new AdminView(getView());
 								frame.setVisible(true);
 							}
 						} catch (MalformedURLException | RemoteException | NotBoundException e1) {
@@ -128,5 +120,13 @@ public class Login extends JDialog {
 				buttonPane.add(cancelButton);
 			}
 		}
+	}
+
+	public View getView() {
+		return view;
+	}
+
+	public void setView(View view) {
+		this.view = view;
 	}
 }

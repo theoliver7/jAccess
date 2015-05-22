@@ -34,6 +34,12 @@ public interface UserIntf extends Remote {
 	 * @throws RemoteException
 	 */
 	public List<Arbeiter> getAllArbeiter() throws RemoteException;
+	
+	public void insertArbeiter(Arbeiter a) throws RemoteException;
+	
+	public void updateArbeiter(Arbeiter a, String kuerzel) throws RemoteException;
+	
+	public List<String> getAbteilungen() throws RemoteException;
 
 	/**
 	 * Gibt dem UserClient eine Liste seiner Mitarbeiter mit für das GUI.

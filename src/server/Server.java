@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+import javax.swing.JOptionPane;
+
 import validator.Validator;
 import validator.ValidatorImpl;
 import jdbc.Arbeiter;
@@ -69,8 +71,8 @@ public class Server extends UnicastRemoteObject implements CardIntf, UserIntf {
 		} catch (RemoteException re) {
 			System.err.println("Registry existiert schon");
 			try {
-			LocateRegistry.createRegistry(1100);
-			System.out.println("1099 ist besetzt. Neues Registry wird erstellt.");
+				LocateRegistry.createRegistry(1100);
+				System.out.println("1099 ist besetzt. Neues Registry wird erstellt.");
 			} catch (RemoteException re1) {
 				System.out.println("Registry existiert ebenfalls schon");
 				re1.printStackTrace();
@@ -87,7 +89,7 @@ public class Server extends UnicastRemoteObject implements CardIntf, UserIntf {
 				e.printStackTrace();
 			}
 			System.out.println(servername + " || " + server.toString());
-			
+
 			Validator validator = new ValidatorImpl();
 			Naming.rebind("//localhost/Validator", validator);
 			System.out.println("Validator eingebunden!");
@@ -100,6 +102,15 @@ public class Server extends UnicastRemoteObject implements CardIntf, UserIntf {
 	}
 
 	// Methoden für Reader
+	@Override
+	public String getResponse() {
+		if (uid != null) {
+			return response;
+		} else {
+			return "Fehler bei der Übermittlung!";
+		}
+	}
+	
 	@Override
 	public void receiveUid(String uid) throws SQLException {
 		this.setUid(uid);
@@ -117,7 +128,7 @@ public class Server extends UnicastRemoteObject implements CardIntf, UserIntf {
 		}
 		return you;
 	}
-	
+
 	@Override
 	public List<Arbeiter> getAllArbeiter() throws RemoteException {
 		List<Arbeiter> mitarbeiter = null;
@@ -127,6 +138,38 @@ public class Server extends UnicastRemoteObject implements CardIntf, UserIntf {
 			e.printStackTrace();
 		}
 		return mitarbeiter;
+	}
+
+	@Override
+	public List<String> getAbteilungen() throws RemoteException {
+		List<String> abteilungen = null;
+		try {
+			abteilungen = this.getArbeiterDb().getAllAbteilungen();
+			abteilungen.add(0, new String(""));
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return abteilungen;
+	}
+
+	@Override
+	public void insertArbeiter(Arbeiter a) throws RemoteException {
+		try {
+			this.getArbeiterDb().createUser(a);
+		} catch (SQLException e) {
+			JOptionPane.showMessageDialog(null, "Arbeiter konnte nicht erstellt werden!", "Fehler", JOptionPane.ERROR_MESSAGE);
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public void updateArbeiter(Arbeiter a, String kuerzel) throws RemoteException {
+		try {
+			this.getArbeiterDb().updateUser(a, kuerzel);
+		} catch (SQLException e) {
+			JOptionPane.showMessageDialog(null, "Arbeiter konnte nicht updatet werden!", "Fehler", JOptionPane.ERROR_MESSAGE);
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -208,14 +251,6 @@ public class Server extends UnicastRemoteObject implements CardIntf, UserIntf {
 	}
 
 	// Getters and Setters
-	public String getResponse() {
-		if (uid != null) {
-			return response;
-		} else {
-			return "Fehler bei der Übermittlung!";
-		}
-	}
-
 	public String getUid() {
 		return uid;
 	}

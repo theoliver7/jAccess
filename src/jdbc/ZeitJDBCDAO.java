@@ -9,16 +9,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 /**
- * Queris für die Zeittabellen
+ * Querys für die Zeittabellen
  * @author Oliver Aschwanden, ICT Berufsbildungscenter AG, oliver.aschwanden@bbcag.ch
  * @version 0.1.0.2.1
  *
  */
+public class ZeitJDBCDAO extends Datenbank implements ZeitDAO {
 
-public class ZeitJDBCDAO implements ZeitDAO {
 	private Connection con = null;
-	private PreparedStatement ps = null;
-	private ResultSet rs = null;
 	
 	/**
 	 * Eine Methode welche die Arbeitszeit nach der UID der NFC Karte ausliest
