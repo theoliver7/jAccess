@@ -607,6 +607,7 @@ public class View extends JFrame {
 		JButton btnNchster = new JButton("Neachster");
 		btnNchster.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+
 				int totalzeahler = 5;
 				int tagzeahler = 0;
 				String total = "";
@@ -616,11 +617,11 @@ public class View extends JFrame {
 				time_table_1.setModel(new DefaultTableModel());
 				Zeit z1 = new Zeit();
 				cal.set(Calendar.MONTH, +1);
-				month=month+1;
+				month = month + 1;
 				System.out.println(cal.get(Calendar.MONTH));
 				try {
-					if (UserClient.getServer().getWorktimesMonth(ucl.getYou().getIdarbeiter(), month, 2015) != null || !(UserClient.getServer().getWorktimesMonth(ucl.getYou().getIdarbeiter(), month, 2015).isEmpty()) || UserClient.getServer().getWorktimesMonth(ucl.getYou().getIdarbeiter(), month , 2015).size() != 0) {
-						ucl.setArbeitszeit(z1.totalberechnen(z1.zeitenorganisieren(UserClient.getServer().getWorktimesMonth(ucl.getYou().getIdarbeiter(), month , 2015))));
+					if (UserClient.getServer().getWorktimesMonth(ucl.getYou().getIdarbeiter(), month, 2015) != null || !(UserClient.getServer().getWorktimesMonth(ucl.getYou().getIdarbeiter(), month, 2015).isEmpty()) || UserClient.getServer().getWorktimesMonth(ucl.getYou().getIdarbeiter(), month, 2015).size() != 0) {
+						ucl.setArbeitszeit(z1.totalberechnen(z1.zeitenorganisieren(UserClient.getServer().getWorktimesMonth(ucl.getYou().getIdarbeiter(), month, 2015))));
 					} else {
 						ucl.setArbeitszeit(new ArrayList<ArrayList<String>>());
 						ArrayList<ArrayList<String>> notimes = new ArrayList<ArrayList<String>>();
@@ -630,7 +631,7 @@ public class View extends JFrame {
 						ucl.setArbeitszeit(notimes);
 					}
 
-				} catch (RemoteException | SQLException | ParseException| IndexOutOfBoundsException e) {
+				} catch (RemoteException | SQLException | ParseException | IndexOutOfBoundsException e) {
 					ArrayList<ArrayList<String>> notimes = new ArrayList<ArrayList<String>>();
 					ArrayList<String> row = new ArrayList<String>();
 					row.add("Noch keine Arbeitszeiten!");
@@ -648,7 +649,7 @@ public class View extends JFrame {
 				time_table_1.setModel(new DefaultTableModel(datenletzer, new String[] { "Datum", "Morgen", "Mittag", "Nachmittag", "Abend", "Total" }));
 				time_table_1.getColumnModel().getColumn(1).setPreferredWidth(120);
 				scrollPane_1.setViewportView(time_table_1);
-				
+
 				for (int i = 0; i < ucl.getArbeitszeit().size(); i++) {
 					try {
 						total = ucl.getArbeitszeit().get(tagzeahler).get(totalzeahler);
@@ -664,10 +665,10 @@ public class View extends JFrame {
 						tagzeahler = tagzeahler + 1;
 					}
 				}
-
+				chartPanel.removeAll();
 				XYSeriesCollection data1 = new XYSeriesCollection(series);
 				JFreeChart chart = ChartFactory.createXYLineChart(null, "Days", "Hours", data1, PlotOrientation.VERTICAL, true, true, true);
-				
+
 				ChartPanel chartPanel = new ChartPanel(chart);
 				chartPanel.getPreferredSize();
 
@@ -683,10 +684,11 @@ public class View extends JFrame {
 		JButton btnLetzer = new JButton("Letzer");
 		btnLetzer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+
 				series.clear();
 				time_table_1.setModel(new DefaultTableModel());
 				Zeit z1 = new Zeit();
-				month=month-1;
+				month = month - 1;
 				int totalzeahler = 5;
 				int tagzeahler = 0;
 				String total = "";
@@ -705,7 +707,6 @@ public class View extends JFrame {
 						ucl.setArbeitszeit(notimes);
 					}
 
-				
 				} catch (RemoteException | SQLException | ParseException | IndexOutOfBoundsException e) {
 					ArrayList<ArrayList<String>> notimes = new ArrayList<ArrayList<String>>();
 					ArrayList<String> row = new ArrayList<String>();
@@ -713,7 +714,7 @@ public class View extends JFrame {
 					notimes.add(row);
 					ucl.setArbeitszeit(notimes);
 				}
-				
+
 				String[][] datenletzer = new String[ucl.getArbeitszeit().size()][];
 				ArrayList<String> row = new ArrayList<String>();
 				for (int i = 0; i < ucl.getArbeitszeit().size(); i++) {
@@ -724,7 +725,7 @@ public class View extends JFrame {
 				time_table_1.setModel(new DefaultTableModel(datenletzer, new String[] { "Datum", "Morgen", "Mittag", "Nachmittag", "Abend", "Total" }));
 				time_table_1.getColumnModel().getColumn(1).setPreferredWidth(120);
 				scrollPane_1.setViewportView(time_table_1);
-				
+
 				for (int i = 0; i < ucl.getArbeitszeit().size(); i++) {
 					try {
 						total = ucl.getArbeitszeit().get(tagzeahler).get(totalzeahler);
@@ -740,10 +741,10 @@ public class View extends JFrame {
 						tagzeahler = tagzeahler + 1;
 					}
 				}
-
+				chartPanel.removeAll();
 				XYSeriesCollection data1 = new XYSeriesCollection(series);
 				JFreeChart chart = ChartFactory.createXYLineChart(null, "Days", "Hours", data1, PlotOrientation.VERTICAL, true, true, true);
-				
+
 				ChartPanel chartPanel = new ChartPanel(chart);
 				chartPanel.getPreferredSize();
 
@@ -752,7 +753,7 @@ public class View extends JFrame {
 				time_panel.add(chart_panel);
 				time_panel.repaint();
 			}
-			
+
 		});
 		btnLetzer.setBounds(780, 219, 89, 23);
 		time_panel.add(btnLetzer);
@@ -867,13 +868,14 @@ public class View extends JFrame {
 		}
 		return new ImageIcon(resource);
 	}
-	public JFreeChart refreshgraph(){
+
+	public JFreeChart refreshgraph() {
 		int totalzeahler = 5;
 		int tagzeahler = 0;
 		String total = "";
 		Double emptydouble = 0.0;
 		Double novalues = 0.0;
-	
+
 		XYSeries series = new XYSeries("Work Progress");
 		for (int i = 0; i < ucl.getArbeitszeit().size(); i++) {
 			try {

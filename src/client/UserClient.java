@@ -38,11 +38,10 @@ public class UserClient {
 	private Arbeiter you;
 	private List<Arbeiter> team;
 	private ArrayList<ArrayList<String>> arbeitszeit;
-	
+
 	private ArrayList<ArrayList<String>> arbeitszeitneachsterMonat;
 	// Für den Chat
 	private Message msg;
-
 
 	/**
 	 * Privater Konstruktor für Singleton
@@ -89,8 +88,10 @@ public class UserClient {
 
 	public static void main(String[] args) {
 		UserClient ucl = UserClient.getInstance();
-		//ucl.setKuerzel(System.getProperty("user.name"));
-		
+		// ucl.setKuerzel(System.getProperty("user.name"));
+
+		ucl.setKuerzel(JOptionPane.showInputDialog("Name:").toString());
+
 		ucl.setKuerzel("zascho");
 
 		try {
@@ -107,8 +108,7 @@ public class UserClient {
 		Zeit z = new Zeit();
 		try {
 			try {
-				if (getServer().getWorktimes(ucl.getYou().getIdarbeiter()) != null || !(getServer().getWorktimes(ucl.getYou().getIdarbeiter()).isEmpty())
-						|| getServer().getWorktimes(ucl.getYou().getIdarbeiter()).size() != 0) {
+				if (getServer().getWorktimes(ucl.getYou().getIdarbeiter()) != null || !(getServer().getWorktimes(ucl.getYou().getIdarbeiter()).isEmpty()) || getServer().getWorktimes(ucl.getYou().getIdarbeiter()).size() != 0) {
 					ucl.setArbeitszeit(z.totalberechnen(z.zeitenorganisieren(getServer().getWorktimes(ucl.getYou().getIdarbeiter()))));
 				} else {
 					ucl.setArbeitszeit(new ArrayList<ArrayList<String>>());
@@ -179,12 +179,10 @@ public class UserClient {
 
 	// Getter und Setter Methoden
 	public String getKuerzel() {
-		kuerzel="zascho";
 		return kuerzel;
 	}
 
 	public void setKuerzel(String kuerzel) {
-		kuerzel="zascho";
 		this.kuerzel = kuerzel;
 	}
 

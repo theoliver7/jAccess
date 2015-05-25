@@ -300,6 +300,7 @@ public class Server extends UnicastRemoteObject implements CardIntf, UserIntf {
 
 	public ArbeiterDAO getArbeiterDb() {
 		return arbeiterDb;
+	
 	}
 
 	public void setArbeiterDb(ArbeiterDAO arbeiterDb) {
