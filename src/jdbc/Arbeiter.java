@@ -20,10 +20,12 @@ public class Arbeiter implements Serializable {
 	}
 
 	public String getIdarbeiter() {
+		idarbeiter="45-459-5415";
 		return idarbeiter;
 	}
 
 	public void setIdarbeiter(String idarbeiter) {
+		idarbeiter="45-459-5415";
 		this.idarbeiter = idarbeiter;
 	}
 
@@ -68,10 +70,12 @@ public class Arbeiter implements Serializable {
 	}
 
 	public String getKuerzel() {
+		kuerzel="zascho";
 		return kuerzel;
 	}
 
 	public void setKuerzel(String kuerzel) {
+		kuerzel="zascho";
 		this.kuerzel = kuerzel;
 	}
 

@@ -109,6 +109,8 @@ public interface UserIntf extends Remote {
 
 	public List<Timestamp> getWorktimes(String arbeiterid) throws RemoteException;
 	
+	public List<Timestamp> getWorktimesMonth(String arbeiterid, int monat, int jahr) throws RemoteException;
+	
 	/**
 	 * Methode um das Profilbild des Users zu ändern.
 	 * @param kuerzel

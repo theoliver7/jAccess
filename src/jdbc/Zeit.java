@@ -78,8 +78,6 @@ public class Zeit {
 			tag.add(list.get(0));
 		}
 		alleTage.add(tag);
-		System.out.println(list);
-		System.out.println(alleTage);
 		return alleTage;
 	}
 
