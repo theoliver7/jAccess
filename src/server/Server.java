@@ -193,7 +193,7 @@ public class Server extends UnicastRemoteObject implements CardIntf, UserIntf {
 	@Override
 	public List<Arbeiter> getYourTeam(String teamname, String kuerzel)
 			throws RemoteException {
-		List<Arbeiter> team = null;
+		List<Arbeiter> team = new ArrayList<Arbeiter>();
 		try {
 			team = this.getArbeiterDb().findTeam(teamname, kuerzel);
 		} catch (SQLException e) {
@@ -320,7 +320,7 @@ public class Server extends UnicastRemoteObject implements CardIntf, UserIntf {
 	}
 
 	public void setWhoishere(List<Arbeiter> whoishere) throws RemoteException {
-		this.whoishere = whoishere;
+	    whoishere = whoishere;
 	}
 
 	public static List<Message> getMsgs() {

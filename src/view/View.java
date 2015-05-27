@@ -53,9 +53,12 @@ import javax.swing.text.Document;
 import jdbc.Arbeiter;
 import jdbc.Zeit;
 import listener.ExitListener;
+import listener.FileListener;
 import listener.LoginListener;
 import listener.PicListener;
+import listener.PrintListener;
 import listener.ProfileListener;
+import listener.ZeitListener;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
@@ -71,7 +74,6 @@ public class View extends JFrame {
 
 	private static final long serialVersionUID = 4701804783439921041L;
 	private JPanel content;
-	private JTable time_tabel;
 	private JTextPane chattext;
 	public JTextField message;
 	private Timer timer;
@@ -79,18 +81,24 @@ public class View extends JFrame {
 	private JPanel youteam_panel;
 	private JPanel teamPanel;
 	private JScrollPane teamScroll;
-
-	private PicListener picl;
+	
+	public XYSeries series;
+	public JTable time_table_1;
+	public Calendar cal = Calendar.getInstance();
+	public int month;
+	public int year;
+	public JScrollPane scrollPane_1;
+	public ChartPanel chartPanel;
+	public JPanel chart_panel;
+	public JPanel time_panel;
 
 	public JLabel profilePic = new JLabel();
 	public JPanel profileInfo = new JPanel();
-	public JLabel vornameLabel = new JLabel();
-	public JLabel nachnameLabel = new JLabel();
+	public JLabel nameLabel = new JLabel();
 	public JLabel funktionLabel = new JLabel();
 	public JLabel abteilungLabel = new JLabel();
 	public JLabel wohnortLabel = new JLabel();
 	public JLabel statusLabel = new JLabel();
-	private Integer month;
 
 	public JButton picButton;
 	public JLabel profileInfoPanel = new JLabel("Profil links auswählen");
@@ -98,7 +106,6 @@ public class View extends JFrame {
 	// Icons fürs GUI
 	private static final Icon online = loadIcon("bullet_green.png");
 	private static final Icon offline = loadIcon("bullet_red.png");
-	private JTable time_table_1;
 
 	/**
 	 * Create the frame.
@@ -119,20 +126,23 @@ public class View extends JFrame {
 		}
 		// Aktuelle Zeit
 		Date date = new Date();
-		Calendar cal = Calendar.getInstance();
 		cal.setTime(date);
 
 		month = cal.get(Calendar.MONTH) + 1;
-		System.out.println(month);
+		year = cal.get(Calendar.YEAR);
 
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
 
 		JMenu mnFile = new JMenu("Datei");
 		menuBar.add(mnFile);
+		
+		JMenuItem mntmSpeichern = new JMenuItem("Speichern");
+		mntmSpeichern.addActionListener(new FileListener(this));
+		mnFile.add(mntmSpeichern);
 
 		JMenuItem mntmPrint = new JMenuItem("Drucken");
-
+		mntmPrint.addActionListener(new PrintListener());
 		mnFile.add(mntmPrint);
 
 		JMenuItem mntmExit = new JMenuItem("Beenden");
@@ -280,83 +290,42 @@ public class View extends JFrame {
 		profileInfo.setBackground(UIManager.getColor("DesktopPane.background"));
 		profileInfo.setBounds(20, 138, 149, 292);
 		profile_panel.add(profileInfo);
-		profileInfo.setLayout(new GridLayout(0, 2, 0, 0));
+		profileInfo.setLayout(new GridLayout(0, 1, 0, 0));
 
-		vornameLabel.setHorizontalAlignment(SwingConstants.LEFT);
-		profileInfo.add(vornameLabel);
-
-		profileInfo.add(nachnameLabel);
+		nameLabel.setHorizontalAlignment(SwingConstants.LEFT);
+		profileInfo.add(nameLabel);
+		
+		profileInfo.add(statusLabel);
 
 		profileInfo.add(funktionLabel);
 
-		JLabel lblNewLabel_3 = new JLabel("");
-		profileInfo.add(lblNewLabel_3);
-
 		profileInfo.add(abteilungLabel);
 
-		JLabel lblNewLabel_5 = new JLabel("");
-		profileInfo.add(lblNewLabel_5);
-
 		profileInfo.add(wohnortLabel);
-
-		JLabel lblNewLabel_7 = new JLabel("");
-		profileInfo.add(lblNewLabel_7);
-
-		profileInfo.add(statusLabel);
-
-		JLabel lblNewLabel_10 = new JLabel("");
-		profileInfo.add(lblNewLabel_10);
-
-		JLabel lblNewLabel_11 = new JLabel("");
-		profileInfo.add(lblNewLabel_11);
-
-		JLabel lblNewLabel_12 = new JLabel("");
-		profileInfo.add(lblNewLabel_12);
-
-		JLabel lblNewLabel_13 = new JLabel("");
-		profileInfo.add(lblNewLabel_13);
-
-		JLabel lblNewLabel_14 = new JLabel("");
-		profileInfo.add(lblNewLabel_14);
-
-		JLabel label_7 = new JLabel("");
-		profileInfo.add(label_7);
-
-		JLabel lblNewLabel_15 = new JLabel("");
-		profileInfo.add(lblNewLabel_15);
-
-		JLabel lblNewLabel_16 = new JLabel("");
-		profileInfo.add(lblNewLabel_16);
-
-		JLabel lblNewLabel_17 = new JLabel("");
-		profileInfo.add(lblNewLabel_17);
-
-		JLabel lblNewLabel_18 = new JLabel("");
-		profileInfo.add(lblNewLabel_18);
-
-		JLabel lblNewLabel = new JLabel("");
-		profileInfo.add(lblNewLabel);
-
-		JLabel label_4 = new JLabel("");
-		profileInfo.add(label_4);
-
-		JLabel label_6 = new JLabel("");
-		profileInfo.add(label_6);
-
-		JLabel label_5 = new JLabel("");
-		profileInfo.add(label_5);
-
+		
+		JLabel label = new JLabel("");
+		profileInfo.add(label);
+		
+		JLabel label_1 = new JLabel("");
+		profileInfo.add(label_1);
+		
 		JLabel label_2 = new JLabel("");
 		profileInfo.add(label_2);
-
+		
+		JLabel label_7 = new JLabel("");
+		profileInfo.add(label_7);
+		
 		JLabel label_3 = new JLabel("");
 		profileInfo.add(label_3);
-
-		JLabel lblNewLabel_19 = new JLabel("");
-		profileInfo.add(lblNewLabel_19);
-
-		JLabel lblNewLabel_20 = new JLabel("");
-		profileInfo.add(lblNewLabel_20);
+		
+		JLabel label_6 = new JLabel("");
+		profileInfo.add(label_6);
+		
+		JLabel label_4 = new JLabel("");
+		profileInfo.add(label_4);
+		
+		JLabel label_5 = new JLabel("");
+		profileInfo.add(label_5);
 
 		picButton = new JButton();
 		picButton.setText("Profilbild");
@@ -434,7 +403,7 @@ public class View extends JFrame {
 		});
 		chat_panel.add(scrollPane);
 
-		JPanel time_panel = new JPanel();
+		time_panel = new JPanel();
 		tabbedPanel.addTab("Arbeitszeiten", null, time_panel, null);
 		time_panel.setLayout(null);
 
@@ -486,7 +455,7 @@ public class View extends JFrame {
 		separator_25.setBounds(7, 254, 33, 7);
 		time_panel.add(separator_25);
 
-		JPanel chart_panel = new JPanel();
+		chart_panel = new JPanel();
 		chart_panel.setBounds(7, 255, 964, 228);
 		chart_panel.setLayout(new GridLayout());
 
@@ -495,7 +464,7 @@ public class View extends JFrame {
 		String total = "";
 		Double emptydouble = 0.0;
 		Double novalues = 0.0;
-		XYSeries series = new XYSeries("Work Progress");
+		series = new XYSeries("Work Progress");
 		for (int i = 0; i < ucl.getArbeitszeit().size(); i++) {
 			try {
 				total = ucl.getArbeitszeit().get(tagzeahler).get(totalzeahler);
@@ -515,14 +484,14 @@ public class View extends JFrame {
 		XYSeriesCollection data = new XYSeriesCollection(series);
 		JFreeChart chart = ChartFactory.createXYLineChart(null, "Days", "Hours", data, PlotOrientation.VERTICAL, true, true, true);
 
-		ChartPanel chartPanel = new ChartPanel(chart);
+		chartPanel = new ChartPanel(chart);
 		chartPanel.getPreferredSize();
 
 		chart_panel.add(chartPanel);
 
 		time_panel.add(chart_panel);
 
-		JScrollPane scrollPane_1 = new JScrollPane();
+		scrollPane_1 = new JScrollPane();
 		scrollPane_1.setBounds(7, 30, 963, 178);
 		time_panel.add(scrollPane_1);
 
@@ -536,225 +505,17 @@ public class View extends JFrame {
 		time_table_1.getColumnModel().getColumn(1).setPreferredWidth(120);
 		scrollPane_1.setViewportView(time_table_1);
 
-		mntmPrint.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				try {
-					// the file path
-					File file = new File("D:\\Users\\"+ucl.getKuerzel()+"\\Desktop\\Zeitnachweisblatt.txt");
-					// if the file not exist create one
-					if (!file.exists()) {
-						file.createNewFile();
-					}
-
-					FileWriter filewriter = new FileWriter(file.getAbsoluteFile());
-					BufferedWriter bufferdwriter = new BufferedWriter(filewriter);
-					bufferdwriter.write(System.getProperty("line.separator"));
-					bufferdwriter.write("Arbeitszeiten von " + getUcl().getYou().getName() + "\t\t\t\t\t\t\t\t\t JAccess");
-					bufferdwriter.write(System.getProperty("line.separator"));
-					bufferdwriter.write(getUcl().getYou().getNachname());
-					bufferdwriter.write(System.getProperty("line.separator"));
-					bufferdwriter.write(getUcl().getYou().getAbteilung());
-					bufferdwriter.write(System.getProperty("line.separator"));
-					bufferdwriter.write(getUcl().getYou().getWohnort());
-					bufferdwriter.write(System.getProperty("line.separator"));
-					bufferdwriter.write(System.getProperty("line.separator"));
-					bufferdwriter.write(System.getProperty("line.separator"));
-
-					bufferdwriter.write("________________________________________________________________________________________________________");
-
-					bufferdwriter.write(System.getProperty("line.separator"));
-					bufferdwriter.write("|");
-					bufferdwriter.write("\t\t\t\t\t\t\t\t\t\t\t\t\t");
-					bufferdwriter.write("|");
-					bufferdwriter.write(System.getProperty("line.separator"));
-
-					// loop for jtable rows
-					for (int i = 0; i < time_table_1.getRowCount(); i++) {
-						// loop for jtable column
-						bufferdwriter.write("|");
-						for (int j = 0; j < time_table_1.getColumnCount(); j++) {
-							bufferdwriter.write("\t");
-							if (time_table_1.getModel().getValueAt(i, j) != null) {
-								bufferdwriter.write(time_table_1.getModel().getValueAt(i, j) + " ");
-								bufferdwriter.write("\t");
-							}
-
-						}
-						// break line at the begin
-						// break line at the end
-						bufferdwriter.write("|");
-						bufferdwriter.write(System.getProperty("line.separator"));
-
-					}
-					// close BufferedWriter
-					bufferdwriter.write("________________________________________________________________________________________________________");
-					bufferdwriter.close();
-					// close FileWriter
-					filewriter.close();
-					JOptionPane.showMessageDialog(null, "Zeitnachweisblatt wurde in den Desktop exportiert");
-
-				} catch (Exception ex) {
-					ex.printStackTrace();
-				}
-			}
-		});
-
 		JLabel tabel_label = new JLabel("Arbeitszeiten");
 		tabel_label.setBounds(44, 11, 71, 14);
 		time_panel.add(tabel_label);
 
 		JButton btnNchster = new JButton("Neachster");
-		btnNchster.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-
-				int totalzeahler = 5;
-				int tagzeahler = 0;
-				String total = "";
-				Double emptydouble = 0.0;
-				Double novalues = 0.0;
-				series.clear();
-				time_table_1.setModel(new DefaultTableModel());
-				Zeit z1 = new Zeit();
-				cal.set(Calendar.MONTH, +1);
-				month = month + 1;
-				
-				try {
-					if (UserClient.getServer().getWorktimesMonth(ucl.getYou().getIdarbeiter(), month, 2015) != null || !(UserClient.getServer().getWorktimesMonth(ucl.getYou().getIdarbeiter(), month, 2015).isEmpty()) || UserClient.getServer().getWorktimesMonth(ucl.getYou().getIdarbeiter(), month, 2015).size() != 0) {
-						ucl.setArbeitszeit(z1.totalberechnen(z1.zeitenorganisieren(UserClient.getServer().getWorktimesMonth(ucl.getYou().getIdarbeiter(), month, 2015))));
-					} else {
-						ucl.setArbeitszeit(new ArrayList<ArrayList<String>>());
-						ArrayList<ArrayList<String>> notimes = new ArrayList<ArrayList<String>>();
-						ArrayList<String> row = new ArrayList<String>();
-						row.add("Noch keine Arbeitszeiten!");
-						notimes.add(row);
-						ucl.setArbeitszeit(notimes);
-					}
-
-				} catch (RemoteException | SQLException | ParseException | IndexOutOfBoundsException e) {
-					ArrayList<ArrayList<String>> notimes = new ArrayList<ArrayList<String>>();
-					ArrayList<String> row = new ArrayList<String>();
-					row.add("Noch keine Arbeitszeiten!");
-					notimes.add(row);
-					ucl.setArbeitszeit(notimes);
-				}
-
-				String[][] datenletzer = new String[ucl.getArbeitszeit().size()][];
-				ArrayList<String> row = new ArrayList<String>();
-				for (int i = 0; i < ucl.getArbeitszeit().size(); i++) {
-					row = ucl.getArbeitszeit().get(i);
-					datenletzer[i] = row.toArray(new String[row.size()]);
-				}
-				time_table_1 = new JTable();
-				time_table_1.setModel(new DefaultTableModel(datenletzer, new String[] { "Datum", "Morgen", "Mittag", "Nachmittag", "Abend", "Total" }));
-				time_table_1.getColumnModel().getColumn(1).setPreferredWidth(120);
-				scrollPane_1.setViewportView(time_table_1);
-
-				for (int i = 0; i < ucl.getArbeitszeit().size(); i++) {
-					try {
-						total = ucl.getArbeitszeit().get(tagzeahler).get(totalzeahler);
-						total = total.replace(':', '.');
-						Double toal_float = Double.valueOf(total);
-						series.add(emptydouble, toal_float);
-						emptydouble++;
-						tagzeahler = tagzeahler + 1;
-
-					} catch (IndexOutOfBoundsException e) {
-						series.add(emptydouble, novalues);
-						emptydouble++;
-						tagzeahler = tagzeahler + 1;
-					}
-				}
-				chartPanel.removeAll();
-				XYSeriesCollection data1 = new XYSeriesCollection(series);
-				JFreeChart chart = ChartFactory.createXYLineChart(null, "Days", "Hours", data1, PlotOrientation.VERTICAL, true, true, true);
-
-				ChartPanel chartPanel = new ChartPanel(chart);
-				chartPanel.getPreferredSize();
-
-				chart_panel.add(chartPanel);
-
-				time_panel.add(chart_panel);
-				time_panel.repaint();
-			}
-		});
+		btnNchster.addActionListener(new ZeitListener(this, 1));
 		btnNchster.setBounds(872, 219, 89, 23);
 		time_panel.add(btnNchster);
 
 		JButton btnLetzer = new JButton("Letzer");
-		btnLetzer.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-
-				series.clear();
-				time_table_1.setModel(new DefaultTableModel());
-				Zeit z1 = new Zeit();
-				month = month - 1;
-				int totalzeahler = 5;
-				int tagzeahler = 0;
-				String total = "";
-				Double emptydouble = 0.0;
-				Double novalues = 0.0;
-				try {
-					if (UserClient.getServer().getWorktimesMonth(ucl.getYou().getIdarbeiter(), month, 2015) != null || !(UserClient.getServer().getWorktimesMonth(ucl.getYou().getIdarbeiter(), month, 2015).isEmpty()) || UserClient.getServer().getWorktimesMonth(ucl.getYou().getIdarbeiter(), month, 2015).size() != 0) {
-
-						ucl.setArbeitszeit(z1.totalberechnen(z1.zeitenorganisieren(UserClient.getServer().getWorktimesMonth(ucl.getYou().getIdarbeiter(), month, 2015))));
-					} else {
-						ucl.setArbeitszeit(new ArrayList<ArrayList<String>>());
-						ArrayList<ArrayList<String>> notimes = new ArrayList<ArrayList<String>>();
-						ArrayList<String> row = new ArrayList<String>();
-						row.add("Noch keine Arbeitszeiten!");
-						notimes.add(row);
-						ucl.setArbeitszeit(notimes);
-					}
-
-				} catch (RemoteException | SQLException | ParseException | IndexOutOfBoundsException e) {
-					ArrayList<ArrayList<String>> notimes = new ArrayList<ArrayList<String>>();
-					ArrayList<String> row = new ArrayList<String>();
-					row.add("Noch keine Arbeitszeiten!");
-					notimes.add(row);
-					ucl.setArbeitszeit(notimes);
-				}
-
-				String[][] datenletzer = new String[ucl.getArbeitszeit().size()][];
-				ArrayList<String> row = new ArrayList<String>();
-				for (int i = 0; i < ucl.getArbeitszeit().size(); i++) {
-					row = ucl.getArbeitszeit().get(i);
-					datenletzer[i] = row.toArray(new String[row.size()]);
-				}
-				time_table_1 = new JTable();
-				time_table_1.setModel(new DefaultTableModel(datenletzer, new String[] { "Datum", "Morgen", "Mittag", "Nachmittag", "Abend", "Total" }));
-				time_table_1.getColumnModel().getColumn(1).setPreferredWidth(120);
-				scrollPane_1.setViewportView(time_table_1);
-
-				for (int i = 0; i < ucl.getArbeitszeit().size(); i++) {
-					try {
-						total = ucl.getArbeitszeit().get(tagzeahler).get(totalzeahler);
-						total = total.replace(':', '.');
-						Double toal_float = Double.valueOf(total);
-						series.add(emptydouble, toal_float);
-						emptydouble++;
-						tagzeahler = tagzeahler + 1;
-
-					} catch (IndexOutOfBoundsException e) {
-						series.add(emptydouble, novalues);
-						emptydouble++;
-						tagzeahler = tagzeahler + 1;
-					}
-				}
-				chartPanel.removeAll();
-				XYSeriesCollection data1 = new XYSeriesCollection(series);
-				JFreeChart chart = ChartFactory.createXYLineChart(null, "Days", "Hours", data1, PlotOrientation.VERTICAL, true, true, true);
-
-				ChartPanel chartPanel = new ChartPanel(chart);
-				chartPanel.getPreferredSize();
-
-				chart_panel.add(chartPanel);
-
-				time_panel.add(chart_panel);
-				time_panel.repaint();
-			}
-
-		});
+		btnLetzer.addActionListener(new ZeitListener(this, -1));
 		btnLetzer.setBounds(780, 219, 89, 23);
 		time_panel.add(btnLetzer);
 
@@ -804,11 +565,6 @@ public class View extends JFrame {
 				for (Arbeiter mitglied : workers) {
 					if (a.getKuerzel().equals(mitglied.getKuerzel())) {
 						JLabel label = new JLabel(a.getName() + " " + a.getNachname(), online, JLabel.LEFT);
-						label.addMouseListener(new ProfileListener(this, a));
-						teamPanel.add(label);
-
-					} else {
-						JLabel label = new JLabel(a.getName() + " " + a.getNachname(), offline, JLabel.LEFT);
 						label.addMouseListener(new ProfileListener(this, a));
 						teamPanel.add(label);
 					}

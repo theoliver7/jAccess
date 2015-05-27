@@ -27,10 +27,8 @@ public class ProfileListener implements MouseListener {
 			this.getView().picButton.setVisible(false);
 		}
 		this.getView().profileInfoPanel.setText("");
-		this.getView().vornameLabel.setText(this.getArbeiter().getName());
-		this.getView().vornameLabel.repaint();
-		this.getView().nachnameLabel.setText(this.getArbeiter().getNachname());
-		this.getView().nachnameLabel.repaint();
+		this.getView().nameLabel.setText(this.getArbeiter().getName() + " " + this.getArbeiter().getNachname());
+		this.getView().nameLabel.repaint();
 		this.getView().abteilungLabel.setText(this.getArbeiter().getAbteilung());
 		this.getView().abteilungLabel.repaint();
 		this.getView().funktionLabel.setText(this.getArbeiter().getFunktion());

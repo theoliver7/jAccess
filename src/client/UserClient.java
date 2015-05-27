@@ -92,8 +92,6 @@ public class UserClient {
 
 		ucl.setKuerzel(JOptionPane.showInputDialog("Name:").toString());
 
-		ucl.setKuerzel("zascho");
-
 		try {
 			ucl.setYou(getServer().getYourArbeiter(ucl.getKuerzel()));
 		} catch (RemoteException e) {
