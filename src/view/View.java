@@ -541,7 +541,7 @@ public class View extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					// the file path
-					File file = new File("D:\\Users\\zascho\\Desktop\\Zeitnachweisblatt.txt");
+					File file = new File("D:\\Users\\"+ucl.getKuerzel()+"\\Desktop\\Zeitnachweisblatt.txt");
 					// if the file not exist create one
 					if (!file.exists()) {
 						file.createNewFile();
@@ -618,7 +618,7 @@ public class View extends JFrame {
 				Zeit z1 = new Zeit();
 				cal.set(Calendar.MONTH, +1);
 				month = month + 1;
-				System.out.println(cal.get(Calendar.MONTH));
+				
 				try {
 					if (UserClient.getServer().getWorktimesMonth(ucl.getYou().getIdarbeiter(), month, 2015) != null || !(UserClient.getServer().getWorktimesMonth(ucl.getYou().getIdarbeiter(), month, 2015).isEmpty()) || UserClient.getServer().getWorktimesMonth(ucl.getYou().getIdarbeiter(), month, 2015).size() != 0) {
 						ucl.setArbeitszeit(z1.totalberechnen(z1.zeitenorganisieren(UserClient.getServer().getWorktimesMonth(ucl.getYou().getIdarbeiter(), month, 2015))));
