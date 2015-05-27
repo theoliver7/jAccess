@@ -24,7 +24,6 @@ public class ValidatorImpl extends UnicastRemoteObject implements Validator {
 		if(keys.containsKey(id) && keys.get(id).equals(pw)) {
 			return true;
 		} else {
-			JOptionPane.showMessageDialog(null, "Kein Zugriff!", "Fehler", JOptionPane.ERROR_MESSAGE);
 			return false;
 		}
 	}

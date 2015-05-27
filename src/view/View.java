@@ -29,6 +29,7 @@ import javax.swing.BoxLayout;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -91,6 +92,7 @@ public class View extends JFrame {
 	public ChartPanel chartPanel;
 	public JPanel chart_panel;
 	public JPanel time_panel;
+	public JLabel datumLabel;
 
 	public JLabel profilePic = new JLabel();
 	public JPanel profileInfo = new JPanel();
@@ -135,38 +137,58 @@ public class View extends JFrame {
 		setJMenuBar(menuBar);
 
 		JMenu mnFile = new JMenu("Datei");
+		mnFile.setIcon(new ImageIcon(View.class.getResource("/images/folder_stand.png")));
 		menuBar.add(mnFile);
 		
 		JMenuItem mntmSpeichern = new JMenuItem("Speichern");
+		mntmSpeichern.setIcon(new ImageIcon(View.class.getResource("/images/save_as.png")));
 		mntmSpeichern.addActionListener(new FileListener(this));
 		mnFile.add(mntmSpeichern);
 
 		JMenuItem mntmPrint = new JMenuItem("Drucken");
+		mntmPrint.setIcon(new ImageIcon(View.class.getResource("/images/printer.png")));
 		mntmPrint.addActionListener(new PrintListener());
 		mnFile.add(mntmPrint);
 
 		JMenuItem mntmExit = new JMenuItem("Beenden");
+		mntmExit.setIcon(new ImageIcon(View.class.getResource("/images/door_in.png")));
 		mntmExit.addActionListener(new ExitListener(this));
 		mnFile.add(mntmExit);
 
 		JMenu mnSettings = new JMenu("Einstellungen");
+		mnSettings.setIcon(new ImageIcon(View.class.getResource("/images/gear_in.png")));
 		menuBar.add(mnSettings);
 
 		JMenuItem mntmAccount = new JMenuItem("Account");
+		mntmAccount.setIcon(new ImageIcon(View.class.getResource("/images/mail_server_setting.png")));
 		mnSettings.add(mntmAccount);
 
 		JMenuItem mntmAdminLogin = new JMenuItem("Admin Login");
+		mntmAdminLogin.setIcon(new ImageIcon(View.class.getResource("/images/administrator.png")));
 		mntmAdminLogin.addActionListener(new LoginListener(this));
 		mnSettings.add(mntmAdminLogin);
 
 		JMenu mnHelp = new JMenu("Hilfe");
+		mnHelp.setIcon(new ImageIcon(View.class.getResource("/images/help.png")));
 		menuBar.add(mnHelp);
 
-		JMenuItem mntmVersion = new JMenuItem("\u00DCber");
-		mnHelp.add(mntmVersion);
+		JMenuItem mntmAbout = new JMenuItem("Über");
+		mntmAbout.setIcon(new ImageIcon(View.class.getResource("/images/books.png")));
+		mntmAbout.addActionListener(new ActionListener() {
 
-		JMenuItem mntmVersion_1 = new JMenuItem("Version");
-		mnHelp.add(mntmVersion_1);
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JDialog about = new About();
+				about.setVisible(true);
+				about.setAutoRequestFocus(true);
+			}
+			
+		});
+		mnHelp.add(mntmAbout);
+
+		JMenuItem mntmVersion = new JMenuItem("Version");
+		mntmVersion.setIcon(new ImageIcon(View.class.getResource("/images/application_osx_terminal.png")));
+		mnHelp.add(mntmVersion);
 		content = new JPanel();
 		content.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(content);
@@ -353,7 +375,7 @@ public class View extends JFrame {
 					e.consume();
 					try {
 						if (!message.getText().equals("")) {
-							getUcl().send(new Message("[" + ucl.getKuerzel() + " - " + ucl.getYou().getAbteilung() + "] ", message.getText() + "\n"));
+							UserClient.getServer().send(new Message("[" + ucl.getKuerzel() + " - " + ucl.getYou().getAbteilung() + "] ", message.getText() + "\n"));
 							message.setText("");
 						}
 					} catch (RemoteException e1) {
@@ -376,7 +398,7 @@ public class View extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					if (!message.getText().equals("")) {
-						getUcl().send(new Message("[" + getUcl().getKuerzel() + "] ", message.getText() + "\n"));
+						UserClient.getServer().send(new Message("[" + getUcl().getKuerzel() + "] ", message.getText() + "\n"));
 						message.setText("");
 					}
 				} catch (RemoteException e1) {
@@ -509,7 +531,7 @@ public class View extends JFrame {
 		tabel_label.setBounds(44, 11, 71, 14);
 		time_panel.add(tabel_label);
 
-		JButton btnNchster = new JButton("Neachster");
+		JButton btnNchster = new JButton("N\u00E4chster");
 		btnNchster.addActionListener(new ZeitListener(this, 1));
 		btnNchster.setBounds(872, 219, 89, 23);
 		time_panel.add(btnNchster);
@@ -518,6 +540,11 @@ public class View extends JFrame {
 		btnLetzer.addActionListener(new ZeitListener(this, -1));
 		btnLetzer.setBounds(780, 219, 89, 23);
 		time_panel.add(btnLetzer);
+		
+		datumLabel = new JLabel(this.month + "." + this.year);
+		datumLabel.setIcon(new ImageIcon(View.class.getResource("/images/calendar.png")));
+		datumLabel.setBounds(679, 220, 89, 23);
+		time_panel.add(datumLabel);
 
 		JPanel online_panel = new JPanel();
 		content.add(online_panel, BorderLayout.SOUTH);
@@ -543,7 +570,7 @@ public class View extends JFrame {
 
 		// Thread starten für den Chat
 		this.setTimer(new Timer());
-		this.getTimer().scheduleAtFixedRate(new Prozess(), 0, 500);
+		this.getTimer().scheduleAtFixedRate(new Prozess(), 0, 100);
 
 	}
 
@@ -582,28 +609,20 @@ public class View extends JFrame {
 		chattext.removeAll();
 		List<Message> messages = new ArrayList<Message>();
 		try {
-			messages = this.getUcl().getServer().returnMessages();
+			messages = UserClient.getServer().returnMessages();
 		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		for (Message i : messages) {
 			append(i.getName() + i.getMsg());
 			try {
-				this.getUcl().getServer().rmvPrintedMsgs();
+				UserClient.getServer().rmvPrintedMsgs();
 			} catch (RemoteException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
+		chattext.revalidate();
 		chattext.repaint();
-		try {
-			Thread.sleep(1);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
 	}
 
 	public void append(String s) {

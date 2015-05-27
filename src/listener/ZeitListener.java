@@ -113,6 +113,10 @@ public class ZeitListener implements ActionListener {
 		chartPanel.getPreferredSize();
 		chartPanel.revalidate();
 		chartPanel.repaint();
+		
+		this.getView().datumLabel.setText(this.getView().month + "." + this.getView().year);
+		this.getView().datumLabel.revalidate();
+		this.getView().datumLabel.repaint();
 
 		this.getView().chart_panel.add(chartPanel);
 		this.getView().chart_panel.revalidate();

@@ -264,7 +264,7 @@ public class Server extends UnicastRemoteObject implements CardIntf, UserIntf {
 	// Methoden für Chat
 	@Override
 	public List<Message> returnMessages() throws RemoteException {
-		return this.getMsgs();
+		return Server.getMsgs();
 	}
 
 	@Override
@@ -275,13 +275,13 @@ public class Server extends UnicastRemoteObject implements CardIntf, UserIntf {
 			// Mit sleep(int) kann ein Cooldown eingestellt werden. Für
 			// besonders
 			// Nervige Chatter :)
-			Thread.sleep(20);
+			Thread.sleep(200);
 
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 		msgarray.clear();
-		this.setMsgs(msgarray);
+		Server.setMsgs(msgarray);
 	}
 
 	@Override
@@ -320,7 +320,7 @@ public class Server extends UnicastRemoteObject implements CardIntf, UserIntf {
 	}
 
 	public void setWhoishere(List<Arbeiter> whoishere) throws RemoteException {
-	    whoishere = whoishere;
+	    this.whoishere = whoishere;
 	}
 
 	public static List<Message> getMsgs() {

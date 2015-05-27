@@ -96,6 +96,8 @@ public class Login extends JDialog {
 								setVisible(false);
 								AdminView frame = new AdminView(getView());
 								frame.setVisible(true);
+							} else {
+								JOptionPane.showMessageDialog(getView(), "Kein Zugriff!", "Fehler", JOptionPane.ERROR_MESSAGE);
 							}
 						} catch (MalformedURLException | RemoteException | NotBoundException e1) {
 							JOptionPane.showMessageDialog(null, "Probleme mit dem Login-Server! \nBitte wenden " + "Sie sich an den IT-Support.", "Fehler", JOptionPane.ERROR_MESSAGE);

@@ -90,7 +90,7 @@ public class UserClient {
 		UserClient ucl = UserClient.getInstance();
 		// ucl.setKuerzel(System.getProperty("user.name"));
 
-		ucl.setKuerzel(JOptionPane.showInputDialog("Name:").toString());
+		ucl.setKuerzel(System.getProperty("user.name"));
 
 		try {
 			ucl.setYou(getServer().getYourArbeiter(ucl.getKuerzel()));
@@ -164,15 +164,6 @@ public class UserClient {
 	@SuppressWarnings("unused")
 	private boolean isOnline() {
 		return false;
-	}
-
-	// Methoden für die Chat-Funktion
-	public void send(Message msg) throws RemoteException {
-		try {
-			UserClient.getServer().send(msg);
-		} catch (RemoteException e) {
-			// TODO eigene exception wenn nachricht nicht senden kann
-		}
 	}
 
 	// Getter und Setter Methoden
