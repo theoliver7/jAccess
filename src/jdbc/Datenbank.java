@@ -19,6 +19,7 @@ public class Datenbank {
 		String user = "";
 		String database = "";
 		String password = "";
+		// Informationen aus dem properties File auslesen
 		try (FileReader reader = new FileReader("config.properties")) {
 			Properties properties = new Properties();
 			properties.load(reader);
@@ -31,6 +32,7 @@ public class Datenbank {
 		}
 
 		try {
+			// Treiber laden
 			Class.forName("com.mysql.jdbc.Driver").newInstance();
 		} catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
 			System.out.println("Treiber Problem");
@@ -39,6 +41,7 @@ public class Datenbank {
 		}
 
 		try {
+			// Verbindung mit der DB erstellen
 			con = DriverManager.getConnection(database, user, password);
 
 		} catch (SQLException e) {
@@ -59,6 +62,9 @@ public class Datenbank {
 		this.con = con;
 	}
 
+	/**
+	 * Schliesst die Verbindung mit der DB
+	 */
 	public void closeCon() {
 		try {
 			if (rs != null) {

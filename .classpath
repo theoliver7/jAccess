@@ -7,5 +7,6 @@
 	<classpathentry kind="lib" path="T:/Public/Software/Tools/Java/Lib/mysql-connector-java-5.1.30.jar"/>
 	<classpathentry kind="lib" path="T:/Public/Software/Tools/Java/Lib/jfreechart-1.0.19.jar"/>
 	<classpathentry kind="lib" path="T:/Public/Software/Tools/Java/Lib/jcommon-1.0.23.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

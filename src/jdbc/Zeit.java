@@ -17,6 +17,16 @@ public class Zeit {
 	private ArrayList<Timestamp> tag = new ArrayList<Timestamp>();
 	private ArrayList<ArrayList<Timestamp>> alleTage = new ArrayList<ArrayList<Timestamp>>();
 
+	/**
+	 * Rechnet das Total der Arbeitszeiten aus und formatiert die Liste fuer die
+	 * Tabelle
+	 * 
+	 * @param arrayList
+	 * @return Zweidimensionale Arraylist
+	 * @throws SQLException
+	 * @throws ParseException
+	 */
+
 	public ArrayList<ArrayList<String>> totalberechnen(ArrayList<ArrayList<Timestamp>> arrayList) throws SQLException, ParseException {
 		int tagzaehler = 0;
 		int zeitzaehler = 0;
@@ -46,7 +56,7 @@ public class Zeit {
 			} else {
 				finaltag.add(datumformatieren(arrayList.get(tagzaehler).get(0)));
 				finaltag.add("Zeiten nicht korrekt eingetragen ");
-				
+
 				finalalleTage.add(finaltag);
 				finaltag = new ArrayList<String>();
 
@@ -57,6 +67,14 @@ public class Zeit {
 		return finalalleTage;
 	}
 
+	/**
+	 * Fuegt die Timestamps des gleichen Tages in eine Arraylist
+	 * 
+	 * @param list
+	 * @return Zweidimensionale Arraylist
+	 * @throws SQLException
+	 * @throws ParseException
+	 */
 	public ArrayList<ArrayList<Timestamp>> zeitenorganisieren(List<Timestamp> list) throws SQLException, ParseException {
 		int i = 0;
 		int position = 0;
@@ -81,23 +99,50 @@ public class Zeit {
 		return alleTage;
 	}
 
+	/**
+	 * Rechnet die Arbeitszeit aus
+	 * 
+	 * @param date1
+	 * @param date2
+	 * @param date3
+	 * @param date4
+	 * @return
+	 */
 	public long rechnen(Timestamp date1, Timestamp date2, Timestamp date3, Timestamp date4) {
 		long diffInMillies = date2.getTime() - date1.getTime() + date4.getTime() - date3.getTime();
 		return diffInMillies;
 	}
 
+	/**
+	 * Formatiert das Datum nach dem yyyy-MM-dd Format
+	 * 
+	 * @param timestamp
+	 * @return
+	 * @throws ParseException
+	 */
 	public String datumformatieren(Date timestamp) throws ParseException {
 		Format formatter = new SimpleDateFormat("yyyy-MM-dd");
 		String timestamp_string = formatter.format(timestamp);
 		return timestamp_string;
 	}
 
+	/**
+	 * Formatiert die Zeiten nach dem HH:mm Format
+	 * 
+	 * @param timestamp
+	 * @return
+	 * @throws ParseException
+	 */
 	public String zeitformatieren(Date timestamp) throws ParseException {
 		Format formatter = new SimpleDateFormat("HH:mm");
 		String timestamp_string = formatter.format(timestamp);
 		return timestamp_string;
 	}
-
+	/**
+	 * Formatiert eine Float Zahl sodass sie lesbar ist
+	 * @param diff
+	 * @return
+	 */
 	public String leserlichmachen(long diff) {
 		long second = (diff / 1000) % 60;
 		long minute = (diff / (1000 * 60)) % 60;
