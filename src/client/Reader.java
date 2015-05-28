@@ -117,7 +117,7 @@ public class Reader {
 	 * @param channel
 	 * @return Gibt Uid als fomratierten String zurück.
 	 */
-	public static String send(byte[] cmd, CardChannel channel) {
+	private static String send(byte[] cmd, CardChannel channel) {
 
 		String res = "";
 

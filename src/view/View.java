@@ -100,7 +100,6 @@ public class View extends JFrame {
 	public JLabel funktionLabel = new JLabel();
 	public JLabel abteilungLabel = new JLabel();
 	public JLabel wohnortLabel = new JLabel();
-	public JLabel statusLabel = new JLabel();
 
 	public JButton picButton;
 	public JLabel profileInfoPanel = new JLabel("Profil links auswählen");
@@ -119,6 +118,7 @@ public class View extends JFrame {
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 992, 651);
+		setLocationRelativeTo(null);
 
 		try {
 			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
@@ -159,8 +159,9 @@ public class View extends JFrame {
 		mnSettings.setIcon(new ImageIcon(View.class.getResource("/images/gear_in.png")));
 		menuBar.add(mnSettings);
 
-		JMenuItem mntmAccount = new JMenuItem("Account");
+		JMenuItem mntmAccount = new JMenuItem("Profilbild");
 		mntmAccount.setIcon(new ImageIcon(View.class.getResource("/images/mail_server_setting.png")));
+		mntmAccount.addActionListener(PicListener.getInstance(this, this.getUcl().getYou()));
 		mnSettings.add(mntmAccount);
 
 		JMenuItem mntmAdminLogin = new JMenuItem("Admin Login");
@@ -188,6 +189,16 @@ public class View extends JFrame {
 
 		JMenuItem mntmVersion = new JMenuItem("Version");
 		mntmVersion.setIcon(new ImageIcon(View.class.getResource("/images/application_osx_terminal.png")));
+		mntmVersion.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JDialog version = new Version();
+				version.setVisible(true);
+				version.setAutoRequestFocus(true);
+			}
+			
+		});
 		mnHelp.add(mntmVersion);
 		content = new JPanel();
 		content.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -316,8 +327,6 @@ public class View extends JFrame {
 
 		nameLabel.setHorizontalAlignment(SwingConstants.LEFT);
 		profileInfo.add(nameLabel);
-		
-		profileInfo.add(statusLabel);
 
 		profileInfo.add(funktionLabel);
 

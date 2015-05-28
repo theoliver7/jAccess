@@ -48,8 +48,10 @@ public class PicListener implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		if (this.dialog == null) {
 			dialog = new JDialog();
+			dialog.setLocationRelativeTo(null);
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
+			dialog.setTitle("Profilbild ändern");
 			dialog.setBounds(100, 100, 450, 300);
 			dialog.getContentPane().setLayout(new BorderLayout());
 			

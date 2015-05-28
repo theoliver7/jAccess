@@ -37,8 +37,9 @@ public class About extends JDialog {
 		}
 		
 		setResizable(false);
-		setTitle("About - \u00DCber");
+		setTitle("About - Über");
 		setBounds(100, 100, 344, 266);
+		setLocationRelativeTo(null);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);

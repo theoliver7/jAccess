@@ -38,6 +38,7 @@ public class Login extends JDialog {
 	public Login(View view) {
 		this.setView(view);
 		setResizable(false);
+		setLocationRelativeTo(null);
 		setTitle("jAccess - Admin Login");
 		setBounds(100, 100, 271, 205);
 		getContentPane().setLayout(new BorderLayout());

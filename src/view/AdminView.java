@@ -67,6 +67,7 @@ public class AdminView extends JFrame {
 	public AdminView(View view) {
 		setIconImage(Toolkit.getDefaultToolkit().getImage(AdminView.class.getResource("/images/user.png")));
 		setResizable(false);
+		setLocationRelativeTo(null);
 		setTitle("Mitarbeiterverwaltung");
 		this.setView(view);
 		setBounds(100, 100, 540, 501);

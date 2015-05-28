@@ -39,10 +39,6 @@ public class UserClient {
 	private List<Arbeiter> team;
 	private ArrayList<ArrayList<String>> arbeitszeit;
 
-	private ArrayList<ArrayList<String>> arbeitszeitneachsterMonat;
-	// Für den Chat
-	private Message msg;
-
 	/**
 	 * Privater Konstruktor für Singleton
 	 */
@@ -88,8 +84,6 @@ public class UserClient {
 
 	public static void main(String[] args) {
 		UserClient ucl = UserClient.getInstance();
-		// ucl.setKuerzel(System.getProperty("user.name"));
-
 		ucl.setKuerzel(System.getProperty("user.name"));
 
 		try {
@@ -154,16 +148,6 @@ public class UserClient {
 		frame.repaint();
 
 		frame.addWindowListener(new ExitListener(frame));
-	}
-
-	/**
-	 * Gibt einen Booleschen Wert zurück ob UserClient im Chat online ist.
-	 * 
-	 * @return boolean (ist UserClient online?)
-	 */
-	@SuppressWarnings("unused")
-	private boolean isOnline() {
-		return false;
 	}
 
 	// Getter und Setter Methoden

@@ -35,8 +35,6 @@ public class ProfileListener implements MouseListener {
 		this.getView().funktionLabel.repaint();
 		this.getView().wohnortLabel.setText(this.getArbeiter().getWohnort());
 		this.getView().wohnortLabel.repaint();
-		this.getView().statusLabel.setText("STATUS");
-		this.getView().statusLabel.repaint();
 		ImageIcon icon = (ImageIcon) View.loadIcon(this.getArbeiter().getPic());
 		Image img = icon.getImage();
 		Image newimg = img.getScaledInstance(100, 100, java.awt.Image.SCALE_SMOOTH);

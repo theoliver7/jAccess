@@ -48,7 +48,7 @@ public class Server extends UnicastRemoteObject implements CardIntf, UserIntf {
 	// Ende Karten Teil
 
 	// User Teil
-	public List<Arbeiter> whoishere = new ArrayList<Arbeiter>();
+	private List<Arbeiter> whoishere = new ArrayList<Arbeiter>();
 	// Ende User Teil
 
 	// Chat Teil

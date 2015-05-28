@@ -51,14 +51,6 @@ public class Arbeiter implements Serializable {
 		this.funktion = funktion;
 	}
 
-	public boolean isStatus() {
-		return status;
-	}
-
-	public void setStatus(boolean status) {
-		this.status = status;
-	}
-
 	public String getWohnort() {
 		return wohnort;
 	}
