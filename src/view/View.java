@@ -56,6 +56,7 @@ import jdbc.Zeit;
 import listener.ExitListener;
 import listener.FileListener;
 import listener.LoginListener;
+import listener.MessageListener;
 import listener.PicListener;
 import listener.PrintListener;
 import listener.ProfileListener;
@@ -378,43 +379,10 @@ public class View extends JFrame {
 		message.setBounds(10, 419, 362, 28);
 		chat_panel.add(message);
 		message.setColumns(10);
-		message.addKeyListener(new KeyListener() {
-			public void keyPressed(KeyEvent e) {
-				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-					e.consume();
-					try {
-						if (!message.getText().equals("")) {
-							UserClient.getServer().send(new Message("[" + ucl.getKuerzel() + " - " + ucl.getYou().getAbteilung() + "] ", message.getText() + "\n"));
-							message.setText("");
-						}
-					} catch (RemoteException e1) {
-						// TODO eigene Nachrichten exception
-					}
-				}
-			}
-
-			@Override
-			public void keyTyped(KeyEvent e) {
-			}
-
-			@Override
-			public void keyReleased(KeyEvent e) {
-			}
-		});
+		message.addKeyListener(new MessageListener(this));
 
 		JButton message_send = new JButton("Senden");
-		message_send.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try {
-					if (!message.getText().equals("")) {
-						UserClient.getServer().send(new Message("[" + getUcl().getKuerzel() + "] ", message.getText() + "\n"));
-						message.setText("");
-					}
-				} catch (RemoteException e1) {
-					// TODO Nachricht nicht senden exception
-				}
-			}
-		});
+		message_send.addActionListener(new MessageListener(this));
 		message_send.setBounds(374, 420, 77, 26);
 		chat_panel.add(message_send);
 

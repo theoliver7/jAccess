@@ -77,14 +77,16 @@ public class UserClient {
 			serverobj = (UserIntf) Naming.lookup(server);
 		} catch (MalformedURLException | RemoteException | NotBoundException e) {
 			JOptionPane.showMessageDialog(null, "Der Server hat zurzeit Probleme! \nBitte wenden " + "Sie sich an den IT-Support.", "Fehler", JOptionPane.ERROR_MESSAGE);
-			e.printStackTrace();
+			System.exit(0);
 		}
 		return serverobj;
 	}
 
 	public static void main(String[] args) {
 		UserClient ucl = UserClient.getInstance();
-		ucl.setKuerzel(System.getProperty("user.name"));
+		//ucl.setKuerzel(System.getProperty("user.name"));
+		
+		ucl.setKuerzel(JOptionPane.showInputDialog(null, "Kürzel eingeben", "Präsentation", JOptionPane.QUESTION_MESSAGE));
 
 		try {
 			ucl.setYou(getServer().getYourArbeiter(ucl.getKuerzel()));
@@ -143,7 +145,7 @@ public class UserClient {
 			UserClient.getServer().send(msg);
 		} catch (RemoteException e1) {
 			JOptionPane.showMessageDialog(null, "Die Nachricht konnte nicht gesendet werden! \nBitte wenden " + "Sie sich an den IT-Support.", "Fehler", JOptionPane.ERROR_MESSAGE);
-			e1.printStackTrace();
+			System.exit(0);
 		}
 		frame.repaint();
 
