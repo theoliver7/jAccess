@@ -83,7 +83,7 @@ public class Server extends UnicastRemoteObject implements CardIntf, UserIntf {
 		Server server = new Server();
 		try {
 			String servername = "//localhost/Server";
-			try (FileReader reader = new FileReader("config.properties")) {
+			try (FileReader reader = new FileReader("./config.properties")) {
 				Properties properties = new Properties();
 				properties.load(reader);
 				servername = properties.getProperty("server");

@@ -20,7 +20,7 @@ public class Datenbank {
 		String database = "";
 		String password = "";
 		// Informationen aus dem properties File auslesen
-		try (FileReader reader = new FileReader("config.properties")) {
+		try (FileReader reader = new FileReader("./config.properties")) {
 			Properties properties = new Properties();
 			properties.load(reader);
 			user = properties.getProperty("user");

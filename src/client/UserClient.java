@@ -66,7 +66,7 @@ public class UserClient {
 		UserIntf serverobj = null;
 		try {
 			String server = "//localhost/Server";
-			try (FileReader reader = new FileReader("config.properties")) {
+			try (FileReader reader = new FileReader("./config.properties")) {
 				Properties properties = new Properties();
 				properties.load(reader);
 				server = properties.getProperty("server");

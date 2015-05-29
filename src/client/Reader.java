@@ -1,11 +1,14 @@
 package client;
 
+import java.io.FileReader;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.ByteBuffer;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.sql.SQLException;
+import java.util.Properties;
 
 import javax.smartcardio.*;
 
@@ -99,15 +102,25 @@ public class Reader {
 	 * @throws NotBoundException
 	 */
 	private static void newTag(String uid) throws MalformedURLException, RemoteException, NotBoundException {
-		CardIntf serverobj = (CardIntf) Naming.lookup("//localhost/Server");
-		try {
-			serverobj.receiveUid(uid);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			System.out.println("Failed to insert Time!");
+		String servername = "//localhost/Server";
+		// Server informationen aus dem config file auslesen
+		try (FileReader reader = new FileReader("./config.properties")) {
+			Properties properties = new Properties();
+			properties.load(reader);
+			servername = properties.getProperty("server");
+
+			CardIntf serverobj = (CardIntf) Naming.lookup(servername);
+			try {
+				serverobj.receiveUid(uid);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				System.out.println("Failed to insert Time!");
+				e.printStackTrace();
+			}
+			System.err.println(serverobj.getResponse());
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		System.err.println(serverobj.getResponse());
 	}
 
 	/**
@@ -118,9 +131,7 @@ public class Reader {
 	 * @return Gibt Uid als fomratierten String zurück.
 	 */
 	private static String send(byte[] cmd, CardChannel channel) {
-
 		String res = "";
-
 		byte[] baResp = new byte[258];
 		ByteBuffer bufCmd = ByteBuffer.wrap(cmd);
 		ByteBuffer bufResp = ByteBuffer.wrap(baResp);
