@@ -577,7 +577,8 @@ public class View extends JFrame {
 			teamPanel.repaint();
 			teamPanel.revalidate();
 		} catch (RemoteException e) {
-			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Der Server hat zurzeit Probleme! \nBitte wenden " + "Sie sich an den IT-Support.", "Fehler", JOptionPane.ERROR_MESSAGE);
+			System.exit(0);
 		}
 
 	}

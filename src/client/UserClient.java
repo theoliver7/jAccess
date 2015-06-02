@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+import javax.sound.midi.SysexMessage;
 import javax.swing.JOptionPane;
 
 import jdbc.Arbeiter;
@@ -85,9 +86,8 @@ public class UserClient {
 	public static void main(String[] args) {
 		UserClient ucl = UserClient.getInstance();
 		//ucl.setKuerzel(System.getProperty("user.name"));
+		ucl.setKuerzel(JOptionPane.showInputDialog("Kürzel"));
 		
-		ucl.setKuerzel(JOptionPane.showInputDialog(null, "Kürzel eingeben", "Präsentation", JOptionPane.QUESTION_MESSAGE));
-
 		try {
 			ucl.setYou(getServer().getYourArbeiter(ucl.getKuerzel()));
 		} catch (RemoteException e) {
@@ -102,7 +102,8 @@ public class UserClient {
 		Zeit z = new Zeit();
 		try {
 			try {
-				if (getServer().getWorktimes(ucl.getYou().getIdarbeiter()) != null || !(getServer().getWorktimes(ucl.getYou().getIdarbeiter()).isEmpty()) || getServer().getWorktimes(ucl.getYou().getIdarbeiter()).size() != 0) {
+				if (getServer().getWorktimes(ucl.getYou().getIdarbeiter()) != null || !(getServer().getWorktimes(ucl.getYou().getIdarbeiter()).isEmpty())
+						|| getServer().getWorktimes(ucl.getYou().getIdarbeiter()).size() != 0) {
 					ucl.setArbeitszeit(z.totalberechnen(z.zeitenorganisieren(getServer().getWorktimes(ucl.getYou().getIdarbeiter()))));
 				} else {
 					ucl.setArbeitszeit(new ArrayList<ArrayList<String>>());
@@ -122,8 +123,9 @@ public class UserClient {
 			boolean test2 = UserClient.getServer().updateUser(ucl.getYou());
 			System.out.println(test);
 			System.out.println(test2);
-		} catch (RemoteException e) {
-			e.printStackTrace();
+		} catch (RemoteException | NullPointerException e) {
+			JOptionPane.showMessageDialog(null, "Dieser Benutzer konnte nicht gefunden werden! \nBitte wenden " + "Sie sich an den IT-Support.", "Fehler", JOptionPane.ERROR_MESSAGE);
+			System.exit(0);
 		}
 
 		try {

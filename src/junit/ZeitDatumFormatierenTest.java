@@ -1,19 +1,14 @@
 package junit;
 
-import static org.junit.Assert.*;
-
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Date;
 
 import jdbc.Zeit;
-import junit.framework.Assert;
 
-import org.junit.After;
 import org.junit.AfterClass;
-import org.junit.Before;
+import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;

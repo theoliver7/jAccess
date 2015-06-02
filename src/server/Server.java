@@ -275,7 +275,7 @@ public class Server extends UnicastRemoteObject implements CardIntf, UserIntf {
 			// Mit sleep(int) kann ein Cooldown eingestellt werden. Für
 			// besonders
 			// Nervige Chatter :)
-			Thread.sleep(200);
+			Thread.sleep(400);
 
 		} catch (InterruptedException e) {
 			e.printStackTrace();
